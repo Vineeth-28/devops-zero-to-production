@@ -1,6 +1,6 @@
 # 🐧 Linux Production Revision
 
-Production-focused Linux revision with real-world troubleshooting, interview preparation, and hands-on labs.
+Production-focused Linux revision with real-world troubleshooting, interview preparation, hands-on labs, and production debugging scenarios.
 
 ---
 
@@ -28,24 +28,34 @@ Build the mindset of a Linux Administrator / DevOps Engineer by learning how to 
 
 # 📂 Folder Structure
 
-```
+```text
 01-linux/
 
 ├── commands/
 │   ├── linux-commands.md
 │   ├── permissions.md
 │   ├── users.md
-│   └── ssh.md
+│   ├── ssh.md
+│   ├── networking.md
+│   └── logs.md
 │
 ├── troubleshooting/
 │   ├── 502-bad-gateway.md
 │   ├── high-cpu.md
 │   ├── permission-denied.md
-│   └── ssh-failure.md
+│   ├── ssh-failure.md
+│   ├── website-not-opening.md
+│   └── log-analysis.md
 │
 ├── labs/
 │   ├── ec2-nginx-lab.md
-│   └── user-management-lab.md
+│   ├── user-management-lab.md
+│   └── networking-lab.md
+│
+├── pdfs/
+│   ├── Day-01-Linux-Production-Basics.pdf
+│   ├── Day-02-Linux-Permissions-and-SSH.pdf
+│   └── Day-03-Linux-Networking-and-Logs.pdf
 │
 └── README.md
 ```
@@ -54,7 +64,7 @@ Build the mindset of a Linux Administrator / DevOps Engineer by learning how to 
 
 # 🚀 Commands Practiced
 
-### Process Management
+## Process Management
 
 - `ps aux`
 - `top`
@@ -62,36 +72,46 @@ Build the mindset of a Linux Administrator / DevOps Engineer by learning how to 
 - `kill -15`
 - `kill -9`
 
-### Services
+## Services
 
 - `systemctl status`
 - `systemctl start`
 - `systemctl stop`
 - `systemctl restart`
 
-### Logs
+## Logs
 
 - `journalctl`
 - `journalctl -u nginx`
+- `cat`
+- `less`
+- `tail`
+- `tail -f`
+- `grep`
 
-### Networking
+## Networking
 
+- `hostname -I`
+- `ip addr`
+- `ping`
+- `curl`
+- `wget`
 - `ss -tulpn`
 
-### Permissions
+## Permissions
 
 - `ls -l`
 - `chmod`
 - `chown`
 
-### Users
+## Users
 
 - `whoami`
 - `id`
 - `groups`
 - `adduser`
 
-### SSH
+## SSH
 
 - `ssh -i key.pem`
 - `authorized_keys`
@@ -100,20 +120,22 @@ Build the mindset of a Linux Administrator / DevOps Engineer by learning how to 
 
 # 🚨 Production Scenarios
 
-Completed:
+## Completed
 
 - ✅ 502 Bad Gateway Investigation
 - ✅ High CPU Usage Debugging
 - ✅ Permission Denied
 - ✅ SSH Login Failure
+- ✅ Website Not Opening
+- ✅ Log Analysis & Live Monitoring
 
-Upcoming:
+## Upcoming
 
 - ⏳ Disk Full
 - ⏳ Memory Leak
 - ⏳ Service Crash
-- ⏳ Log Rotation
 - ⏳ File System Issues
+- ⏳ Log Rotation
 
 ---
 
@@ -137,13 +159,65 @@ Upcoming:
 
 ---
 
+# 🛠 Production Debugging Flow
+
+```text
+Customer reports issue
+
+        │
+
+        ▼
+
+Network
+
+        │
+
+        ▼
+
+Server
+
+        │
+
+        ▼
+
+Service
+
+        │
+
+        ▼
+
+Application
+
+        │
+
+        ▼
+
+Logs
+
+        │
+
+        ▼
+
+Root Cause
+
+        │
+
+        ▼
+
+Fix
+```
+
+---
+
 # 📅 Revision Progress
 
 - ✅ Day 01 – Linux Production Basics
 - ✅ Day 02 – Permissions, Users & SSH
-- ⏳ Day 03 – Networking & Log Analysis
-- ⏳ Day 04 – Disk & Memory
-- ⏳ Day 05 – Linux Production Mock Interview
+- ✅ Day 03 – Networking & Log Analysis
+- ⏳ Day 04 – Disk & Storage
+- ⏳ Day 05 – Performance & Memory
+- ⏳ Day 06 – Linux Mock Interview
+- ⏳ Day 07 – Linux Production Challenge
 
 ---
 
@@ -151,8 +225,8 @@ Upcoming:
 
 Think like a Linux Administrator managing production servers.
 
-**Investigate → Understand → Fix**
+> **Investigate → Understand → Fix**
 
-Not
+Never
 
-**Guess → Restart → Hope**
+> **Guess → Restart → Hope**
