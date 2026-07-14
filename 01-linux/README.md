@@ -19,7 +19,7 @@ Build the mindset of a Linux Administrator / DevOps Engineer by learning how to 
 - ✅ File Permissions
 - ✅ Users & Groups
 - ✅ SSH Authentication
-- ⏳ Disk Management
+- ✅ Disk Management & Storage
 - ⏳ Memory Management
 - ⏳ Scheduling (cron)
 - ⏳ Package Management
@@ -37,7 +37,9 @@ Build the mindset of a Linux Administrator / DevOps Engineer by learning how to 
 │   ├── users.md
 │   ├── ssh.md
 │   ├── networking.md
-│   └── logs.md
+│   ├── logs.md
+│   ├── storage.md
+│   └── disk-management.md
 │
 ├── troubleshooting/
 │   ├── 502-bad-gateway.md
@@ -45,17 +47,21 @@ Build the mindset of a Linux Administrator / DevOps Engineer by learning how to 
 │   ├── permission-denied.md
 │   ├── ssh-failure.md
 │   ├── website-not-opening.md
-│   └── log-analysis.md
+│   ├── log-analysis.md
+│   ├── disk-full.md
+│   └── no-space-left.md
 │
 ├── labs/
 │   ├── ec2-nginx-lab.md
 │   ├── user-management-lab.md
-│   └── networking-lab.md
+│   ├── networking-lab.md
+│   └── disk-management-lab.md
 │
 ├── pdfs/
 │   ├── Day-01-Linux-Production-Basics.pdf
 │   ├── Day-02-Linux-Permissions-and-SSH.pdf
-│   └── Day-03-Linux-Networking-and-Logs.pdf
+│   ├── Day-03-Linux-Networking-and-Logs.pdf
+│   └── Day-04-Linux-Disk-and-Storage.pdf
 │
 └── README.md
 ```
@@ -98,6 +104,14 @@ Build the mindset of a Linux Administrator / DevOps Engineer by learning how to 
 - `wget`
 - `ss -tulpn`
 
+## Storage
+
+- `df -h`
+- `du -sh`
+- `lsblk`
+- `mount`
+- `find`
+
 ## Permissions
 
 - `ls -l`
@@ -128,11 +142,13 @@ Build the mindset of a Linux Administrator / DevOps Engineer by learning how to 
 - ✅ SSH Login Failure
 - ✅ Website Not Opening
 - ✅ Log Analysis & Live Monitoring
+- ✅ Disk Full Investigation
+- ✅ No Space Left on Device
 
 ## Upcoming
 
-- ⏳ Disk Full
 - ⏳ Memory Leak
+- ⏳ High Memory Usage
 - ⏳ Service Crash
 - ⏳ File System Issues
 - ⏳ Log Rotation
@@ -156,6 +172,42 @@ Build the mindset of a Linux Administrator / DevOps Engineer by learning how to 
 ❌ Memorize commands
 
 ✅ Understand the system
+
+---
+
+# 💡 Engineering Principles
+
+Every production issue should follow this flow:
+
+```text
+Incident
+
+↓
+
+Investigate
+
+↓
+
+Collect Evidence
+
+↓
+
+Find Root Cause
+
+↓
+
+Apply Fix
+
+↓
+
+Verify
+
+↓
+
+Prevent Recurrence
+```
+
+Never fix symptoms without understanding the cause.
 
 ---
 
@@ -205,6 +257,18 @@ Root Cause
         ▼
 
 Fix
+
+        │
+
+        ▼
+
+Verification
+
+        │
+
+        ▼
+
+Prevention
 ```
 
 ---
@@ -214,7 +278,7 @@ Fix
 - ✅ Day 01 – Linux Production Basics
 - ✅ Day 02 – Permissions, Users & SSH
 - ✅ Day 03 – Networking & Log Analysis
-- ⏳ Day 04 – Disk & Storage
+- ✅ Day 04 – Disk & Storage Management
 - ⏳ Day 05 – Performance & Memory
 - ⏳ Day 06 – Linux Mock Interview
 - ⏳ Day 07 – Linux Production Challenge
@@ -225,7 +289,7 @@ Fix
 
 Think like a Linux Administrator managing production servers.
 
-> **Investigate → Understand → Fix**
+> **Investigate → Understand → Fix → Verify → Prevent**
 
 Never
 
