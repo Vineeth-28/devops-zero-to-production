@@ -20,7 +20,7 @@ Build the mindset of a Linux Administrator / DevOps Engineer by learning how to 
 - ✅ Users & Groups
 - ✅ SSH Authentication
 - ✅ Disk Management & Storage
-- ⏳ Memory Management
+- ✅ Performance & Memory Monitoring
 - ⏳ Scheduling (cron)
 - ⏳ Package Management
 
@@ -39,7 +39,9 @@ Build the mindset of a Linux Administrator / DevOps Engineer by learning how to 
 │   ├── networking.md
 │   ├── logs.md
 │   ├── storage.md
-│   └── disk-management.md
+│   ├── disk-management.md
+│   ├── performance.md
+│   └── memory.md
 │
 ├── troubleshooting/
 │   ├── 502-bad-gateway.md
@@ -49,19 +51,23 @@ Build the mindset of a Linux Administrator / DevOps Engineer by learning how to 
 │   ├── website-not-opening.md
 │   ├── log-analysis.md
 │   ├── disk-full.md
-│   └── no-space-left.md
+│   ├── no-space-left.md
+│   ├── high-memory.md
+│   └── server-slow.md
 │
 ├── labs/
 │   ├── ec2-nginx-lab.md
 │   ├── user-management-lab.md
 │   ├── networking-lab.md
-│   └── disk-management-lab.md
+│   ├── disk-management-lab.md
+│   └── performance-lab.md
 │
 ├── pdfs/
 │   ├── Day-01-Linux-Production-Basics.pdf
 │   ├── Day-02-Linux-Permissions-and-SSH.pdf
 │   ├── Day-03-Linux-Networking-and-Logs.pdf
-│   └── Day-04-Linux-Disk-and-Storage.pdf
+│   ├── Day-04-Linux-Disk-and-Storage.pdf
+│   └── Day-05-Linux-Performance-and-Memory.pdf
 │
 └── README.md
 ```
@@ -112,6 +118,13 @@ Build the mindset of a Linux Administrator / DevOps Engineer by learning how to 
 - `mount`
 - `find`
 
+## Performance
+
+- `top`
+- `free -h`
+- `uptime`
+- `ps aux --sort=-%cpu`
+
 ## Permissions
 
 - `ls -l`
@@ -144,14 +157,16 @@ Build the mindset of a Linux Administrator / DevOps Engineer by learning how to 
 - ✅ Log Analysis & Live Monitoring
 - ✅ Disk Full Investigation
 - ✅ No Space Left on Device
+- ✅ High Memory Usage
+- ✅ Slow Server Investigation
 
 ## Upcoming
 
 - ⏳ Memory Leak
-- ⏳ High Memory Usage
 - ⏳ Service Crash
 - ⏳ File System Issues
 - ⏳ Log Rotation
+- ⏳ Linux Mock Interview
 
 ---
 
@@ -181,29 +196,23 @@ Every production issue should follow this flow:
 
 ```text
 Incident
-
-↓
-
+      │
+      ▼
 Investigate
-
-↓
-
+      │
+      ▼
 Collect Evidence
-
-↓
-
+      │
+      ▼
 Find Root Cause
-
-↓
-
+      │
+      ▼
 Apply Fix
-
-↓
-
+      │
+      ▼
 Verify
-
-↓
-
+      │
+      ▼
 Prevent Recurrence
 ```
 
@@ -215,59 +224,35 @@ Never fix symptoms without understanding the cause.
 
 ```text
 Customer reports issue
-
         │
-
         ▼
-
 Network
-
         │
-
         ▼
-
 Server
-
         │
-
         ▼
-
 Service
-
         │
-
         ▼
-
+CPU / Memory / Disk
+        │
+        ▼
 Application
-
         │
-
         ▼
-
 Logs
-
         │
-
         ▼
-
 Root Cause
-
         │
-
         ▼
-
 Fix
-
         │
-
         ▼
-
 Verification
-
         │
-
         ▼
-
 Prevention
 ```
 
@@ -279,9 +264,28 @@ Prevention
 - ✅ Day 02 – Permissions, Users & SSH
 - ✅ Day 03 – Networking & Log Analysis
 - ✅ Day 04 – Disk & Storage Management
-- ⏳ Day 05 – Performance & Memory
+- ✅ Day 05 – Performance & Memory
 - ⏳ Day 06 – Linux Mock Interview
 - ⏳ Day 07 – Linux Production Challenge
+
+---
+
+# 🏆 Skills Acquired
+
+After completing Week 1, you should be comfortable with:
+
+- Linux process management
+- Service management with systemd
+- Networking basics and troubleshooting
+- SSH authentication
+- Linux permissions and ownership
+- User and group management
+- Disk and storage troubleshooting
+- Performance monitoring
+- Memory investigation
+- Log analysis
+- Root Cause Analysis (RCA)
+- Production troubleshooting mindset
 
 ---
 
