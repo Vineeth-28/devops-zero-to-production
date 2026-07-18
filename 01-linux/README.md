@@ -21,8 +21,9 @@ Build the mindset of a Linux Administrator / DevOps Engineer by learning how to 
 - ✅ SSH Authentication
 - ✅ Disk Management & Storage
 - ✅ Performance & Memory Monitoring
-- ⏳ Scheduling (cron)
-- ⏳ Package Management
+- ✅ Production Troubleshooting
+- ✅ Root Cause Analysis (RCA)
+- ✅ Linux Mock Interview & Production Challenge
 
 ---
 
@@ -67,7 +68,8 @@ Build the mindset of a Linux Administrator / DevOps Engineer by learning how to 
 │   ├── Day-02-Linux-Permissions-and-SSH.pdf
 │   ├── Day-03-Linux-Networking-and-Logs.pdf
 │   ├── Day-04-Linux-Disk-and-Storage.pdf
-│   └── Day-05-Linux-Performance-and-Memory.pdf
+│   ├── Day-05-Linux-Performance-and-Memory.pdf
+│   └── Day-06-Linux-Mock-Interview.pdf
 │
 └── README.md
 ```
@@ -159,14 +161,8 @@ Build the mindset of a Linux Administrator / DevOps Engineer by learning how to 
 - ✅ No Space Left on Device
 - ✅ High Memory Usage
 - ✅ Slow Server Investigation
-
-## Upcoming
-
-- ⏳ Memory Leak
-- ⏳ Service Crash
-- ⏳ File System Issues
-- ⏳ Log Rotation
-- ⏳ Linux Mock Interview
+- ✅ Linux Mock Interview
+- ✅ End-to-End Production Challenge
 
 ---
 
@@ -192,7 +188,7 @@ Build the mindset of a Linux Administrator / DevOps Engineer by learning how to 
 
 # 💡 Engineering Principles
 
-Every production issue should follow this flow:
+Every production issue should follow this workflow:
 
 ```text
 Incident
@@ -216,7 +212,7 @@ Verify
 Prevent Recurrence
 ```
 
-Never fix symptoms without understanding the cause.
+Never fix symptoms without understanding the root cause.
 
 ---
 
@@ -265,36 +261,84 @@ Prevention
 - ✅ Day 03 – Networking & Log Analysis
 - ✅ Day 04 – Disk & Storage Management
 - ✅ Day 05 – Performance & Memory
-- ⏳ Day 06 – Linux Mock Interview
-- ⏳ Day 07 – Linux Production Challenge
+- ✅ Day 06 – Linux Mock Interview & Production Challenge
 
 ---
 
 # 🏆 Skills Acquired
 
-After completing Week 1, you should be comfortable with:
+After completing the Linux module, you should be comfortable with:
 
 - Linux process management
-- Service management with systemd
-- Networking basics and troubleshooting
+- Linux service management (systemd)
+- Linux networking troubleshooting
 - SSH authentication
-- Linux permissions and ownership
-- User and group management
-- Disk and storage troubleshooting
-- Performance monitoring
-- Memory investigation
+- Linux permissions & ownership
+- User & group management
 - Log analysis
+- Disk & storage management
+- CPU & memory monitoring
 - Root Cause Analysis (RCA)
-- Production troubleshooting mindset
+- Production debugging workflow
+- Production incident investigation
+- Linux interview readiness
 
 ---
 
-# 🎯 Goal
+# 📖 Key Learning
 
-Think like a Linux Administrator managing production servers.
+This module focused on building a production-first mindset rather than memorizing Linux commands.
 
-> **Investigate → Understand → Fix → Verify → Prevent**
+Every production issue should follow the same workflow:
 
-Never
+> **Investigate → Collect Evidence → Find Root Cause → Apply Fix → Verify → Prevent**
 
-> **Guess → Restart → Hope**
+This approach applies not only to Linux but also to Docker, Kubernetes, AWS, Terraform, CI/CD, and other production environments.
+
+---
+
+# 🎉 Linux Module Completed
+
+This module covered:
+
+- Hands-on Linux commands
+- Production troubleshooting
+- Root Cause Analysis (RCA)
+- Practical labs
+- Mock interviews
+- Real-world debugging scenarios
+
+This Linux foundation prepares you for modern DevOps tools where the same troubleshooting mindset is applied.
+
+---
+
+# 🚀 Next Module — Git & GitHub
+
+We'll cover:
+
+- Git Internals
+- Repository & Commit History
+- Staging Area
+- Branching Strategy
+- Merge vs Rebase
+- Cherry-pick
+- Reset vs Revert
+- Reflog
+- Git Tags
+- GitHub Workflows
+- Production Git Scenarios
+- Interview Questions
+- Hands-on Labs
+- Daily Revision PDFs
+
+---
+
+# ✅ Module Status
+
+**Linux Module:** Completed ✔️
+
+This module serves as the foundation for the rest of the **DevOps Zero to Production** roadmap.
+
+Next Stop:
+
+➡️ **02 - Git & GitHub**
