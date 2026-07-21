@@ -275,4 +275,4 @@ Learn Git the way production engineers use it.
 
 Instead of memorizing commands, understand Git's internal architecture, object database, branching model, and troubleshooting techniques to confidently work with real-world repositories.
 
-> **Learn → Understand → Practice → Explain → Apply**
+> **Learn → Understand → Practice → Explain → Apply**a
