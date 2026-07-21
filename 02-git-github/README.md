@@ -51,6 +51,25 @@ The goal is to understand **how Git works under the hood**, troubleshoot reposit
 
 ---
 
+## ✅ Day 03 – Git Branches
+
+- What is a Branch?
+- Lightweight Branches
+- Branch Pointers
+- HEAD and Branch Relationship
+- Branch Creation
+- Branch Switching
+- `git branch`
+- `git switch`
+- `git checkout`
+- `.git/refs/heads`
+- Branch Deletion (`-d` vs `-D`)
+- Git Flow
+- GitHub Flow
+- Trunk-Based Development
+
+---
+
 # 📂 Folder Structure
 
 ```text
@@ -58,18 +77,22 @@ The goal is to understand **how Git works under the hood**, troubleshoot reposit
 
 ├── commands/
 │   ├── git-basics.md
-│   └── git-internals.md
+│   ├── git-internals.md
+│   └── branching.md
 │
 ├── troubleshooting/
 │   ├── git-basics.md
-│   └── detached-head.md
+│   ├── detached-head.md
+│   └── branch-issues.md
 │
 ├── workflows/
-│   └── git-workflow.md
+│   ├── git-workflow.md
+│   └── branching-workflow.md
 │
 ├── pdfs/
 │   ├── Day-01-Git-Basics.pdf
-│   └── Day-02-Git-Internals.pdf
+│   ├── Day-02-Git-Internals.pdf
+│   └── Day-03-Branches.pdf
 │
 └── README.md
 ```
@@ -99,10 +122,17 @@ The goal is to understand **how Git works under the hood**, troubleshoot reposit
 - `git cat-file -p <tree_hash>`
 - `cat .git/HEAD`
 
-## Navigation
+## Branching
 
-- `git checkout <commit_hash>`
-- `git checkout main`
+- `git branch`
+- `git branch <branch-name>`
+- `git switch <branch-name>`
+- `git switch main`
+- `git checkout <branch-name>`
+- `git branch -d <branch-name>`
+- `git branch -D <branch-name>`
+- `ls .git/refs/heads`
+- `cat .git/refs/heads/main`
 
 ---
 
@@ -121,6 +151,9 @@ The goal is to understand **how Git works under the hood**, troubleshoot reposit
 - SHA-1 Hashing
 - HEAD
 - Detached HEAD
+- Git Branches
+- Branch Pointers
+- Branch References
 - Git Snapshot
 
 ---
@@ -147,32 +180,73 @@ Git stores every repository using **Blob**, **Tree**, and **Commit** objects.
 
 ---
 
-# 🎯 HEAD
-
-Normal Repository
+# 🌿 Git Branch Architecture
 
 ```text
+Before Branch Creation
+
 HEAD
  │
  ▼
 main
  │
  ▼
-Latest Commit
+Commit C
 ```
 
-Detached HEAD
-
 ```text
+After Creating feature
+
 HEAD
  │
  ▼
-Commit
+main
+ │
+ ▼
+Commit C
+
+feature
+ │
+ ▼
+Commit C
 ```
 
-Normally, **HEAD points to a branch**.
+```text
+After Switching to feature
 
-In a Detached HEAD state, **HEAD points directly to a commit**.
+HEAD
+ │
+ ▼
+feature
+ │
+ ▼
+Commit C
+
+main
+ │
+ ▼
+Commit C
+```
+
+```text
+After Commit on feature
+
+HEAD
+ │
+ ▼
+feature
+ │
+ ▼
+Commit D
+ │
+ ▼
+Commit C
+
+main
+ │
+ ▼
+Commit C
+```
 
 ---
 
@@ -199,25 +273,22 @@ Remote Repository (GitHub)
 
 ---
 
-# 🚨 Production Scenario
+# 🚨 Production Scenarios
 
-Deployment failed after the latest release.
+## Linux
 
-```text
-Commit A ✅
+- Production debugging
+- Log analysis
+- Service failures
 
-Commit B ✅
+## Git
 
-Commit C ❌
-```
-
-Using Detached HEAD:
-
-- Checkout Commit B
-- Verify application behaviour
-- Compare changes
-- Identify the root cause
-- Return to the main branch safely
+- Detached HEAD Investigation
+- Branch Pointer Inspection
+- Branch Storage Investigation
+- Branch Switching
+- Branch Deletion
+- HEAD Movement Analysis
 
 ---
 
@@ -229,31 +300,44 @@ Using Detached HEAD:
 - Commit objects store metadata and project snapshots.
 - HEAD represents the current position in the repository.
 - Detached HEAD enables safe debugging of previous commits.
-- Git efficiently reuses unchanged objects instead of duplicating files.
+- Branches are lightweight movable pointers.
+- Creating a branch does not copy the repository.
+- Local branches are stored inside `.git/refs/heads`.
+- Only the active branch pointer moves after a commit.
 
 ---
 
 # 🎤 Interview Questions Covered
 
+### Git Fundamentals
+
 - What is Git?
 - What is Version Control?
 - Git vs GitHub
-- Centralized vs Distributed Version Control
 - Why do companies use Git?
-- What is a Working Directory?
-- What is a Staging Area?
-- Why does Git have a Staging Area?
-- What happens after `git init`?
-- What is inside the `.git` directory?
-- What is a Git Commit?
+
+### Git Internals
+
 - What is a Blob?
 - What is a Tree?
 - What is a Commit Object?
-- What is SHA-1 in Git?
+- Explain SHA-1.
 - What is HEAD?
 - What is Detached HEAD?
-- How do you recover from Detached HEAD?
-- Explain a production use case for Detached HEAD.
+
+### Git Branches
+
+- What is a Git Branch?
+- Why are branches lightweight?
+- Where are branches stored?
+- What is inside `.git/refs/heads`?
+- What happens during `git switch`?
+- What moves after a commit?
+- Difference between `git switch` and `git checkout`.
+- Difference between `git branch -d` and `git branch -D`.
+- Explain Git Flow.
+- Explain GitHub Flow.
+- Explain Trunk-Based Development.
 
 ---
 
@@ -261,7 +345,7 @@ Using Detached HEAD:
 
 - ✅ Day 01 – Git Fundamentals
 - ✅ Day 02 – Git Internals & HEAD
-- ⏳ Day 03 – Branches & Branch Pointers
+- ✅ Day 03 – Branches & Branch Pointers
 - ⏳ Day 04 – Merge & Merge Conflicts
 - ⏳ Day 05 – Rebase, Reset & Reflog
 - ⏳ Day 06 – GitHub Workflow & Collaboration
@@ -275,4 +359,4 @@ Learn Git the way production engineers use it.
 
 Instead of memorizing commands, understand Git's internal architecture, object database, branching model, and troubleshooting techniques to confidently work with real-world repositories.
 
-> **Learn → Understand → Practice → Explain → Apply**a
+> **Learn → Understand → Practice → Explain → Apply**
