@@ -4,11 +4,11 @@
 
 > A structured, hands-on journey to becoming a production-ready DevOps Engineer.
 
-This repository documents my DevOps learning journey through practical labs, production troubleshooting, infrastructure automation, and real-world engineering scenarios.
+This repository documents my journey of learning DevOps through hands-on labs, production troubleshooting, infrastructure automation, and real-world engineering scenarios.
 
 This is **not** a collection of tutorials or random notes.
 
-It is a production-focused engineering handbook built while learning, practicing, troubleshooting, documenting, and revising every topic.
+It is a production-focused engineering handbook built by learning, practicing, troubleshooting, documenting, and revising every topic from first principles.
 
 ---
 
@@ -22,6 +22,7 @@ By the end of this roadmap, I aim to confidently:
 
 - ✅ Debug production incidents
 - ✅ Understand Linux systems
+- ✅ Master Git collaboration workflows
 - ✅ Build CI/CD pipelines
 - ✅ Deploy containerized applications
 - ✅ Manage Kubernetes clusters
@@ -36,7 +37,7 @@ By the end of this roadmap, I aim to confidently:
 | Module | Status |
 |---------|--------|
 | 🐧 Linux | ✅ Completed |
-| 🔥 Git & GitHub | 🟡 Next |
+| 🔥 Git & GitHub | 🟡 In Progress (Day 03/07) |
 | 🐳 Docker | ⏳ Planned |
 | ☸️ Kubernetes | ⏳ Planned |
 | ☁️ AWS | ⏳ Planned |
@@ -48,9 +49,31 @@ By the end of this roadmap, I aim to confidently:
 
 ---
 
+# 📅 Current Progress
+
+```text
+Linux                 ████████████████████ 100%
+
+Git & GitHub          ████████░░░░░░░░░░░░ 43%
+
+Docker                ░░░░░░░░░░░░░░░░░░░░
+
+Kubernetes            ░░░░░░░░░░░░░░░░░░░░
+
+Terraform             ░░░░░░░░░░░░░░░░░░░░
+
+Ansible               ░░░░░░░░░░░░░░░░░░░░
+
+CI/CD                 ░░░░░░░░░░░░░░░░░░░░
+
+Monitoring            ░░░░░░░░░░░░░░░░░░░░
+```
+
+---
+
 # 📚 Learning Methodology
 
-Every topic follows the same workflow:
+Every module follows the same engineering workflow:
 
 - 📖 Concept Revision
 - 💻 Hands-on Practice
@@ -67,7 +90,7 @@ The objective is to retain knowledge through repetition and practical implementa
 
 # 🛠 Technologies Covered
 
-## 🐧 Linux
+## 🐧 Linux ✅
 
 - Process Management
 - Services (systemd)
@@ -82,18 +105,42 @@ The objective is to retain knowledge through repetition and practical implementa
 
 ---
 
-## 🔥 Git & GitHub
+## 🔥 Git & GitHub 🟡
 
-- Git Internals
-- Repository Management
-- Branching
+### ✅ Completed
+
+- Git Fundamentals
+- Version Control
+- Git vs GitHub
+- Working Directory
+- Staging Area
+- Local & Remote Repository
+- Git Object Database
+- Blob Objects
+- Tree Objects
+- Commit Objects
+- SHA-1
+- HEAD
+- Detached HEAD
+- Git Branches
+- Branch Pointers
+- git switch
+- git checkout
+- Branch Deletion
+- Git Flow
+- GitHub Flow
+- Trunk-Based Development
+
+### ⏳ Upcoming
+
 - Merge
+- Merge Conflicts
 - Rebase
 - Cherry-pick
 - Reset
 - Revert
 - Reflog
-- GitHub Workflows
+- GitHub Collaboration
 
 ---
 
@@ -201,12 +248,22 @@ devops-zero-to-production/
 - Linux Mock Interview
 - End-to-End Production Challenge
 
+### Git
+
+- Detached HEAD Investigation
+- Branch Pointer Inspection
+- Branch Storage Investigation
+- Branch Switching
+- Branch Deletion
+- HEAD Movement
+
 ---
 
 ## ⏳ Upcoming
 
 - Git Merge Conflicts
-- Rollback Strategies
+- Git Rebase Recovery
+- Git Reflog Recovery
 - Docker Container Failures
 - Kubernetes CrashLoopBackOff
 - ImagePullBackOff
@@ -218,9 +275,9 @@ devops-zero-to-production/
 
 # 📖 Repository Philosophy
 
-The goal is not to learn commands.
+The goal is not to memorize commands.
 
-The goal is to answer questions like:
+The goal is to understand systems well enough to answer questions like:
 
 - Why did the application fail?
 - Why is CPU usage high?
@@ -228,7 +285,7 @@ The goal is to answer questions like:
 - Why is the deployment failing?
 - Why is Kubernetes restarting the pod?
 
-Every problem should be investigated before applying a fix.
+Every production issue should be investigated before applying a fix.
 
 ---
 
@@ -264,39 +321,27 @@ Every problem should be investigated before applying a fix.
 Incident
 
       │
-
       ▼
-
 Investigate
 
       │
-
       ▼
-
 Collect Evidence
 
       │
-
       ▼
-
 Find Root Cause
 
       │
-
       ▼
-
 Apply Fix
 
       │
-
       ▼
-
 Verify
 
       │
-
       ▼
-
 Prevent Recurrence
 ```
 
@@ -328,13 +373,14 @@ Become confident handling:
 # ✅ Current Status
 
 - ✅ Linux Module Completed
-- 🟡 Next Module → Git & GitHub
+- 🟡 Git Module In Progress (Day 03 of 07)
+- ⏳ Next: Merge & Merge Conflicts
 
 Building one production-ready skill at a time.
 
 ---
 
-## ⭐ Long-Term Goal
+# ⭐ Long-Term Goal
 
 By the end of this roadmap, this repository will contain:
 
@@ -342,10 +388,10 @@ By the end of this roadmap, this repository will contain:
 - Hands-on labs
 - Production runbooks
 - Interview preparation
-- Daily revision PDFs
+- Revision PDFs
 - Real-world troubleshooting scenarios
 - End-to-end DevOps projects
 
-The objective is to build a portfolio that reflects practical engineering skills rather than just completed courses.
+The objective is to build a portfolio that demonstrates practical engineering skills rather than simply completed courses.
 
 🚀 **DevOps Zero to Production**
