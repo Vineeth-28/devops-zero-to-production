@@ -124,7 +124,8 @@ The project may fail to build.
 Always remove
 
 ```
-<<<<<<<
+<<<<
+<<<
 =======
 >>>>>>>
 ```
