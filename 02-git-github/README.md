@@ -8,7 +8,7 @@ This module focuses on understanding **how Git works internally**, enabling deve
 
 # 🎯 Objective
 
-Build a strong understanding of Git internals, version control, branching, and collaboration workflows.
+Build a strong understanding of Git internals, version control, branching, merging, and collaboration workflows.
 
 The goal is to understand **how Git works under the hood**, troubleshoot repositories confidently, and apply Git effectively in real-world production environments.
 
@@ -70,6 +70,22 @@ The goal is to understand **how Git works under the hood**, troubleshoot reposit
 
 ---
 
+## ✅ Day 04 – Merge & Merge Conflicts
+
+- What is Git Merge?
+- Fast-Forward Merge
+- Three-Way Merge
+- Merge Base
+- Merge Commit
+- Merge Conflicts
+- Conflict Markers
+- Conflict Resolution
+- ORT Merge Strategy
+- Production Merge Workflow
+- Merge Best Practices
+
+---
+
 # 📂 Folder Structure
 
 ```text
@@ -78,21 +94,25 @@ The goal is to understand **how Git works under the hood**, troubleshoot reposit
 ├── commands/
 │   ├── git-basics.md
 │   ├── git-internals.md
-│   └── branching.md
+│   ├── branching.md
+│   └── merge.md
 │
 ├── troubleshooting/
 │   ├── git-basics.md
 │   ├── detached-head.md
-│   └── branch-issues.md
+│   ├── branch-issues.md
+│   └── merge-conflicts.md
 │
 ├── workflows/
 │   ├── git-workflow.md
-│   └── branching-workflow.md
+│   ├── branching-workflow.md
+│   └── merge-workflow.md
 │
 ├── pdfs/
 │   ├── Day-01-Git-Basics.pdf
 │   ├── Day-02-Git-Internals.pdf
-│   └── Day-03-Branches.pdf
+│   ├── Day-03-Branches.pdf
+│   └── Day-04-Merge.pdf
 │
 └── README.md
 ```
@@ -118,6 +138,7 @@ The goal is to understand **how Git works under the hood**, troubleshoot reposit
 ## History & Internals
 
 - `git log --oneline`
+- `git log --graph --all`
 - `git cat-file -p HEAD`
 - `git cat-file -p <tree_hash>`
 - `cat .git/HEAD`
@@ -133,6 +154,15 @@ The goal is to understand **how Git works under the hood**, troubleshoot reposit
 - `git branch -D <branch-name>`
 - `ls .git/refs/heads`
 - `cat .git/refs/heads/main`
+
+## Merge
+
+- `git merge <branch>`
+- `git merge feature`
+- `git status`
+- `git add <file>`
+- `git commit`
+- `git log --graph --all`
 
 ---
 
@@ -155,6 +185,12 @@ The goal is to understand **how Git works under the hood**, troubleshoot reposit
 - Branch Pointers
 - Branch References
 - Git Snapshot
+- Fast-Forward Merge
+- Three-Way Merge
+- Merge Base
+- Merge Commit
+- Merge Conflict
+- ORT Merge Strategy
 
 ---
 
@@ -180,106 +216,80 @@ Git stores every repository using **Blob**, **Tree**, and **Commit** objects.
 
 ---
 
-# 🌿 Git Branch Architecture
+# 🌿 Git Branch & Merge Architecture
+
+## Fast-Forward Merge
 
 ```text
-Before Branch Creation
-
-HEAD
- │
- ▼
-main
- │
- ▼
-Commit C
-```
-
-```text
-After Creating feature
-
-HEAD
- │
- ▼
-main
- │
- ▼
-Commit C
-
-feature
- │
- ▼
-Commit C
-```
-
-```text
-After Switching to feature
-
-HEAD
- │
- ▼
-feature
- │
- ▼
-Commit C
+Before Merge
 
 main
  │
  ▼
-Commit C
+A ─── B ─── C
+             \
+              D ─── E
+                   ▲
+                feature
 ```
 
 ```text
-After Commit on feature
+After Merge
 
-HEAD
- │
- ▼
-feature
- │
- ▼
-Commit D
- │
- ▼
-Commit C
-
-main
- │
- ▼
-Commit C
+A ─── B ─── C ─── D ─── E
+                         ▲
+                   main, feature
 ```
+
+---
+
+## Three-Way Merge
+
+```text
+             D ─── E
+            /       \
+A ─── B ─── C         M
+            \       /
+             F ─── G
+```
+
+`M` is the **Merge Commit**.
 
 ---
 
 # 🛠 Git Workflow
 
 ```text
-Edit File
+Developer
       │
       ▼
-Working Directory
+Feature Branch
       │
- git add
       ▼
-Staging Area
+Commit Changes
       │
- git commit
       ▼
-Local Repository
+Push Branch
       │
- git push
       ▼
-Remote Repository (GitHub)
+Pull Request
+      │
+      ▼
+Code Review
+      │
+      ▼
+CI Tests
+      │
+      ▼
+Merge
+      │
+      ▼
+Deploy
 ```
 
 ---
 
 # 🚨 Production Scenarios
-
-## Linux
-
-- Production debugging
-- Log analysis
-- Service failures
 
 ## Git
 
@@ -289,6 +299,11 @@ Remote Repository (GitHub)
 - Branch Switching
 - Branch Deletion
 - HEAD Movement Analysis
+- Fast-Forward Merge
+- Three-Way Merge
+- Merge Conflict Resolution
+- Pull Request Workflow
+- Code Review Workflow
 
 ---
 
@@ -302,21 +317,25 @@ Remote Repository (GitHub)
 - Detached HEAD enables safe debugging of previous commits.
 - Branches are lightweight movable pointers.
 - Creating a branch does not copy the repository.
-- Local branches are stored inside `.git/refs/heads`.
-- Only the active branch pointer moves after a commit.
+- Fast-Forward Merge moves only the branch pointer.
+- Three-Way Merge creates a Merge Commit.
+- Merge Base is the common ancestor of two branches.
+- Merge Conflicts occur when the same lines are modified differently.
+- ORT is Git's default merge strategy.
+- Production teams use Pull Requests before merging into `main`.
 
 ---
 
 # 🎤 Interview Questions Covered
 
-### Git Fundamentals
+## Git Fundamentals
 
 - What is Git?
 - What is Version Control?
 - Git vs GitHub
 - Why do companies use Git?
 
-### Git Internals
+## Git Internals
 
 - What is a Blob?
 - What is a Tree?
@@ -325,7 +344,7 @@ Remote Repository (GitHub)
 - What is HEAD?
 - What is Detached HEAD?
 
-### Git Branches
+## Git Branches
 
 - What is a Git Branch?
 - Why are branches lightweight?
@@ -333,11 +352,26 @@ Remote Repository (GitHub)
 - What is inside `.git/refs/heads`?
 - What happens during `git switch`?
 - What moves after a commit?
-- Difference between `git switch` and `git checkout`.
-- Difference between `git branch -d` and `git branch -D`.
-- Explain Git Flow.
-- Explain GitHub Flow.
-- Explain Trunk-Based Development.
+- Difference between `git switch` and `git checkout`
+- Difference between `git branch -d` and `git branch -D`
+- Explain Git Flow
+- Explain GitHub Flow
+- Explain Trunk-Based Development
+
+## Git Merge
+
+- What is Git Merge?
+- What is a Fast-Forward Merge?
+- Why is it called a Fast-Forward Merge?
+- What is a Three-Way Merge?
+- Why can't Git perform a Fast-Forward Merge when branches diverge?
+- What is a Merge Base?
+- What is a Merge Commit?
+- Why do merge conflicts occur?
+- How do you resolve merge conflicts?
+- What is the ORT Merge Strategy?
+- Why do companies use feature branches and Pull Requests?
+- Merge Best Practices
 
 ---
 
@@ -346,7 +380,7 @@ Remote Repository (GitHub)
 - ✅ Day 01 – Git Fundamentals
 - ✅ Day 02 – Git Internals & HEAD
 - ✅ Day 03 – Branches & Branch Pointers
-- ⏳ Day 04 – Merge & Merge Conflicts
+- ✅ Day 04 – Merge & Merge Conflicts
 - ⏳ Day 05 – Rebase, Reset & Reflog
 - ⏳ Day 06 – GitHub Workflow & Collaboration
 - ⏳ Day 07 – Production Git Challenge
@@ -357,6 +391,6 @@ Remote Repository (GitHub)
 
 Learn Git the way production engineers use it.
 
-Instead of memorizing commands, understand Git's internal architecture, object database, branching model, and troubleshooting techniques to confidently work with real-world repositories.
+Instead of memorizing commands, understand Git's internal architecture, object database, branching model, merge strategies, and troubleshooting techniques to confidently work with real-world repositories.
 
 > **Learn → Understand → Practice → Explain → Apply**

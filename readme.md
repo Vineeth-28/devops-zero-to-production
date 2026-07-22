@@ -37,7 +37,7 @@ By the end of this roadmap, I aim to confidently:
 | Module | Status |
 |---------|--------|
 | 🐧 Linux | ✅ Completed |
-| 🔥 Git & GitHub | 🟡 In Progress (Day 03/07) |
+| 🔥 Git & GitHub | 🟡 In Progress (Day 04/07) |
 | 🐳 Docker | ⏳ Planned |
 | ☸️ Kubernetes | ⏳ Planned |
 | ☁️ AWS | ⏳ Planned |
@@ -54,7 +54,7 @@ By the end of this roadmap, I aim to confidently:
 ```text
 Linux                 ████████████████████ 100%
 
-Git & GitHub          ████████░░░░░░░░░░░░ 43%
+Git & GitHub          ███████████░░░░░░░░░ 57%
 
 Docker                ░░░░░░░░░░░░░░░░░░░░
 
@@ -109,12 +109,18 @@ The objective is to retain knowledge through repetition and practical implementa
 
 ### ✅ Completed
 
-- Git Fundamentals
+#### Git Fundamentals
+
+- Git
 - Version Control
 - Git vs GitHub
 - Working Directory
 - Staging Area
-- Local & Remote Repository
+- Local Repository
+- Remote Repository
+
+#### Git Internals
+
 - Git Object Database
 - Blob Objects
 - Tree Objects
@@ -122,6 +128,9 @@ The objective is to retain knowledge through repetition and practical implementa
 - SHA-1
 - HEAD
 - Detached HEAD
+
+#### Git Branching
+
 - Git Branches
 - Branch Pointers
 - git switch
@@ -131,15 +140,26 @@ The objective is to retain knowledge through repetition and practical implementa
 - GitHub Flow
 - Trunk-Based Development
 
+#### Git Merge
+
+- Git Merge
+- Fast-Forward Merge
+- Three-Way Merge
+- Merge Base
+- Merge Commit
+- Merge Conflicts
+- Conflict Resolution
+- ORT Merge Strategy
+- Pull Request Workflow
+- Merge Best Practices
+
 ### ⏳ Upcoming
 
-- Merge
-- Merge Conflicts
 - Rebase
-- Cherry-pick
 - Reset
 - Revert
 - Reflog
+- Cherry-pick
 - GitHub Collaboration
 
 ---
@@ -234,18 +254,15 @@ devops-zero-to-production/
 
 ### Linux
 
-- 502 Bad Gateway Investigation
-- High CPU Debugging
+- Production Troubleshooting
 - Service Failure Investigation
-- Permission Denied
-- SSH Login Failure
-- Website Not Opening
-- Log Analysis
+- High CPU Investigation
+- High Memory Investigation
+- Permission Issues
+- SSH Login Failures
 - Disk Full Investigation
-- No Space Left on Device
-- High Memory Usage
-- Slow Server Investigation
-- Linux Mock Interview
+- Log Analysis
+- Root Cause Analysis
 - End-to-End Production Challenge
 
 ### Git
@@ -256,13 +273,18 @@ devops-zero-to-production/
 - Branch Switching
 - Branch Deletion
 - HEAD Movement
+- Fast-Forward Merge
+- Three-Way Merge
+- Merge Conflict Resolution
+- Pull Request Workflow
+- Code Review Workflow
 
 ---
 
 ## ⏳ Upcoming
 
-- Git Merge Conflicts
 - Git Rebase Recovery
+- Git Reset Recovery
 - Git Reflog Recovery
 - Docker Container Failures
 - Kubernetes CrashLoopBackOff
@@ -291,25 +313,25 @@ Every production issue should be investigated before applying a fix.
 
 # 🧠 Engineering Mindset
 
-❌ Memorize commands
+❌ Memorize Commands
 
-✅ Understand systems
-
----
-
-❌ Restart services immediately
-
-✅ Investigate first
+✅ Understand Systems
 
 ---
 
-❌ Guess the issue
+❌ Restart Services Immediately
 
-✅ Collect evidence
+✅ Investigate First
 
 ---
 
-❌ Fix symptoms
+❌ Guess the Problem
+
+✅ Collect Evidence
+
+---
+
+❌ Fix Symptoms
 
 ✅ Find the Root Cause
 
@@ -319,31 +341,45 @@ Every production issue should be investigated before applying a fix.
 
 ```text
 Incident
-
       │
       ▼
 Investigate
-
       │
       ▼
 Collect Evidence
-
       │
       ▼
 Find Root Cause
-
       │
       ▼
 Apply Fix
-
       │
       ▼
 Verify
-
       │
       ▼
 Prevent Recurrence
 ```
+
+---
+
+# 📊 Git Learning Progress
+
+## ✅ Completed
+
+- Git Fundamentals
+- Git Internals
+- Git Branching
+- Merge & Merge Conflicts
+
+## ⏳ Remaining
+
+- Rebase
+- Reset
+- Revert
+- Reflog
+- GitHub Collaboration
+- Production Git Challenge
 
 ---
 
@@ -362,8 +398,6 @@ Become confident handling:
 - Production Incidents
 - DevOps Interviews
 
----
-
 > **Learning DevOps tools is easy.**
 
 > **Operating production systems with confidence is engineering.**
@@ -373,8 +407,8 @@ Become confident handling:
 # ✅ Current Status
 
 - ✅ Linux Module Completed
-- 🟡 Git Module In Progress (Day 03 of 07)
-- ⏳ Next: Merge & Merge Conflicts
+- 🟡 Git Module In Progress (Day 04 of 07)
+- ⏳ Next: Rebase, Reset & Reflog
 
 Building one production-ready skill at a time.
 
@@ -393,5 +427,9 @@ By the end of this roadmap, this repository will contain:
 - End-to-end DevOps projects
 
 The objective is to build a portfolio that demonstrates practical engineering skills rather than simply completed courses.
+
+---
+
+> **Learn → Understand → Practice → Explain → Apply**
 
 🚀 **DevOps Zero to Production**
