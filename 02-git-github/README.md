@@ -8,7 +8,7 @@ This module focuses on understanding **how Git works internally**, enabling deve
 
 # 🎯 Objective
 
-Build a strong understanding of Git internals, version control, branching, merging, and collaboration workflows.
+Build a strong understanding of Git internals, version control, branching, merging, rebasing, resetting, and collaboration workflows.
 
 The goal is to understand **how Git works under the hood**, troubleshoot repositories confidently, and apply Git effectively in real-world production environments.
 
@@ -86,6 +86,29 @@ The goal is to understand **how Git works under the hood**, troubleshoot reposit
 
 ---
 
+## ✅ Day 05 – Rebase, Reset & Reflog
+
+- What is Git Rebase?
+- Merge vs Rebase
+- Linear History
+- Interactive Rebase
+- Squash
+- Reword
+- Edit
+- Drop
+- Git Reset
+- Working Directory
+- Staging Area
+- Repository
+- Soft Reset
+- Mixed Reset
+- Hard Reset
+- Git Reflog
+- Recover Lost Commits
+- Production Rebase Workflow
+
+---
+
 # 📂 Folder Structure
 
 ```text
@@ -95,24 +118,31 @@ The goal is to understand **how Git works under the hood**, troubleshoot reposit
 │   ├── git-basics.md
 │   ├── git-internals.md
 │   ├── branching.md
-│   └── merge.md
+│   ├── merge.md
+│   ├── rebase.md
+│   ├── reset.md
+│   └── reflog.md
 │
 ├── troubleshooting/
 │   ├── git-basics.md
 │   ├── detached-head.md
 │   ├── branch-issues.md
-│   └── merge-conflicts.md
+│   ├── merge-conflicts.md
+│   ├── reset-recovery.md
+│   └── reflog-recovery.md
 │
 ├── workflows/
 │   ├── git-workflow.md
 │   ├── branching-workflow.md
-│   └── merge-workflow.md
+│   ├── merge-workflow.md
+│   └── rebase-workflow.md
 │
 ├── pdfs/
 │   ├── Day-01-Git-Basics.pdf
 │   ├── Day-02-Git-Internals.pdf
 │   ├── Day-03-Branches.pdf
-│   └── Day-04-Merge.pdf
+│   ├── Day-04-Merge.pdf
+│   └── Day-05-Rebase-Reset-Reflog.pdf
 │
 └── README.md
 ```
@@ -164,6 +194,25 @@ The goal is to understand **how Git works under the hood**, troubleshoot reposit
 - `git commit`
 - `git log --graph --all`
 
+## Rebase
+
+- `git rebase`
+- `git rebase -i`
+- `git rebase --continue`
+- `git rebase --abort`
+
+## Reset
+
+- `git reset --soft`
+- `git reset --mixed`
+- `git reset`
+- `git reset --hard`
+
+## Reflog
+
+- `git reflog`
+- `git reset --hard HEAD@{1}`
+
 ---
 
 # 🧠 Core Concepts
@@ -191,6 +240,21 @@ The goal is to understand **how Git works under the hood**, troubleshoot reposit
 - Merge Commit
 - Merge Conflict
 - ORT Merge Strategy
+- Git Rebase
+- Interactive Rebase
+- Replay Commits
+- Linear History
+- Squash
+- Reword
+- Edit
+- Drop
+- Git Reset
+- Soft Reset
+- Mixed Reset
+- Hard Reset
+- Git Reflog
+- HEAD Movement
+- Commit Recovery
 
 ---
 
@@ -213,6 +277,22 @@ Blob       Blob
 ```
 
 Git stores every repository using **Blob**, **Tree**, and **Commit** objects.
+
+## Working Directory → Staging Area → Repository
+
+```text
+Working Directory
+        │
+        ▼   (git add)
+Staging Area
+        │
+        ▼   (git commit)
+Repository
+```
+
+- `git add` moves changes from the Working Directory into the Staging Area.
+- `git commit` moves staged changes into the Repository as a permanent snapshot.
+- `git reset` moves HEAD (and optionally the Staging Area and Working Directory) backward through this pipeline, depending on the reset mode used.
 
 ---
 
@@ -257,6 +337,76 @@ A ─── B ─── C         M
 
 ---
 
+# 🔀 Rebase Architecture
+
+## Before Rebase
+
+```text
+main:      A ─── B ─── C
+                          \
+feature:                   D ─── E
+                            (branched from A)
+```
+
+## After Rebase
+
+```text
+main:      A ─── B ─── C
+                          \
+feature:                   D' ─── E'
+                     (replayed on top of C)
+```
+
+Rebase **replays** the commits from `feature` on top of the latest `main`, producing new commits (`D'`, `E'`) with new SHAs, resulting in a **linear history**.
+
+## Merge vs Rebase
+
+```text
+Merge                          Rebase
+
+A ─ B ─ C ─ M                  A ─ B ─ C ─ D' ─ E'
+        │  /                          (linear, no merge commit)
+   D ─ E
+(creates a Merge Commit,       (rewrites history,
+ preserves branch history)      no Merge Commit)
+```
+
+---
+
+# 🔄 Reset Architecture
+
+```text
+                Working Directory   Staging Area   Repository (HEAD)
+Soft Reset             ✔ kept            ✔ kept        moves back
+Mixed Reset            ✔ kept            ✘ unstaged    moves back
+Hard Reset              ✘ discarded       ✘ discarded    moves back
+```
+
+- **Soft Reset** (`git reset --soft`) – moves HEAD only; staged changes and working directory are untouched.
+- **Mixed Reset** (`git reset` / `git reset --mixed`) – moves HEAD and unstages changes; working directory files are untouched.
+- **Hard Reset** (`git reset --hard`) – moves HEAD and discards staged and working directory changes, matching the repository exactly to the target commit.
+
+---
+
+# 🛟 Reflog Recovery
+
+```text
+Commit
+   │
+   ▼
+Hard Reset
+   │
+   ▼
+git reflog
+   │
+   ▼
+Recover
+```
+
+`git reflog` tracks every movement of HEAD, so even after a `git reset --hard`, the "lost" commit can be recovered with `git reset --hard HEAD@{1}` (or the relevant reflog entry) before it is garbage collected.
+
+---
+
 # 🛠 Git Workflow
 
 ```text
@@ -287,6 +437,30 @@ Merge
 Deploy
 ```
 
+## Production Rebase Workflow
+
+```text
+Feature
+   │
+   ▼
+Commit
+   │
+   ▼
+Fetch
+   │
+   ▼
+Rebase
+   │
+   ▼
+Resolve Conflicts
+   │
+   ▼
+Push --force-with-lease
+   │
+   ▼
+Pull Request
+```
+
 ---
 
 # 🚨 Production Scenarios
@@ -304,6 +478,13 @@ Deploy
 - Merge Conflict Resolution
 - Pull Request Workflow
 - Code Review Workflow
+- Interactive Rebase before PR
+- Squashing commits
+- Cleaning commit history
+- Recover after Hard Reset
+- Recover deleted commits
+- Recover deleted branch
+- Safe Force Push
 
 ---
 
@@ -323,6 +504,14 @@ Deploy
 - Merge Conflicts occur when the same lines are modified differently.
 - ORT is Git's default merge strategy.
 - Production teams use Pull Requests before merging into `main`.
+- Rebase rewrites history.
+- Rebase creates new SHAs.
+- Interactive Rebase cleans commits.
+- Soft Reset keeps staging.
+- Mixed Reset unstages.
+- Hard Reset restores repository.
+- Reflog stores HEAD movements.
+- Lost commits can be recovered.
 
 ---
 
@@ -373,6 +562,36 @@ Deploy
 - Why do companies use feature branches and Pull Requests?
 - Merge Best Practices
 
+## Git Rebase
+
+- What is Git Rebase?
+- How is Rebase different from Merge?
+- Why does Rebase create new SHAs?
+- What is an Interactive Rebase?
+- What does `git rebase -i` allow you to do?
+- What is Squash and when is it used?
+- What is the difference between Reword and Edit?
+- What does Drop do during an interactive rebase?
+- What happens during `git rebase --continue`?
+- Why and when would you use `git rebase --abort`?
+
+## Git Reset
+
+- What is Git Reset?
+- What is the difference between Soft, Mixed, and Hard Reset?
+- What happens to the Staging Area in a Mixed Reset?
+- What happens to the Working Directory in a Hard Reset?
+- When would you use `git reset --soft`?
+- Why is `git reset --hard` considered dangerous in production?
+
+## Git Reflog
+
+- What is Git Reflog?
+- How does Reflog help recover lost commits?
+- What does `HEAD@{1}` mean?
+- Can Reflog recover a deleted branch?
+- How long do unreachable commits stay recoverable before garbage collection?
+
 ---
 
 # 📅 Revision Progress
@@ -381,9 +600,31 @@ Deploy
 - ✅ Day 02 – Git Internals & HEAD
 - ✅ Day 03 – Branches & Branch Pointers
 - ✅ Day 04 – Merge & Merge Conflicts
-- ⏳ Day 05 – Rebase, Reset & Reflog
+- ✅ Day 05 – Rebase, Reset & Reflog
 - ⏳ Day 06 – GitHub Workflow & Collaboration
 - ⏳ Day 07 – Production Git Challenge
+
+---
+
+# ⭐ Cheat Sheet (Quick Revision)
+
+```text
+Git Rebase
+   │
+   ▼
+Interactive Rebase
+   │
+   ▼
+Reset
+   │
+   ▼
+Reflog
+   │
+   ▼
+Recovery
+```
+
+Use this as a fast pre-interview refresher: rebase to clean up history, interactive rebase to squash/reword/edit/drop commits, reset to move HEAD (soft/mixed/hard), and reflog as the safety net to recover from any reset gone wrong.
 
 ---
 
@@ -391,6 +632,6 @@ Deploy
 
 Learn Git the way production engineers use it.
 
-Instead of memorizing commands, understand Git's internal architecture, object database, branching model, merge strategies, and troubleshooting techniques to confidently work with real-world repositories.
+Instead of memorizing commands, understand Git's internal architecture, object database, branching model, merge strategies, rebase workflow, reset modes, and recovery techniques to confidently work with real-world repositories.
 
 > **Learn → Understand → Practice → Explain → Apply**

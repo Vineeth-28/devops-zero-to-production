@@ -37,7 +37,7 @@ By the end of this roadmap, I aim to confidently:
 | Module | Status |
 |---------|--------|
 | 🐧 Linux | ✅ Completed |
-| 🔥 Git & GitHub | 🟡 In Progress (Day 04/07) |
+| 🔥 Git & GitHub | 🟡 In Progress (Day 05/07) |
 | 🐳 Docker | ⏳ Planned |
 | ☸️ Kubernetes | ⏳ Planned |
 | ☁️ AWS | ⏳ Planned |
@@ -54,7 +54,7 @@ By the end of this roadmap, I aim to confidently:
 ```text
 Linux                 ████████████████████ 100%
 
-Git & GitHub          ███████████░░░░░░░░░ 57%
+Git & GitHub          ██████████████░░░░░░ 71%
 
 Docker                ░░░░░░░░░░░░░░░░░░░░
 
@@ -153,12 +153,20 @@ The objective is to retain knowledge through repetition and practical implementa
 - Pull Request Workflow
 - Merge Best Practices
 
+#### Git Rebase, Reset & Reflog
+
+- Git Rebase
+- Merge vs Rebase
+- Linear History
+- Interactive Rebase (Squash, Reword, Edit, Drop)
+- Git Reset (Soft, Mixed, Hard)
+- Git Reflog
+- Commit Recovery
+- Production Rebase Workflow
+
 ### ⏳ Upcoming
 
-- Rebase
-- Reset
 - Revert
-- Reflog
 - Cherry-pick
 - GitHub Collaboration
 
@@ -278,14 +286,19 @@ devops-zero-to-production/
 - Merge Conflict Resolution
 - Pull Request Workflow
 - Code Review Workflow
+- Interactive Rebase before PR
+- Squashing Commits
+- Cleaning Commit History
+- Git Rebase Recovery
+- Git Reset Recovery
+- Git Reflog Recovery
+- Recover Deleted Branch
+- Safe Force Push
 
 ---
 
 ## ⏳ Upcoming
 
-- Git Rebase Recovery
-- Git Reset Recovery
-- Git Reflog Recovery
 - Docker Container Failures
 - Kubernetes CrashLoopBackOff
 - ImagePullBackOff
@@ -371,13 +384,12 @@ Prevent Recurrence
 - Git Internals
 - Git Branching
 - Merge & Merge Conflicts
+- Rebase, Reset & Reflog
 
 ## ⏳ Remaining
 
-- Rebase
-- Reset
 - Revert
-- Reflog
+- Cherry-pick
 - GitHub Collaboration
 - Production Git Challenge
 
@@ -407,8 +419,8 @@ Become confident handling:
 # ✅ Current Status
 
 - ✅ Linux Module Completed
-- 🟡 Git Module In Progress (Day 04 of 07)
-- ⏳ Next: Rebase, Reset & Reflog
+- 🟡 Git Module In Progress (Day 05 of 07)
+- ⏳ Next: GitHub Workflow & Collaboration, Production Git Challenge
 
 Building one production-ready skill at a time.
 
