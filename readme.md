@@ -37,7 +37,7 @@ By the end of this roadmap, I aim to confidently:
 | Module | Status |
 |---------|--------|
 | 🐧 Linux | ✅ Completed |
-| 🔥 Git & GitHub | 🟡 In Progress (Day 05/07) |
+| 🔥 Git & GitHub | 🟡 In Progress (Day 06/07) |
 | 🐳 Docker | ⏳ Planned |
 | ☸️ Kubernetes | ⏳ Planned |
 | ☁️ AWS | ⏳ Planned |
@@ -54,7 +54,7 @@ By the end of this roadmap, I aim to confidently:
 ```text
 Linux                 ████████████████████ 100%
 
-Git & GitHub          ██████████████░░░░░░ 71%
+Git & GitHub          █████████████████░░░ 86%
 
 Docker                ░░░░░░░░░░░░░░░░░░░░
 
@@ -164,11 +164,22 @@ The objective is to retain knowledge through repetition and practical implementa
 - Commit Recovery
 - Production Rebase Workflow
 
+#### GitHub Workflow & Collaboration
+
+- Remote Repositories (origin vs upstream)
+- git clone, git remote, git fetch, git pull, git push
+- Remote Tracking Branches
+- Fast-Forward vs Non-Fast-Forward Push
+- GitHub Flow
+- Pull Requests & Code Reviews
+- Branch Protection Rules
+- Multi-Developer Collaboration
+
 ### ⏳ Upcoming
 
 - Revert
 - Cherry-pick
-- GitHub Collaboration
+- Production Git Challenge
 
 ---
 
@@ -294,6 +305,19 @@ devops-zero-to-production/
 - Git Reflog Recovery
 - Recover Deleted Branch
 - Safe Force Push
+- Configure GitHub Remote
+- Clone Existing Repository
+- Add Remote Repository
+- Push First Project
+- Track Remote Branches
+- Fetch Remote Changes
+- Pull Latest Changes
+- Push Local Changes
+- Resolve Remote Merge Conflicts
+- Handle Non-Fast-Forward Push
+- Collaborate with Multiple Developers
+- Pull Request Review Workflow
+- Branch Protection Workflow
 
 ---
 
@@ -385,12 +409,12 @@ Prevent Recurrence
 - Git Branching
 - Merge & Merge Conflicts
 - Rebase, Reset & Reflog
+- GitHub Workflow & Collaboration
 
 ## ⏳ Remaining
 
 - Revert
 - Cherry-pick
-- GitHub Collaboration
 - Production Git Challenge
 
 ---
@@ -419,8 +443,8 @@ Become confident handling:
 # ✅ Current Status
 
 - ✅ Linux Module Completed
-- 🟡 Git Module In Progress (Day 05 of 07)
-- ⏳ Next: GitHub Workflow & Collaboration, Production Git Challenge
+- 🟡 Git Module In Progress (Day 06 of 07)
+- ⏳ Next: Production Git Challenge
 
 Building one production-ready skill at a time.
 

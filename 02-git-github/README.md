@@ -109,6 +109,31 @@ The goal is to understand **how Git works under the hood**, troubleshoot reposit
 
 ---
 
+## ✅ Day 06 – GitHub Workflow & Collaboration
+
+- Remote Repositories
+- `origin` vs `upstream`
+- `git init` vs `git clone`
+- `git remote`
+- `git remote -v`
+- `git remote add`
+- `git remote rename`
+- `git remote set-url`
+- `git fetch`
+- `git pull`
+- `git pull --rebase`
+- `git push`
+- Remote Tracking Branches
+- Fast-Forward Push
+- Non-Fast-Forward Push
+- GitHub Flow
+- Pull Requests
+- Code Reviews
+- Branch Protection Rules
+- Multi-Developer Collaboration
+
+---
+
 # 📂 Folder Structure
 
 ```text
@@ -121,7 +146,13 @@ The goal is to understand **how Git works under the hood**, troubleshoot reposit
 │   ├── merge.md
 │   ├── rebase.md
 │   ├── reset.md
-│   └── reflog.md
+│   ├── reflog.md
+│   ├── remote-repositories.md
+│   ├── remote-commands.md
+│   ├── github-flow.md
+│   ├── pull-requests.md
+│   ├── branch-protection.md
+│   └── remote-tracking-branches.md
 │
 ├── troubleshooting/
 │   ├── git-basics.md
@@ -129,20 +160,27 @@ The goal is to understand **how Git works under the hood**, troubleshoot reposit
 │   ├── branch-issues.md
 │   ├── merge-conflicts.md
 │   ├── reset-recovery.md
-│   └── reflog-recovery.md
+│   ├── reflog-recovery.md
+│   ├── non-fast-forward.md
+│   ├── remote-conflicts.md
+│   └── pull-vs-fetch.md
 │
 ├── workflows/
 │   ├── git-workflow.md
 │   ├── branching-workflow.md
 │   ├── merge-workflow.md
-│   └── rebase-workflow.md
+│   ├── rebase-workflow.md
+│   ├── github-collaboration-workflow.md
+│   ├── fork-upstream-workflow.md
+│   └── pull-request-workflow.md
 │
 ├── pdfs/
 │   ├── Day-01-Git-Basics.pdf
 │   ├── Day-02-Git-Internals.pdf
 │   ├── Day-03-Branches.pdf
 │   ├── Day-04-Merge.pdf
-│   └── Day-05-Rebase-Reset-Reflog.pdf
+│   ├── Day-05-Rebase-Reset-Reflog.pdf
+│   └── Day-06-GitHub-Remotes-and-Collaboration.pdf
 │
 └── README.md
 ```
@@ -213,6 +251,21 @@ The goal is to understand **how Git works under the hood**, troubleshoot reposit
 - `git reflog`
 - `git reset --hard HEAD@{1}`
 
+## Remote Repositories
+
+- `git clone`
+- `git remote`
+- `git remote -v`
+- `git remote add`
+- `git remote rename`
+- `git remote remove`
+- `git remote set-url`
+- `git fetch`
+- `git pull`
+- `git pull --rebase`
+- `git push`
+- `git push -u origin main`
+
 ---
 
 # 🧠 Core Concepts
@@ -255,6 +308,19 @@ The goal is to understand **how Git works under the hood**, troubleshoot reposit
 - Git Reflog
 - HEAD Movement
 - Commit Recovery
+- Origin
+- Upstream
+- Fetch
+- Pull
+- Push
+- Remote Tracking Branches
+- GitHub Flow
+- Pull Requests
+- Code Review
+- Branch Protection
+- Fast-Forward Push
+- Non-Fast-Forward Push
+- Multi-Developer Workflow
 
 ---
 
@@ -407,6 +473,60 @@ Recover
 
 ---
 
+# 🌐 GitHub Collaboration Architecture
+
+```text
+Developer A               Developer B
+      │                         │
+      ▼                         ▼
+Feature Branch            Feature Branch
+      │                         │
+      ├──────────────┐──────────┤
+                     ▼
+              GitHub Repository
+                     │
+             Pull Request
+                     │
+              Code Review
+                     │
+                 Merge
+                     │
+                    main
+```
+
+---
+
+# 🔄 Remote Repository Workflow
+
+```text
+Local Repository
+      │
+      │ git push
+      ▼
+GitHub Repository
+      ▲
+      │ git fetch
+      │ git pull
+Local Repository
+```
+
+---
+
+# 🌿 Remote Tracking Branches
+
+```text
+GitHub
+   │
+   ▼
+origin/main
+   │
+merge / rebase
+   ▼
+main
+```
+
+---
+
 # 🛠 Git Workflow
 
 ```text
@@ -461,6 +581,32 @@ Push --force-with-lease
 Pull Request
 ```
 
+## GitHub Flow
+
+```text
+main
+ │
+ ├──────────────┐
+ │              │
+ ▼              ▼
+feature/login  feature/payment
+ │              │
+ ▼              ▼
+Push          Push
+ │              │
+ ▼              ▼
+Pull Request Pull Request
+        │
+        ▼
+Code Review
+        │
+        ▼
+CI Checks
+        │
+        ▼
+Merge
+```
+
 ---
 
 # 🚨 Production Scenarios
@@ -485,6 +631,19 @@ Pull Request
 - Recover deleted commits
 - Recover deleted branch
 - Safe Force Push
+- Configure GitHub Remote
+- Clone Existing Repository
+- Add Remote Repository
+- Push First Project
+- Track Remote Branches
+- Fetch Remote Changes
+- Pull Latest Changes
+- Push Local Changes
+- Resolve Remote Merge Conflicts
+- Handle Non-Fast-Forward Push
+- Collaborate with Multiple Developers
+- Pull Request Review Workflow
+- Branch Protection Workflow
 
 ---
 
@@ -512,6 +671,16 @@ Pull Request
 - Hard Reset restores repository.
 - Reflog stores HEAD movements.
 - Lost commits can be recovered.
+- GitHub hosts remote repositories for collaboration.
+- `origin` is the default remote alias created by `git clone`.
+- `upstream` refers to the original repository in a fork workflow.
+- `git fetch` downloads remote changes without modifying the current branch.
+- `git pull` performs `fetch` followed by `merge` (or `rebase`).
+- Remote-tracking branches mirror the state of remote branches.
+- `git push` uploads local commits to the remote repository.
+- Non-fast-forward pushes occur when the remote contains newer commits.
+- Pull Requests enable collaboration and code reviews.
+- Branch Protection prevents unsafe changes to production branches.
 
 ---
 
@@ -592,6 +761,25 @@ Pull Request
 - Can Reflog recover a deleted branch?
 - How long do unreachable commits stay recoverable before garbage collection?
 
+## GitHub Collaboration
+
+- What is a Remote Repository?
+- Difference between Git and GitHub?
+- What is origin?
+- What is upstream?
+- Difference between git init and git clone?
+- What is git fetch?
+- Difference between git fetch and git pull?
+- What are Remote Tracking Branches?
+- What is a Fast-Forward Push?
+- What is a Non-Fast-Forward Push?
+- How do you resolve a rejected push?
+- What is GitHub Flow?
+- What is a Pull Request?
+- Why do companies use Pull Requests?
+- What is Branch Protection?
+- Explain a production Git workflow.
+
 ---
 
 # 📅 Revision Progress
@@ -601,7 +789,7 @@ Pull Request
 - ✅ Day 03 – Branches & Branch Pointers
 - ✅ Day 04 – Merge & Merge Conflicts
 - ✅ Day 05 – Rebase, Reset & Reflog
-- ⏳ Day 06 – GitHub Workflow & Collaboration
+- ✅ Day 06 – GitHub Workflow & Collaboration
 - ⏳ Day 07 – Production Git Challenge
 
 ---
@@ -632,6 +820,6 @@ Use this as a fast pre-interview refresher: rebase to clean up history, interact
 
 Learn Git the way production engineers use it.
 
-Instead of memorizing commands, understand Git's internal architecture, object database, branching model, merge strategies, rebase workflow, reset modes, and recovery techniques to confidently work with real-world repositories.
+Instead of memorizing commands, understand Git's internal architecture, object database, branching model, merge strategies, rebase workflow, reset modes, remote/collaboration workflows, and recovery techniques to confidently work with real-world repositories.
 
 > **Learn → Understand → Practice → Explain → Apply**
