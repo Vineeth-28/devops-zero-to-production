@@ -8,7 +8,7 @@ This module focuses on understanding **how Git works internally**, enabling deve
 
 # 🎯 Objective
 
-Build a strong understanding of Git internals, version control, branching, merging, rebasing, resetting, and collaboration workflows.
+Build a strong understanding of Git internals, version control, branching, merging, rebasing, resetting, reverting, and collaboration workflows.
 
 The goal is to understand **how Git works under the hood**, troubleshoot repositories confidently, and apply Git effectively in real-world production environments.
 
@@ -134,6 +134,22 @@ The goal is to understand **how Git works under the hood**, troubleshoot reposit
 
 ---
 
+## ✅ Day 07 – Git Revert
+
+- What is Git Revert?
+- Git Reset vs Git Revert
+- Internal Working of Git Revert
+- Reverting Latest Commit
+- Reverting Specific Commit
+- Reverting Multiple Commits
+- `git revert --no-commit`
+- Reverting Merge Commits
+- `git revert -m 1`
+- Production Rollback Workflow
+- Best Practices
+
+---
+
 # 📂 Folder Structure
 
 ```text
@@ -152,7 +168,8 @@ The goal is to understand **how Git works under the hood**, troubleshoot reposit
 │   ├── github-flow.md
 │   ├── pull-requests.md
 │   ├── branch-protection.md
-│   └── remote-tracking-branches.md
+│   ├── remote-tracking-branches.md
+│   └── revert.md
 │
 ├── troubleshooting/
 │   ├── git-basics.md
@@ -163,7 +180,8 @@ The goal is to understand **how Git works under the hood**, troubleshoot reposit
 │   ├── reflog-recovery.md
 │   ├── non-fast-forward.md
 │   ├── remote-conflicts.md
-│   └── pull-vs-fetch.md
+│   ├── pull-vs-fetch.md
+│   └── revert-recovery.md
 │
 ├── workflows/
 │   ├── git-workflow.md
@@ -172,7 +190,8 @@ The goal is to understand **how Git works under the hood**, troubleshoot reposit
 │   ├── rebase-workflow.md
 │   ├── github-collaboration-workflow.md
 │   ├── fork-upstream-workflow.md
-│   └── pull-request-workflow.md
+│   ├── pull-request-workflow.md
+│   └── revert-workflow.md
 │
 ├── pdfs/
 │   ├── Day-01-Git-Basics.pdf
@@ -180,7 +199,8 @@ The goal is to understand **how Git works under the hood**, troubleshoot reposit
 │   ├── Day-03-Branches.pdf
 │   ├── Day-04-Merge.pdf
 │   ├── Day-05-Rebase-Reset-Reflog.pdf
-│   └── Day-06-GitHub-Remotes-and-Collaboration.pdf
+│   ├── Day-06-GitHub-Remotes-and-Collaboration.pdf
+│   └── Day-07-Revert.pdf
 │
 └── README.md
 ```
@@ -266,6 +286,16 @@ The goal is to understand **how Git works under the hood**, troubleshoot reposit
 - `git push`
 - `git push -u origin main`
 
+## Git Revert
+
+- `git revert HEAD`
+- `git revert <commit_hash>`
+- `git revert --no-commit <commit_hash>`
+- `git revert -m 1 <merge_commit_hash>`
+- `git revert --continue`
+- `git revert --abort`
+- `git show <commit_hash>`
+
 ---
 
 # 🧠 Core Concepts
@@ -321,6 +351,14 @@ The goal is to understand **how Git works under the hood**, troubleshoot reposit
 - Fast-Forward Push
 - Non-Fast-Forward Push
 - Multi-Developer Workflow
+- Git Revert
+- Reverse Patch
+- Rollback Commit
+- Merge Revert
+- Mainline Parent
+- Parent Commit
+- Production Rollback
+- Revert Workflow
 
 ---
 
@@ -527,6 +565,31 @@ main
 
 ---
 
+# ↩️ Git Revert Architecture
+
+```text
+Target Commit
+      │
+      ▼
+Read Commit
+      │
+      ▼
+Generate Reverse Patch
+      │
+      ▼
+Apply Reverse Changes
+      │
+      ▼
+Create New Commit
+      │
+      ▼
+Move HEAD Forward
+```
+
+Unlike `git reset`, which moves HEAD **backward** and rewrites history, `git revert` moves HEAD **forward** by creating a brand-new commit that applies the inverse of the target commit's changes — the original commit stays intact in history.
+
+---
+
 # 🛠 Git Workflow
 
 ```text
@@ -607,6 +670,30 @@ CI Checks
 Merge
 ```
 
+## Production Rollback Workflow
+
+```text
+Bug Found
+      │
+      ▼
+Identify Commit
+      │
+      ▼
+git show
+      │
+      ▼
+git revert
+      │
+      ▼
+Test
+      │
+      ▼
+Push
+      │
+      ▼
+Production Restored
+```
+
 ---
 
 # 🚨 Production Scenarios
@@ -644,6 +731,12 @@ Merge
 - Collaborate with Multiple Developers
 - Pull Request Review Workflow
 - Branch Protection Workflow
+- Rollback Failed Deployment
+- Rollback Production Bug
+- Undo Faulty Feature
+- Rollback Merge Commit
+- Emergency Production Rollback
+- Multiple Commit Rollback
 
 ---
 
@@ -681,6 +774,14 @@ Merge
 - Non-fast-forward pushes occur when the remote contains newer commits.
 - Pull Requests enable collaboration and code reviews.
 - Branch Protection prevents unsafe changes to production branches.
+- Git Revert never deletes commits.
+- Git creates a new rollback commit.
+- Git Revert preserves history.
+- Git Reset rewrites history.
+- HEAD moves forward after a revert.
+- `git revert --no-commit` stages rollback changes without committing.
+- Merge commits require `git revert -m 1`.
+- Git Revert is the preferred rollback strategy for shared repositories.
 
 ---
 
@@ -780,6 +881,19 @@ Merge
 - What is Branch Protection?
 - Explain a production Git workflow.
 
+## Git Revert
+
+- What is Git Revert?
+- Difference between Git Reset and Git Revert?
+- Why do companies prefer Git Revert?
+- What happens internally during Git Revert?
+- Why does Git create a new commit?
+- What is `git revert --no-commit`?
+- Why is `-m` required while reverting a merge commit?
+- What does `git revert -m 1` do?
+- Can Git Revert create merge conflicts?
+- Production rollback strategy using Git Revert.
+
 ---
 
 # 📅 Revision Progress
@@ -790,7 +904,9 @@ Merge
 - ✅ Day 04 – Merge & Merge Conflicts
 - ✅ Day 05 – Rebase, Reset & Reflog
 - ✅ Day 06 – GitHub Workflow & Collaboration
-- ⏳ Day 07 – Production Git Challenge
+- ✅ Day 07 – Git Revert
+- ⏳ Day 08 – Git Cherry-pick
+- ⏳ Day 09 – Production Git Challenge
 
 ---
 
@@ -821,5 +937,7 @@ Use this as a fast pre-interview refresher: rebase to clean up history, interact
 Learn Git the way production engineers use it.
 
 Instead of memorizing commands, understand Git's internal architecture, object database, branching model, merge strategies, rebase workflow, reset modes, remote/collaboration workflows, and recovery techniques to confidently work with real-world repositories.
+
+Git Revert provides safe rollback without rewriting history, making it the recommended rollback mechanism for shared repositories and production deployments.
 
 > **Learn → Understand → Practice → Explain → Apply**

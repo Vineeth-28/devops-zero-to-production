@@ -37,7 +37,7 @@ By the end of this roadmap, I aim to confidently:
 | Module | Status |
 |---------|--------|
 | 🐧 Linux | ✅ Completed |
-| 🔥 Git & GitHub | 🟡 In Progress (Day 06/07) |
+| 🔥 Git & GitHub | 🟡 In Progress (Day 07/09) |
 | 🐳 Docker | ⏳ Planned |
 | ☸️ Kubernetes | ⏳ Planned |
 | ☁️ AWS | ⏳ Planned |
@@ -54,7 +54,7 @@ By the end of this roadmap, I aim to confidently:
 ```text
 Linux                 ████████████████████ 100%
 
-Git & GitHub          █████████████████░░░ 86%
+Git & GitHub          ███████████████░░░░░ 78%
 
 Docker                ░░░░░░░░░░░░░░░░░░░░
 
@@ -175,9 +175,17 @@ The objective is to retain knowledge through repetition and practical implementa
 - Branch Protection Rules
 - Multi-Developer Collaboration
 
+#### Git Revert
+
+- Git Revert vs Git Reset
+- Internal Working of Git Revert
+- Reverting Latest / Specific / Multiple Commits
+- git revert --no-commit
+- Reverting Merge Commits (git revert -m 1)
+- Production Rollback Workflow
+
 ### ⏳ Upcoming
 
-- Revert
 - Cherry-pick
 - Production Git Challenge
 
@@ -318,6 +326,12 @@ devops-zero-to-production/
 - Collaborate with Multiple Developers
 - Pull Request Review Workflow
 - Branch Protection Workflow
+- Rollback Failed Deployment
+- Rollback Production Bug
+- Undo Faulty Feature
+- Rollback Merge Commit
+- Emergency Production Rollback
+- Multiple Commit Rollback
 
 ---
 
@@ -410,10 +424,10 @@ Prevent Recurrence
 - Merge & Merge Conflicts
 - Rebase, Reset & Reflog
 - GitHub Workflow & Collaboration
+- Git Revert
 
 ## ⏳ Remaining
 
-- Revert
 - Cherry-pick
 - Production Git Challenge
 
@@ -443,8 +457,8 @@ Become confident handling:
 # ✅ Current Status
 
 - ✅ Linux Module Completed
-- 🟡 Git Module In Progress (Day 06 of 07)
-- ⏳ Next: Production Git Challenge
+- 🟡 Git Module In Progress (Day 07 of 09)
+- ⏳ Next: Cherry-pick, Production Git Challenge
 
 Building one production-ready skill at a time.
 
