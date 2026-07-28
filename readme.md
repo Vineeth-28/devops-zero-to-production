@@ -37,7 +37,7 @@ By the end of this roadmap, I aim to confidently:
 | Module | Status |
 |---------|--------|
 | 🐧 Linux | ✅ Completed |
-| 🔥 Git & GitHub | 🟡 In Progress (Day 07/09) |
+| 🔥 Git & GitHub | 🟡 In Progress (Day 08/09) |
 | 🐳 Docker | ⏳ Planned |
 | ☸️ Kubernetes | ⏳ Planned |
 | ☁️ AWS | ⏳ Planned |
@@ -54,7 +54,7 @@ By the end of this roadmap, I aim to confidently:
 ```text
 Linux                 ████████████████████ 100%
 
-Git & GitHub          ███████████████░░░░░ 78%
+Git & GitHub          █████████████████░░░ 89%
 
 Docker                ░░░░░░░░░░░░░░░░░░░░
 
@@ -184,9 +184,24 @@ The objective is to retain knowledge through repetition and practical implementa
 - Reverting Merge Commits (git revert -m 1)
 - Production Rollback Workflow
 
+#### ✅ Day 08 – Git Cherry-pick
+
+- What is Git Cherry-pick?
+- Cherry-pick vs Merge
+- Cherry-pick vs Rebase
+- Cherry-pick vs Revert
+- Internal Working of Cherry-pick
+- Cherry-pick Single Commit
+- Cherry-pick Multiple Commits
+- Cherry-pick Commit Range
+- `git cherry-pick --no-commit`
+- `git cherry-pick --continue`
+- `git cherry-pick --abort`
+- Production Hotfix Workflow
+- Best Practices
+
 ### ⏳ Upcoming
 
-- Cherry-pick
 - Production Git Challenge
 
 ---
@@ -273,6 +288,22 @@ devops-zero-to-production/
 └── README.md
 ```
 
+### 02-git-github/ additions for Day 08
+
+```text
+commands/
+    cherry-pick.md
+
+troubleshooting/
+    cherry-pick-recovery.md
+
+workflows/
+    cherry-pick-workflow.md
+
+pdfs/
+    Day-08-Cherry-pick.pdf
+```
+
 ---
 
 # 🚨 Production Scenarios
@@ -332,6 +363,12 @@ devops-zero-to-production/
 - Rollback Merge Commit
 - Emergency Production Rollback
 - Multiple Commit Rollback
+- Cherry-pick Hotfix
+- Backport Production Fix
+- Cherry-pick Multiple Commits
+- Cherry-pick Commit Range
+- Cherry-pick Conflict Resolution
+- Selective Feature Migration
 
 ---
 
@@ -414,6 +451,52 @@ Prevent Recurrence
 
 ---
 
+# 🍒 Git Cherry-pick Architecture
+
+```text
+Selected Commit
+      │
+      ▼
+Read Commit
+      │
+      ▼
+Generate Patch
+      │
+      ▼
+Apply Patch
+      │
+      ▼
+Create NEW Commit
+      │
+      ▼
+Move HEAD Forward
+```
+
+---
+
+# 🩹 Production Hotfix Workflow
+
+```text
+Production Bug
+      │
+      ▼
+Create Hotfix
+      │
+      ▼
+Commit
+      │
+      ▼
+git cherry-pick
+      │
+      ▼
+Release Branch
+      │
+      ▼
+Deploy
+```
+
+---
+
 # 📊 Git Learning Progress
 
 ## ✅ Completed
@@ -425,11 +508,99 @@ Prevent Recurrence
 - Rebase, Reset & Reflog
 - GitHub Workflow & Collaboration
 - Git Revert
+- Git Cherry-pick
 
 ## ⏳ Remaining
 
-- Cherry-pick
 - Production Git Challenge
+
+---
+
+# 🧰 Commands Practiced — Git Cherry-pick
+
+```md
+## Git Cherry-pick
+
+- `git cherry-pick <commit_hash>`
+- `git cherry-pick commit1 commit2`
+- `git cherry-pick A^..D`
+- `git cherry-pick --no-commit <commit_hash>`
+- `git cherry-pick --continue`
+- `git cherry-pick --abort`
+- `git cherry-pick --skip`
+- `git show <commit_hash>`
+```
+
+---
+
+# 🧠 Core Concepts — Git Cherry-pick
+
+```text
+Git Cherry-pick
+Patch
+Patch Application
+Commit Copy
+Hotfix Branch
+Backport
+Cherry-pick Workflow
+Selective Commit Transfer
+```
+
+---
+
+# 🗝 Key Learnings — Git Cherry-pick
+
+- Git Cherry-pick copies commits instead of moving them.
+- Cherry-pick creates new commit hashes.
+- Original commits remain unchanged.
+- Cherry-pick is ideal for hotfixes and backports.
+- Cherry-pick may produce merge conflicts.
+- `--no-commit` stages changes without creating a commit.
+- `--continue` resumes an interrupted Cherry-pick.
+- `--abort` cancels an in-progress Cherry-pick.
+
+---
+
+# 🎤 Interview Questions — Git Cherry-pick
+
+```md
+## Git Cherry-pick
+
+- What is Git Cherry-pick?
+- Cherry-pick vs Merge?
+- Cherry-pick vs Rebase?
+- Cherry-pick vs Revert?
+- Why does Cherry-pick create a new commit?
+- What happens internally during Cherry-pick?
+- What is `git cherry-pick --no-commit`?
+- What does `git cherry-pick --continue` do?
+- What does `git cherry-pick --abort` do?
+- Can Cherry-pick create merge conflicts?
+- Production use cases of Cherry-pick?
+```
+
+---
+
+# 🗺 Git Revision Cheat Sheet
+
+```text
+Git Rebase
+   │
+   ▼
+Reset
+   │
+   ▼
+Reflog
+   │
+   ▼
+Revert
+   │
+   ▼
+Cherry-pick
+   │
+   ▼
+Production Git Challenge
+```
 
 ---
 
@@ -448,6 +619,8 @@ Become confident handling:
 - Production Incidents
 - DevOps Interviews
 
+Git Cherry-pick enables selective commit transfer between branches, making it an essential tool for production hotfixes, release backports, and maintaining stable release branches without merging unrelated changes.
+
 > **Learning DevOps tools is easy.**
 
 > **Operating production systems with confidence is engineering.**
@@ -457,8 +630,16 @@ Become confident handling:
 # ✅ Current Status
 
 - ✅ Linux Module Completed
-- 🟡 Git Module In Progress (Day 07 of 09)
-- ⏳ Next: Cherry-pick, Production Git Challenge
+- 🟡 Git Module In Progress (Day 08 of 09)
+- ✅ Day 01 – Git Fundamentals
+- ✅ Day 02 – Git Internals
+- ✅ Day 03 – Branches
+- ✅ Day 04 – Merge
+- ✅ Day 05 – Rebase, Reset & Reflog
+- ✅ Day 06 – GitHub Workflow & Collaboration
+- ✅ Day 07 – Git Revert
+- ✅ Day 08 – Git Cherry-pick
+- ⏳ Day 09 – Production Git Challenge
 
 Building one production-ready skill at a time.
 
