@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Interactive Dockerfile & Deployment Guide v1</title>
+</head>
+<body style="margin:0; padding:0; background-color:#0f172a; font-family:'Segoe UI', Arial, sans-serif; color:#e2e8f0; line-height:1.6;">
+
+  <!-- Header -->
+  <div style="background:linear-gradient(135deg,#1e293b,#0f172a); padding:50px 20px 40px; text-align:center; border-bottom:3px solid #38bdf8;">
+    <div style="display:inline-block; background:#0ea5e9; color:#0f172a; font-weight:bold; padding:6px 16px; border-radius:20px; font-size:13px; letter-spacing:1px; margin-bottom:14px;">DEVOPS GUIDE · INTERACTIVE</div>
+    <h1 style="margin:0; font-size:36px; color:#f8fafc;">Building & Deploying a Dockerfile</h1>
+    <p style="max-width:640px; margin:14px auto 0; color:#94a3b8; font-size:16px;">Generate a real Dockerfile from your stack, copy every command with one click, and walk through the deploy pipeline step by step.</p>
+  </div>
+
+  <div style="max-width:900px; margin:0 auto; padding:40px 20px;">
+
+    <!-- ============ LIVE DOCKERFILE GENERATOR ============ -->
+    <div style="background:#1e293b; border-radius:12px; padding:28px 30px; margin-bottom:30px; border:1px solid #334155;">
+      <h2 style="margin-top:0; color:#f8fafc; font-size:22px;">⚙️ Live Dockerfile Generator</h2>
+      <p style="color:#94a3b8; margin-top:-6px;">Pick your stack — the Dockerfile below updates instantly.</p>
+
+      <div style="display:flex; flex-wrap:wrap; gap:20px; margin:20px 0;">
+        <div style="flex:1; min-width:180px;">
+          <label style="display:block; font-size:13px; color:#7dd3fc; margin-bottom:6px; font-weight:bold;">STACK</label>
+          <select id="stackSelect" onchange="updateDockerfile()" style="width:100%; padding:10px; border-radius:8px; background:#0b1220; color:#e2e8f0; border:1px solid #334155; font-size:14px;">
+            <option value="node">Node.js</option>
+            <option value="python">Python (Flask/FastAPI)</option>
+            <option value="go">Go</option>
+            <option value="static">Static Site (Nginx)</option>
+          </select>
+        </div>
+        <div style="flex:1; min-width:140px;">
+          <label style="display:block; font-size:13px; color:#7dd3fc; margin-bottom:6px; font-weight:bold;">PORT</label>
+          <input id="portInput" type="number" value="3000" oninput="updateDockerfile()" style="width:100%; padding:10px; border-radius:8px; background:#0b1220; color:#e2e8f0; border:1px solid #334155; font-size:14px; box-sizing:border-box;">
+        </div>
+        <div style="flex:1; min-width:180px;">
+          <label style="display:block; font-size:13px; color:#7dd3fc; margin-bottom:6px; font-weight:bold;">OPTIONS</label>
+          <label style="display:block; font-size:14px; color:#cbd5e1; margin-top:8px; cursor:pointer;">
+            <input type="checkbox" id="multiStage" checked onchange="updateDockerfile()" style="margin-right:6px;">Multi-stage build
+          </label>
+          <label style="display:block; font-size:14px; color:#cbd5e1; margin-top:4px; cursor:pointer;">
+            <input type="checkbox" id="nonRoot" checked onchange="updateDockerfile()" style="margin-right:6px;">Non-root user
+          </label>
+        </div>
+      </div>
+
+      <div style="position:relative;">
+        <button onclick="copyBlock('genOutput', this)" style="position:absolute; top:10px; right:10px; background:#334155; color:#e2e8f0; border:none; padding:6px 14px; border-radius:6px; font-size:12px; cursor:pointer; z-index:2;">Copy</button>
+        <pre id="genOutput" style="background:#0b1220; color:#a5f3fc; padding:18px; border-radius:8px; overflow-x:auto; font-size:13.5px; margin:0; white-space:pre-wrap;"></pre>
+      </div>
+    </div>
+
+    <!-- ============ TABBED STEP-BY-STEP ============ -->
+    <div style="background:#1e293b; border-radius:12px; padding:0; margin-bottom:30px; border:1px solid #334155; overflow:hidden;">
+
+      <!-- Tab bar -->
+      <div id="tabBar" style="display:flex; flex-wrap:wrap; background:#0b1220; border-bottom:1px solid #334155;">
+        <button class="tabBtn" data-tab="tab1" onclick="showTab('tab1')" style="flex:1; min-width:110px; padding:14px 8px; background:#38bdf8; color:#0f172a; border:none; font-weight:bold; font-size:13px; cursor:pointer;">1. Dockerfile</button>
+        <button class="tabBtn" data-tab="tab2" onclick="showTab('tab2')" style="flex:1; min-width:110px; padding:14px 8px; background:transparent; color:#94a3b8; border:none; font-weight:bold; font-size:13px; cursor:pointer;">2. .dockerignore</button>
+        <button class="tabBtn" data-tab="tab3" onclick="showTab('tab3')" style="flex:1; min-width:110px; padding:14px 8px; background:transparent; color:#94a3b8; border:none; font-weight:bold; font-size:13px; cursor:pointer;">3. Build</button>
+        <button class="tabBtn" data-tab="tab4" onclick="showTab('tab4')" style="flex:1; min-width:110px; padding:14px 8px; background:transparent; color:#94a3b8; border:none; font-weight:bold; font-size:13px; cursor:pointer;">4. Run</button>
+        <button class="tabBtn" data-tab="tab5" onclick="showTab('tab5')" style="flex:1; min-width:110px; padding:14px 8px; background:transparent; color:#94a3b8; border:none; font-weight:bold; font-size:13px; cursor:pointer;">5. Push</button>
+        <button class="tabBtn" data-tab="tab6" onclick="showTab('tab6')" style="flex:1; min-width:110px; padding:14px 8px; background:transparent; color:#94a3b8; border:none; font-weight:bold; font-size:13px; cursor:pointer;">6. Deploy</button>
+      </div>
+
+      <!-- Tab 1 -->
+      <div id="tab1" class="tabPane" style="padding:26px 30px;">
+        <h3 style="margin-top:0; color:#38bdf8;">Create the Dockerfile</h3>
+        <p style="color:#cbd5e1;">Use the generator above, or write it by hand. Save it as <code style="background:#0f172a; padding:2px 8px; border-radius:4px; color:#7dd3fc;">Dockerfile</code> with no extension in your project root.</p>
+        <div style="position:relative;">
+          <button onclick="copyBlock('c1', this)" style="position:absolute; top:8px; right:8px; background:#334155; color:#e2e8f0; border:none; padding:6px 14px; border-radius:6px; font-size:12px; cursor:pointer;">Copy</button>
+          <pre id="c1" style="background:#0b1220; color:#a5f3fc; padding:18px; border-radius:8px; overflow-x:auto; font-size:13.5px; margin:0;"><code>FROM node:20-alpine AS base
+WORKDIR /app
+COPY package*.json ./
+RUN npm ci --omit=dev
+COPY . .
+RUN addgroup -S appgroup && adduser -S appuser -G appgroup
+USER appuser
+EXPOSE 3000
+CMD ["node", "server.js"]</code></pre>
+        </div>
+      </div>
+
+      <!-- Tab 2 -->
+      <div id="tab2" class="tabPane" style="padding:26px 30px; display:none;">
+        <h3 style="margin-top:0; color:#a78bfa;">Add a .dockerignore</h3>
+        <p style="color:#cbd5e1;">Keeps the build context small and stops secrets from leaking into the image.</p>
+        <div style="position:relative;">
+          <button onclick="copyBlock('c2', this)" style="position:absolute; top:8px; right:8px; background:#334155; color:#e2e8f0; border:none; padding:6px 14px; border-radius:6px; font-size:12px; cursor:pointer;">Copy</button>
+          <pre id="c2" style="background:#0b1220; color:#e9d5ff; padding:18px; border-radius:8px; overflow-x:auto; font-size:13.5px; margin:0;"><code>node_modules
+npm-debug.log
+.git
+.env
+Dockerfile
+*.md
+dist
+coverage</code></pre>
+        </div>
+      </div>
+
+      <!-- Tab 3 -->
+      <div id="tab3" class="tabPane" style="padding:26px 30px; display:none;">
+        <h3 style="margin-top:0; color:#34d399;">Build the image</h3>
+        <div style="position:relative;">
+          <button onclick="copyBlock('c3', this)" style="position:absolute; top:8px; right:8px; background:#334155; color:#e2e8f0; border:none; padding:6px 14px; border-radius:6px; font-size:12px; cursor:pointer;">Copy</button>
+          <pre id="c3" style="background:#0b1220; color:#bbf7d0; padding:18px; border-radius:8px; overflow-x:auto; font-size:13.5px; margin:0;"><code>docker build -t myapp:1.0 .
+docker images | grep myapp</code></pre>
+        </div>
+      </div>
+
+      <!-- Tab 4 -->
+      <div id="tab4" class="tabPane" style="padding:26px 30px; display:none;">
+        <h3 style="margin-top:0; color:#fbbf24;">Run it locally</h3>
+        <div style="position:relative;">
+          <button onclick="copyBlock('c4', this)" style="position:absolute; top:8px; right:8px; background:#334155; color:#e2e8f0; border:none; padding:6px 14px; border-radius:6px; font-size:12px; cursor:pointer;">Copy</button>
+          <pre id="c4" style="background:#0b1220; color:#fef08a; padding:18px; border-radius:8px; overflow-x:auto; font-size:13.5px; margin:0;"><code>docker run -d -p 3000:3000 --name myapp-container myapp:1.0
+docker logs -f myapp-container
+curl http://localhost:3000</code></pre>
+        </div>
+      </div>
+
+      <!-- Tab 5 -->
+      <div id="tab5" class="tabPane" style="padding:26px 30px; display:none;">
+        <h3 style="margin-top:0; color:#fb7185;">Push to a registry</h3>
+        <div style="position:relative;">
+          <button onclick="copyBlock('c5', this)" style="position:absolute; top:8px; right:8px; background:#334155; color:#e2e8f0; border:none; padding:6px 14px; border-radius:6px; font-size:12px; cursor:pointer;">Copy</button>
+          <pre id="c5" style="background:#0b1220; color:#fecdd3; padding:18px; border-radius:8px; overflow-x:auto; font-size:13.5px; margin:0;"><code>docker tag myapp:1.0 yourusername/myapp:1.0
+docker login
+docker push yourusername/myapp:1.0</code></pre>
+        </div>
+      </div>
+
+      <!-- Tab 6 -->
+      <div id="tab6" class="tabPane" style="padding:26px 30px; display:none;">
+        <h3 style="margin-top:0; color:#60a5fa;">Deploy on the server</h3>
+        <div style="position:relative;">
+          <button onclick="copyBlock('c6', this)" style="position:absolute; top:8px; right:8px; background:#334155; color:#e2e8f0; border:none; padding:6px 14px; border-radius:6px; font-size:12px; cursor:pointer;">Copy</button>
+          <pre id="c6" style="background:#0b1220; color:#bfdbfe; padding:18px; border-radius:8px; overflow-x:auto; font-size:13.5px; margin:0;"><code>docker pull yourusername/myapp:1.0
+docker run -d \
+  --name myapp \
+  --restart unless-stopped \
+  -p 80:3000 \
+  --env-file .env.production \
+  yourusername/myapp:1.0</code></pre>
+        </div>
+      </div>
+    </div>
+
+    <!-- ============ INTERACTIVE CHECKLIST ============ -->
+    <div id="checklistBox" style="background:#0b1220; border-radius:12px; padding:28px 30px; border:1px dashed #475569;">
+      <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px;">
+        <h2 style="margin:0; color:#f8fafc; font-size:22px;">✅ Best Practices Checklist</h2>
+        <span id="progressLabel" style="color:#38bdf8; font-weight:bold; font-size:14px;">0 / 6 done</span>
+      </div>
+      <div style="background:#1e293b; border-radius:8px; height:8px; margin:14px 0 20px; overflow:hidden;">
+        <div id="progressBar" style="background:#38bdf8; height:100%; width:0%; transition:width 0.3s;"></div>
+      </div>
+      <div id="checklistItems"></div>
+    </div>
+
+  </div>
+
+  <div style="text-align:center; padding:24px; color:#64748b; font-size:13px; border-top:1px solid #1e293b;">
+    Interactive reference · Dockerfile → Build → Run → Push → Deploy
+  </div>
+
+<script>
+  // ---------- Tabs ----------
+  function showTab(id) {
+    document.querySelectorAll('.tabPane').forEach(function(p){ p.style.display = 'none'; });
+    document.getElementById(id).style.display = 'block';
+    document.querySelectorAll('.tabBtn').forEach(function(b){
+      var active = b.getAttribute('data-tab') === id;
+      b.style.background = active ? '#38bdf8' : 'transparent';
+      b.style.color = active ? '#0f172a' : '#94a3b8';
+    });
+  }
+
+  // ---------- Copy buttons ----------
+  function copyBlock(id, btn) {
+    var text = document.getElementById(id).innerText;
+    navigator.clipboard.writeText(text).then(function(){
+      var original = btn.innerText;
+      btn.innerText = 'Copied ✓';
+      btn.style.background = '#22c55e';
+      btn.style.color = '#0f172a';
+      setTimeout(function(){
+        btn.innerText = original;
+        btn.style.background = '#334155';
+        btn.style.color = '#e2e8f0';
+      }, 1400);
+    });
+  }
+
+  // ---------- Dockerfile generator ----------
+  var stacks = {
+    node: {
+      base: 'node:20-alpine',
+      buildStage: 'FROM node:20-alpine AS builder\nWORKDIR /app\nCOPY package*.json ./\nRUN npm ci\nCOPY . .\nRUN npm run build\n\n',
+      copyDeps: 'COPY package*.json ./\nRUN npm ci --omit=dev\nCOPY . .',
+      copyFromBuilder: 'COPY --from=builder /app/dist ./dist\nCOPY --from=builder /app/node_modules ./node_modules',
+      cmd: 'CMD ["node", "server.js"]'
+    },
+    python: {
+      base: 'python:3.12-slim',
+      buildStage: 'FROM python:3.12-slim AS builder\nWORKDIR /app\nCOPY requirements.txt .\nRUN pip install --user -r requirements.txt\nCOPY . .\n\n',
+      copyDeps: 'COPY requirements.txt .\nRUN pip install --no-cache-dir -r requirements.txt\nCOPY . .',
+      copyFromBuilder: 'COPY --from=builder /root/.local /root/.local\nCOPY --from=builder /app .\nENV PATH=/root/.local/bin:$PATH',
+      cmd: 'CMD ["python", "app.py"]'
+    },
+    go: {
+      base: 'golang:1.22-alpine',
+      buildStage: 'FROM golang:1.22-alpine AS builder\nWORKDIR /app\nCOPY go.mod go.sum ./\nRUN go mod download\nCOPY . .\nRUN CGO_ENABLED=0 go build -o app .\n\n',
+      copyDeps: 'COPY go.mod go.sum ./\nRUN go mod download\nCOPY . .\nRUN CGO_ENABLED=0 go build -o app .',
+      copyFromBuilder: 'COPY --from=builder /app/app .',
+      cmd: 'CMD ["./app"]'
+    },
+    static: {
+      base: 'nginx:alpine',
+      buildStage: '',
+      copyDeps: 'COPY . /usr/share/nginx/html',
+      copyFromBuilder: 'COPY . /usr/share/nginx/html',
+      cmd: '# nginx starts automatically'
+    }
+  };
+
+  function updateDockerfile() {
+    var stackKey = document.getElementById('stackSelect').value;
+    var port = document.getElementById('portInput').value || '3000';
+    var multiStage = document.getElementById('multiStage').checked;
+    var nonRoot = document.getElementById('nonRoot').checked;
+    var s = stacks[stackKey];
+
+    var out = '';
+
+    if (stackKey === 'static') {
+      out += 'FROM ' + s.base + '\n';
+      out += s.copyFromBuilder + '\n';
+      out += 'EXPOSE ' + port + '\n';
+    } else if (multiStage && s.buildStage) {
+      out += s.buildStage;
+      out += 'FROM ' + s.base + '\n';
+      out += 'WORKDIR /app\n';
+      out += s.copyFromBuilder + '\n';
+      if (nonRoot) {
+        out += 'RUN addgroup -S appgroup && adduser -S appuser -G appgroup\nUSER appuser\n';
+      }
+      out += 'EXPOSE ' + port + '\n';
+      out += 'ENV NODE_ENV=production\n'.replace('NODE_ENV', stackKey === 'node' ? 'NODE_ENV' : 'ENVIRONMENT');
+      out += s.cmd + '\n';
+    } else {
+      out += 'FROM ' + s.base + '\n';
+      out += 'WORKDIR /app\n';
+      out += s.copyDeps + '\n';
+      if (nonRoot) {
+        out += 'RUN addgroup -S appgroup && adduser -S appuser -G appgroup\nUSER appuser\n';
+      }
+      out += 'EXPOSE ' + port + '\n';
+      out += s.cmd + '\n';
+    }
+
+    document.getElementById('genOutput').innerText = out.trim();
+  }
+
+  // ---------- Checklist ----------
+  var checklist = [
+    'Use a specific, slim base image (e.g. alpine or slim) — never :latest.',
+    'Copy dependency manifests before source code to leverage layer caching.',
+    'Use multi-stage builds to strip build tools from the final image.',
+    'Run as a non-root USER, never root in production.',
+    'Never hardcode secrets — use ENV + --env-file or a secrets manager.',
+    'Add a HEALTHCHECK instruction so orchestrators can monitor container health.'
+  ];
+
+  function renderChecklist() {
+    var container = document.getElementById('checklistItems');
+    container.innerHTML = '';
+    checklist.forEach(function(text, i){
+      var row = document.createElement('label');
+      row.style.cssText = 'display:flex; align-items:flex-start; gap:10px; padding:10px 0; border-bottom:1px solid #1e293b; cursor:pointer;';
+      var box = document.createElement('input');
+      box.type = 'checkbox';
+      box.style.cssText = 'margin-top:3px; width:16px; height:16px; accent-color:#38bdf8; cursor:pointer;';
+      box.onchange = updateProgress;
+      var span = document.createElement('span');
+      span.innerText = text;
+      span.style.color = '#cbd5e1';
+      row.appendChild(box);
+      row.appendChild(span);
+      container.appendChild(row);
+    });
+  }
+
+  function updateProgress() {
+    var boxes = document.querySelectorAll('#checklistItems input[type=checkbox]');
+    var checked = 0;
+    boxes.forEach(function(b, i){
+      var span = b.nextElementSibling;
+      if (b.checked) {
+        checked++;
+        span.style.color = '#64748b';
+        span.style.textDecoration = 'line-through';
+      } else {
+        span.style.color = '#cbd5e1';
+        span.style.textDecoration = 'none';
+      }
+    });
+    var pct = Math.round((checked / boxes.length) * 100);
+    document.getElementById('progressBar').style.width = pct + '%';
+    document.getElementById('progressLabel').innerText = checked + ' / ' + boxes.length + ' done';
+  }
+
+  // ---------- Init ----------
+  updateDockerfile();
+  renderChecklist();
+  updateProgress();
+</script>
+
+</body>
+</html>
