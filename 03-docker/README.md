@@ -43,22 +43,56 @@ The goal is to understand **how Docker works under the hood**, troubleshoot cont
 
 ---
 
+## ✅ Day 02 – Docker Images & Dockerfile
+
+- What is Docker Image?
+- Image vs Container
+- Dockerfile
+- Docker Build Process
+- Docker Image Layers
+- Union File System (UnionFS)
+- Docker Build Cache
+- Base Images
+- Docker Hub Images
+- Image Tags
+- `FROM`
+- `WORKDIR`
+- `COPY`
+- `ADD`
+- `RUN`
+- `CMD`
+- `ENTRYPOINT`
+- `ENV`
+- `EXPOSE`
+- `.dockerignore`
+- `docker build`
+- `docker image inspect`
+- `docker history`
+- Production Dockerfiles
+- Docker Image Best Practices
+
+---
+
 # 📂 Folder Structure
 
 ```text
 03-docker/
 
 ├── commands/
-│   └── docker-basics.md
+│   ├── docker-basics.md
+│   └── docker-images-dockerfile.md
 │
 ├── troubleshooting/
-│   └── docker-basics.md
+│   ├── docker-basics.md
+│   └── docker-build-issues.md
 │
 ├── workflows/
-│   └── docker-workflow.md
+│   ├── docker-workflow.md
+│   └── dockerfile-build-workflow.md
 │
 ├── pdfs/
-│   └── Day-01-Docker-Basics.pdf
+│   ├── Day-01-Docker-Basics.pdf
+│   └── Day-02-Docker-Images-Dockerfile.pdf
 │
 └── README.md
 ```
@@ -82,6 +116,17 @@ The goal is to understand **how Docker works under the hood**, troubleshoot cont
 - `docker rm`
 - `docker rmi`
 
+## Docker Images & Dockerfile
+
+- `docker build -t <name>:<tag> .`
+- `docker image inspect <image>`
+- `docker history <image>`
+- `docker tag <image> <new-tag>`
+- `docker images`
+- `docker rmi <image>`
+- `docker pull <image>`
+- `docker push <image>`
+
 ---
 
 # 🧠 Core Concepts
@@ -100,6 +145,13 @@ The goal is to understand **how Docker works under the hood**, troubleshoot cont
 - Host Operating System
 - Shared Kernel
 - Isolation
+- Dockerfile
+- Docker Build Process
+- Docker Image Layers
+- Union File System (UnionFS)
+- Docker Build Cache
+- Base Images
+- Image Tags
 
 ---
 
@@ -151,6 +203,32 @@ Remove
 
 ---
 
+# 📦 Docker Image Build Process
+
+```text
+Dockerfile
+     │
+     ▼
+docker build
+     │
+     ▼
+Read Instructions (FROM, COPY, RUN, CMD ...)
+     │
+     ▼
+Create Layer (per instruction)
+     │
+     ▼
+Cache Layer (if unchanged)
+     │
+     ▼
+Stack Layers (UnionFS)
+     │
+     ▼
+Final Docker Image
+```
+
+---
+
 # 🏭 Production Workflow
 
 ```text
@@ -179,6 +257,10 @@ Run Container
 
 # 🚨 Production Scenarios
 
+## ✅ Completed
+
+### Day 01 – Docker Fundamentals
+
 - Run first container
 - Inspect Docker images
 - Inspect containers
@@ -186,6 +268,17 @@ Run Container
 - Container lifecycle
 - Docker Hub image pull
 - Verify Docker installation
+
+### Day 02 – Docker Images & Dockerfile
+
+- Write a production Dockerfile
+- Build an image from a Dockerfile
+- Inspect image layers
+- Debug a failed Docker build
+- Reduce image size with a leaner base image
+- Optimize build cache with instruction ordering
+- Use `.dockerignore` to exclude unnecessary files
+- Tag and version images for release
 
 ---
 
@@ -198,10 +291,19 @@ Run Container
 - Docker Engine manages images and containers.
 - Docker Hub stores Docker images.
 - Containers are lightweight and portable.
+- A Dockerfile is a set of instructions used to build an image.
+- Each Dockerfile instruction creates a new image layer.
+- Docker uses UnionFS to stack layers into a single filesystem view.
+- Unchanged layers are reused from the build cache to speed up builds.
+- Instruction order in a Dockerfile affects cache efficiency.
+- `.dockerignore` prevents unnecessary files from bloating the build context.
+- Smaller, purpose-built base images reduce final image size and attack surface.
 
 ---
 
 # 🎤 Interview Questions
+
+## Day 01 – Docker Fundamentals
 
 - What is Docker?
 - Why was Docker created?
@@ -214,12 +316,27 @@ Run Container
 - What is Docker Hub?
 - Explain Docker Architecture.
 
+## Day 02 – Docker Images & Dockerfile
+
+- What is a Docker Image?
+- What is a Dockerfile?
+- Explain the Docker build process.
+- What are image layers, and why do they matter?
+- What is the Union File System (UnionFS)?
+- How does Docker's build cache work?
+- Difference between `COPY` and `ADD`?
+- Difference between `CMD` and `ENTRYPOINT`?
+- What is the purpose of `.dockerignore`?
+- How do you reduce Docker image size?
+- What is a base image, and how do you choose one?
+- What does `docker history` show you?
+
 ---
 
 # 📅 Revision Progress
 
 - ✅ Day 01 – Docker Fundamentals
-- ⏳ Day 02 – Docker Images & Dockerfile
+- ✅ Day 02 – Docker Images & Dockerfile
 - ⏳ Day 03 – Container Lifecycle
 - ⏳ Day 04 – Volumes
 - ⏳ Day 05 – Networking
