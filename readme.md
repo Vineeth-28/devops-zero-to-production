@@ -38,7 +38,7 @@ By the end of this roadmap, I aim to confidently:
 |---------|--------|
 | 🐧 Linux | ✅ Completed |
 | 🔥 Git & GitHub | 🟡 In Progress (Day 08/09) |
-| 🐳 Docker | ⏳ Planned |
+| 🐳 Docker | 🟡 In Progress (Day 03/10) |
 | ☸️ Kubernetes | ⏳ Planned |
 | ☁️ AWS | ⏳ Planned |
 | 🌍 Terraform | ⏳ Planned |
@@ -56,7 +56,7 @@ Linux                 ███████████████████�
 
 Git & GitHub          █████████████████░░░ 89%
 
-Docker                ░░░░░░░░░░░░░░░░░░░░
+Docker                ██████░░░░░░░░░░░░░░ 30%
 
 Kubernetes            ░░░░░░░░░░░░░░░░░░░░
 
@@ -206,16 +206,79 @@ The objective is to retain knowledge through repetition and practical implementa
 
 ---
 
-## 🐳 Docker
+## 🐳 Docker 🟡
 
-- Images
-- Containers
-- Dockerfile
-- Volumes
-- Networks
+### ✅ Completed
+
+#### Day 01 – Docker Fundamentals
+
+- What is Docker?
+- Containers vs Virtual Machines
+- Docker Architecture (Client, Daemon, Registry)
+- Docker Images vs Containers
+- Docker Installation
+- Docker CLI Basics
+
+#### Day 02 – Docker Images & Dockerfile
+
+- Docker Images
+- Dockerfile & Dockerfile Instructions
+- Image Layers
+- UnionFS
+- Build Cache
+- Docker Build Best Practices
+
+#### ✅ Day 03 – Docker Volumes & Bind Mounts
+
+- Container Writable Layer
+- Why Container Data is Lost
+- Persistent Storage
+- Docker Volumes
+- Creating Volumes
+- Mounting Volumes
+- Volume Lifecycle
+- Sharing Volumes Between Containers
+- Docker Volume vs Bind Mount
+- Production Use Cases
+- Development Use Cases
+
+**Commands Practiced (Day 03):**
+
+- `docker volume create`
+- `docker volume ls`
+- `docker volume inspect`
+- `docker volume rm`
+- `docker run -v`
+- `docker rm`
+- `docker exec`
+
+**Practical Lab (Day 03):**
+
+- Created Docker Volume
+- Mounted Volume into Nginx Container
+- Modified index.html
+- Verified Changes in Browser
+- Deleted Container
+- Recreated Container
+- Verified Persistent Data
+- Compared Docker Volumes with Bind Mounts
+
+**Key Learnings (Day 03):**
+
+- Containers are ephemeral.
+- Writable layers are deleted with containers.
+- Docker Volumes persist independently.
+- Multiple containers can share a single volume.
+- Docker Volumes are ideal for databases.
+- Bind Mounts are best suited for local development.
+
+### ⏳ Upcoming
+
+- Docker Networks
 - Docker Compose
 - Multi-stage Builds
 - Container Debugging
+- Production Docker Challenge
 
 ---
 
@@ -304,6 +367,22 @@ pdfs/
     Day-08-Cherry-pick.pdf
 ```
 
+### 03-docker/ additions for Day 03
+
+```text
+commands/
+    docker-volumes.md
+
+troubleshooting/
+    docker-volumes.md
+
+workflows/
+    docker-volume-workflow.md
+
+pdfs/
+    Day-03-Docker-Volumes.pdf
+```
+
 ---
 
 # 🚨 Production Scenarios
@@ -370,11 +449,19 @@ pdfs/
 - Cherry-pick Conflict Resolution
 - Selective Feature Migration
 
+### Docker
+
+- Container Data Loss Investigation (Ephemeral Writable Layer)
+- Persistent Storage Verification with Docker Volumes
+- Bind Mount vs Volume Comparison
+- Sharing a Volume Across Multiple Containers
+
 ---
 
 ## ⏳ Upcoming
 
-- Docker Container Failures
+- Docker Networks Failures
+- Docker Compose Multi-Container Issues
 - Kubernetes CrashLoopBackOff
 - ImagePullBackOff
 - Jenkins Pipeline Failures
@@ -497,6 +584,32 @@ Deploy
 
 ---
 
+# 💾 Docker Volume Persistence Architecture
+
+```text
+Container Writable Layer
+      │
+      ▼
+Container Deleted
+      │
+      ▼
+Writable Layer Lost
+      │
+      ▼
+Docker Volume (Separate from Container)
+      │
+      ▼
+Data Survives Container Deletion
+      │
+      ▼
+New Container Mounts Same Volume
+      │
+      ▼
+Data Restored
+```
+
+---
+
 # 📊 Git Learning Progress
 
 ## ✅ Completed
@@ -513,6 +626,24 @@ Deploy
 ## ⏳ Remaining
 
 - Production Git Challenge
+
+---
+
+# 📊 Docker Learning Progress
+
+## ✅ Completed
+
+- Docker Fundamentals
+- Docker Images & Dockerfile
+- Docker Volumes & Bind Mounts
+
+## ⏳ Remaining
+
+- Docker Networks
+- Docker Compose
+- Multi-stage Builds
+- Container Debugging
+- Production Docker Challenge
 
 ---
 
@@ -533,6 +664,22 @@ Deploy
 
 ---
 
+# 🧰 Commands Practiced — Docker Volumes
+
+```md
+## Docker Volumes
+
+- `docker volume create`
+- `docker volume ls`
+- `docker volume inspect`
+- `docker volume rm`
+- `docker run -v`
+- `docker rm`
+- `docker exec`
+```
+
+---
+
 # 🧠 Core Concepts — Git Cherry-pick
 
 ```text
@@ -548,6 +695,21 @@ Selective Commit Transfer
 
 ---
 
+# 🧠 Core Concepts — Docker Volumes
+
+```text
+Container Writable Layer
+Ephemeral Storage
+Persistent Storage
+Docker Volumes
+Volume Lifecycle
+Bind Mounts
+Shared Volumes
+Volume vs Bind Mount
+```
+
+---
+
 # 🗝 Key Learnings — Git Cherry-pick
 
 - Git Cherry-pick copies commits instead of moving them.
@@ -558,6 +720,17 @@ Selective Commit Transfer
 - `--no-commit` stages changes without creating a commit.
 - `--continue` resumes an interrupted Cherry-pick.
 - `--abort` cancels an in-progress Cherry-pick.
+
+---
+
+# 🗝 Key Learnings — Docker Volumes & Bind Mounts
+
+- Containers are ephemeral.
+- Writable layers are deleted with containers.
+- Docker Volumes persist independently.
+- Multiple containers can share a single volume.
+- Docker Volumes are ideal for databases.
+- Bind Mounts are best suited for local development.
 
 ---
 
@@ -577,6 +750,23 @@ Selective Commit Transfer
 - What does `git cherry-pick --abort` do?
 - Can Cherry-pick create merge conflicts?
 - Production use cases of Cherry-pick?
+```
+
+---
+
+# 🎤 Interview Questions — Docker Volumes
+
+```md
+## Docker Volumes & Bind Mounts
+
+- Why is data lost when a container is deleted?
+- What is a Docker Volume?
+- How is a Volume different from a Bind Mount?
+- Where are Docker Volumes stored on disk?
+- Can multiple containers share the same Volume?
+- When would you use a Bind Mount over a Volume in production?
+- How do you back up data stored in a Docker Volume?
+- What happens to a Volume when its container is removed?
 ```
 
 ---
@@ -604,6 +794,32 @@ Production Git Challenge
 
 ---
 
+# 🗺 Docker Revision Cheat Sheet
+
+```text
+Docker Fundamentals
+   │
+   ▼
+Docker Images & Dockerfile
+   │
+   ▼
+Docker Volumes & Bind Mounts
+   │
+   ▼
+Docker Networks
+   │
+   ▼
+Docker Compose
+   │
+   ▼
+Multi-stage Builds
+   │
+   ▼
+Production Docker Challenge
+```
+
+---
+
 # 🎯 Final Objective
 
 Become confident handling:
@@ -620,6 +836,8 @@ Become confident handling:
 - DevOps Interviews
 
 Git Cherry-pick enables selective commit transfer between branches, making it an essential tool for production hotfixes, release backports, and maintaining stable release branches without merging unrelated changes.
+
+Docker Volumes decouple data from the container lifecycle, making them essential for running stateful workloads like databases reliably in production.
 
 > **Learning DevOps tools is easy.**
 
@@ -640,6 +858,11 @@ Git Cherry-pick enables selective commit transfer between branches, making it an
 - ✅ Day 07 – Git Revert
 - ✅ Day 08 – Git Cherry-pick
 - ⏳ Day 09 – Production Git Challenge
+- 🟡 Docker Module In Progress (Day 03 of 10)
+- ✅ Day 01 – Docker Fundamentals
+- ✅ Day 02 – Docker Images & Dockerfile
+- ✅ Day 03 – Docker Volumes & Bind Mounts
+- ⏳ Day 04 – Docker Networks
 
 Building one production-ready skill at a time.
 

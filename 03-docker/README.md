@@ -73,6 +73,22 @@ The goal is to understand **how Docker works under the hood**, troubleshoot cont
 
 ---
 
+## ✅ Day 03 – Docker Volumes & Bind Mounts
+
+- Container Writable Layer
+- Why Container Data is Lost
+- Persistent Storage
+- Docker Volumes
+- Creating Volumes
+- Mounting Volumes
+- Volume Lifecycle
+- Sharing Volumes Between Containers
+- Docker Volume vs Bind Mount
+- Production Use Cases
+- Development Use Cases
+
+---
+
 # 📂 Folder Structure
 
 ```text
@@ -80,19 +96,23 @@ The goal is to understand **how Docker works under the hood**, troubleshoot cont
 
 ├── commands/
 │   ├── docker-basics.md
-│   └── docker-images-dockerfile.md
+│   ├── docker-images-dockerfile.md
+│   └── docker-volumes.md
 │
 ├── troubleshooting/
 │   ├── docker-basics.md
-│   └── docker-build-issues.md
+│   ├── docker-build-issues.md
+│   └── docker-volumes.md
 │
 ├── workflows/
 │   ├── docker-workflow.md
-│   └── dockerfile-build-workflow.md
+│   ├── dockerfile-build-workflow.md
+│   └── docker-volume-workflow.md
 │
 ├── pdfs/
 │   ├── Day-01-Docker-Basics.pdf
-│   └── Day-02-Docker-Images-Dockerfile.pdf
+│   ├── Day-02-Docker-Images-Dockerfile.pdf
+│   └── Day-03-Docker-Volumes.pdf
 │
 └── README.md
 ```
@@ -127,6 +147,16 @@ The goal is to understand **how Docker works under the hood**, troubleshoot cont
 - `docker pull <image>`
 - `docker push <image>`
 
+## Docker Volumes
+
+- `docker volume create`
+- `docker volume ls`
+- `docker volume inspect`
+- `docker volume rm`
+- `docker run -v`
+- `docker rm`
+- `docker exec`
+
 ---
 
 # 🧠 Core Concepts
@@ -152,6 +182,14 @@ The goal is to understand **how Docker works under the hood**, troubleshoot cont
 - Docker Build Cache
 - Base Images
 - Image Tags
+- Container Writable Layer
+- Ephemeral Storage
+- Persistent Storage
+- Docker Volumes
+- Volume Lifecycle
+- Bind Mounts
+- Shared Volumes
+- Volume vs Bind Mount
 
 ---
 
@@ -229,6 +267,29 @@ Final Docker Image
 
 ---
 
+# 💾 Docker Volume Persistence Flow
+
+```text
+Container Writable Layer
+     │
+     ▼
+Container Deleted
+     │
+     ▼
+Writable Layer Lost
+     │
+     ▼
+Docker Volume (managed outside container lifecycle)
+     │
+     ▼
+New Container Mounts Same Volume
+     │
+     ▼
+Data Restored
+```
+
+---
+
 # 🏭 Production Workflow
 
 ```text
@@ -280,6 +341,17 @@ Run Container
 - Use `.dockerignore` to exclude unnecessary files
 - Tag and version images for release
 
+### Day 03 – Docker Volumes & Bind Mounts
+
+- Created Docker Volume
+- Mounted Volume into Nginx Container
+- Modified index.html
+- Verified Changes in Browser
+- Deleted Container
+- Recreated Container
+- Verified Persistent Data
+- Compared Docker Volumes with Bind Mounts
+
 ---
 
 # 💡 Key Learnings
@@ -298,6 +370,12 @@ Run Container
 - Instruction order in a Dockerfile affects cache efficiency.
 - `.dockerignore` prevents unnecessary files from bloating the build context.
 - Smaller, purpose-built base images reduce final image size and attack surface.
+- Containers are ephemeral.
+- Writable layers are deleted with containers.
+- Docker Volumes persist independently.
+- Multiple containers can share a single volume.
+- Docker Volumes are ideal for databases.
+- Bind Mounts are best suited for local development.
 
 ---
 
@@ -331,16 +409,29 @@ Run Container
 - What is a base image, and how do you choose one?
 - What does `docker history` show you?
 
+## Day 03 – Docker Volumes & Bind Mounts
+
+- Why is data lost when a container is deleted?
+- What is a Docker Volume?
+- How is a Volume different from a Bind Mount?
+- Where are Docker Volumes stored on disk?
+- How do you create and mount a Volume?
+- Can multiple containers share the same Volume?
+- When would you use a Bind Mount over a Volume in production?
+- What is the lifecycle of a Docker Volume relative to its container?
+- How do you remove an unused Volume?
+- What happens to a Volume when its container is removed?
+
 ---
 
 # 📅 Revision Progress
 
 - ✅ Day 01 – Docker Fundamentals
 - ✅ Day 02 – Docker Images & Dockerfile
-- ⏳ Day 03 – Container Lifecycle
-- ⏳ Day 04 – Volumes
-- ⏳ Day 05 – Networking
-- ⏳ Day 06 – Docker Compose
+- ✅ Day 03 – Docker Volumes & Bind Mounts
+- ⏳ Day 04 – Networking
+- ⏳ Day 05 – Docker Compose
+- ⏳ Day 06 – Multi-stage Builds
 - ⏳ Day 07 – Production Docker
 - ⏳ Day 08 – Docker Registry
 - ⏳ Day 09 – Production Labs
