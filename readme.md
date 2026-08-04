@@ -38,7 +38,7 @@ By the end of this roadmap, I aim to confidently:
 |---------|--------|
 | 🐧 Linux | ✅ Completed |
 | 🔥 Git & GitHub | 🟡 In Progress (Day 08/09) |
-| 🐳 Docker | 🟡 In Progress (Day 03/10) |
+| 🐳 Docker | 🟡 In Progress (Day 04/10) |
 | ☸️ Kubernetes | ⏳ Planned |
 | ☁️ AWS | ⏳ Planned |
 | 🌍 Terraform | ⏳ Planned |
@@ -56,7 +56,7 @@ Linux                 ███████████████████�
 
 Git & GitHub          █████████████████░░░ 89%
 
-Docker                ██████░░░░░░░░░░░░░░ 30%
+Docker                ████████░░░░░░░░░░░░ 40%
 
 Kubernetes            ░░░░░░░░░░░░░░░░░░░░
 
@@ -228,7 +228,7 @@ The objective is to retain knowledge through repetition and practical implementa
 - Build Cache
 - Docker Build Best Practices
 
-#### ✅ Day 03 – Docker Volumes & Bind Mounts
+#### Day 03 – Docker Volumes & Bind Mounts
 
 - Container Writable Layer
 - Why Container Data is Lost
@@ -272,9 +272,42 @@ The objective is to retain knowledge through repetition and practical implementa
 - Docker Volumes are ideal for databases.
 - Bind Mounts are best suited for local development.
 
-### ⏳ Upcoming
+#### ✅ Day 04 – Docker Networking
 
 - Docker Networks
+- Bridge Network
+- Host Network
+- None Network
+- Custom Bridge Network
+- Docker DNS
+- Container Communication
+- Multiple Networks
+- Port Mapping
+- Host Port vs Container Port
+- Docker Network Commands
+- Production Networking
+
+**Commands Practiced (Day 04):**
+
+- `docker network ls`
+- `docker network inspect`
+- `docker network create`
+- `docker network connect`
+- `docker network disconnect`
+- `docker run --network`
+- `docker run -p`
+
+**Key Learnings (Day 04):**
+
+- Containers on the default bridge network can't resolve each other by name — only custom bridge networks get Docker DNS.
+- Custom Bridge Networks enable automatic service discovery between containers via container name.
+- Host Network removes network isolation, binding the container directly to the host's network stack.
+- None Network disables networking entirely for a container.
+- Port Mapping (`-p host:container`) exposes a container's internal port to the host.
+- `localhost` inside one container does not refer to another container — container-to-container communication requires the Docker network, not localhost.
+
+### ⏳ Upcoming
+
 - Docker Compose
 - Multi-stage Builds
 - Container Debugging
@@ -383,6 +416,22 @@ pdfs/
     Day-03-Docker-Volumes.pdf
 ```
 
+### 03-docker/ additions for Day 04
+
+```text
+commands/
+    docker-networking.md
+
+troubleshooting/
+    docker-networking.md
+
+workflows/
+    docker-network-workflow.md
+
+pdfs/
+    Day-04-Docker-Networking.pdf
+```
+
 ---
 
 # 🚨 Production Scenarios
@@ -455,12 +504,14 @@ pdfs/
 - Persistent Storage Verification with Docker Volumes
 - Bind Mount vs Volume Comparison
 - Sharing a Volume Across Multiple Containers
+- Container-to-Container Communication Failure (Default Bridge vs Custom Bridge)
+- Docker DNS Resolution Investigation
+- Port Mapping / Exposed Port Troubleshooting
 
 ---
 
 ## ⏳ Upcoming
 
-- Docker Networks Failures
 - Docker Compose Multi-Container Issues
 - Kubernetes CrashLoopBackOff
 - ImagePullBackOff
@@ -610,6 +661,52 @@ Data Restored
 
 ---
 
+# 🌐 Docker Networking Architecture
+
+```text
+Browser
+
+localhost:8080
+      │
+      ▼
+Host Port 8080
+      │
+      ▼
+Docker Network
+      │
+      ▼
+Container Port 80
+      │
+      ▼
+Nginx
+```
+
+```text
+Developer
+     │
+     ▼
+Docker Client
+     │
+     ▼
+Docker Engine
+     │
+     ▼
+Docker Daemon
+     │
+ ┌───┴────────────┐
+ ▼                ▼
+Images       Containers
+                 │
+      ┌──────────┴──────────┐
+      ▼                     ▼
+Volumes              Networks
+                 │
+                 ▼
+            Docker DNS
+```
+
+---
+
 # 📊 Git Learning Progress
 
 ## ✅ Completed
@@ -636,10 +733,10 @@ Data Restored
 - Docker Fundamentals
 - Docker Images & Dockerfile
 - Docker Volumes & Bind Mounts
+- Docker Networking
 
 ## ⏳ Remaining
 
-- Docker Networks
 - Docker Compose
 - Multi-stage Builds
 - Container Debugging
@@ -680,6 +777,22 @@ Data Restored
 
 ---
 
+# 🧰 Commands Practiced — Docker Networking
+
+```md
+## Docker Networking
+
+- `docker network ls`
+- `docker network inspect`
+- `docker network create`
+- `docker network connect`
+- `docker network disconnect`
+- `docker run --network`
+- `docker run -p`
+```
+
+---
+
 # 🧠 Core Concepts — Git Cherry-pick
 
 ```text
@@ -710,6 +823,21 @@ Volume vs Bind Mount
 
 ---
 
+# 🧠 Core Concepts — Docker Networking
+
+```text
+Docker Networks
+Docker DNS
+Bridge Network
+Custom Bridge Network
+Host Network
+None Network
+Port Mapping
+Container Communication
+```
+
+---
+
 # 🗝 Key Learnings — Git Cherry-pick
 
 - Git Cherry-pick copies commits instead of moving them.
@@ -731,6 +859,17 @@ Volume vs Bind Mount
 - Multiple containers can share a single volume.
 - Docker Volumes are ideal for databases.
 - Bind Mounts are best suited for local development.
+
+---
+
+# 🗝 Key Learnings — Docker Networking
+
+- Containers on the default bridge network can't resolve each other by name — only custom bridge networks get Docker DNS.
+- Custom Bridge Networks enable automatic service discovery between containers via container name.
+- Host Network removes network isolation, binding the container directly to the host's network stack.
+- None Network disables networking entirely for a container.
+- Port Mapping (`-p host:container`) exposes a container's internal port to the host.
+- `localhost` inside one container does not refer to another container — container-to-container communication requires the Docker network, not localhost.
 
 ---
 
@@ -767,6 +906,23 @@ Volume vs Bind Mount
 - When would you use a Bind Mount over a Volume in production?
 - How do you back up data stored in a Docker Volume?
 - What happens to a Volume when its container is removed?
+```
+
+---
+
+# 🎤 Interview Questions — Docker Networking
+
+```md
+## Docker Networking
+
+- What is Docker Networking?
+- Bridge vs Host Network?
+- Docker DNS?
+- How do containers communicate?
+- Why use Custom Networks?
+- Explain Port Mapping.
+- Why doesn't localhost work between containers?
+- Explain Docker Architecture.
 ```
 
 ---
@@ -839,6 +995,8 @@ Git Cherry-pick enables selective commit transfer between branches, making it an
 
 Docker Volumes decouple data from the container lifecycle, making them essential for running stateful workloads like databases reliably in production.
 
+Docker Networking enables secure, isolated, and discoverable communication between containers, forming the backbone of any multi-container production application.
+
 > **Learning DevOps tools is easy.**
 
 > **Operating production systems with confidence is engineering.**
@@ -858,11 +1016,12 @@ Docker Volumes decouple data from the container lifecycle, making them essential
 - ✅ Day 07 – Git Revert
 - ✅ Day 08 – Git Cherry-pick
 - ⏳ Day 09 – Production Git Challenge
-- 🟡 Docker Module In Progress (Day 03 of 10)
+- 🟡 Docker Module In Progress (Day 04 of 10)
 - ✅ Day 01 – Docker Fundamentals
 - ✅ Day 02 – Docker Images & Dockerfile
 - ✅ Day 03 – Docker Volumes & Bind Mounts
-- ⏳ Day 04 – Docker Networks
+- ✅ Day 04 – Docker Networking
+- ⏳ Day 05 – Docker Compose
 
 Building one production-ready skill at a time.
 

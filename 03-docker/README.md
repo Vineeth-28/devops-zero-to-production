@@ -1,6 +1,6 @@
 # Docker Fundamentals
 
-Production-focused Docker revision with hands-on labs, interview preparation, Docker internals, container lifecycle, and real-world troubleshooting.
+Production-focused Docker revision with hands-on labs, interview preparation, Docker internals, container lifecycle, networking, and real-world troubleshooting.
 
 This module focuses on understanding **how Docker works internally**, enabling developers to confidently build, run, debug, and deploy containers in production environments.
 
@@ -8,7 +8,7 @@ This module focuses on understanding **how Docker works internally**, enabling d
 
 # 🎯 Objective
 
-Build a strong understanding of Docker fundamentals, containerization, Docker architecture, images, containers, and production workflows.
+Build a strong understanding of Docker fundamentals, containerization, Docker architecture, images, containers, storage, networking, Docker DNS, and production workflows.
 
 The goal is to understand **how Docker works under the hood**, troubleshoot containerized applications confidently, and use Docker effectively in real-world production environments.
 
@@ -89,6 +89,23 @@ The goal is to understand **how Docker works under the hood**, troubleshoot cont
 
 ---
 
+## ✅ Day 04 – Docker Networking
+
+- Docker Networks
+- Bridge Network
+- Host Network
+- None Network
+- Custom Bridge Network
+- Docker DNS
+- Container Communication
+- Multiple Networks
+- Port Mapping
+- Host Port vs Container Port
+- Docker Network Commands
+- Production Networking
+
+---
+
 # 📂 Folder Structure
 
 ```text
@@ -97,22 +114,26 @@ The goal is to understand **how Docker works under the hood**, troubleshoot cont
 ├── commands/
 │   ├── docker-basics.md
 │   ├── docker-images-dockerfile.md
-│   └── docker-volumes.md
+│   ├── docker-volumes.md
+│   └── docker-networking.md
 │
 ├── troubleshooting/
 │   ├── docker-basics.md
 │   ├── docker-build-issues.md
-│   └── docker-volumes.md
+│   ├── docker-volumes.md
+│   └── docker-networking.md
 │
 ├── workflows/
 │   ├── docker-workflow.md
 │   ├── dockerfile-build-workflow.md
-│   └── docker-volume-workflow.md
+│   ├── docker-volume-workflow.md
+│   └── docker-network-workflow.md
 │
 ├── pdfs/
 │   ├── Day-01-Docker-Basics.pdf
 │   ├── Day-02-Docker-Images-Dockerfile.pdf
-│   └── Day-03-Docker-Volumes.pdf
+│   ├── Day-03-Docker-Volumes.pdf
+│   └── Day-04-Docker-Networking.pdf
 │
 └── README.md
 ```
@@ -157,6 +178,16 @@ The goal is to understand **how Docker works under the hood**, troubleshoot cont
 - `docker rm`
 - `docker exec`
 
+## Docker Networking
+
+- `docker network ls`
+- `docker network inspect <network>`
+- `docker network create <network>`
+- `docker network connect <network> <container>`
+- `docker network disconnect <network> <container>`
+- `docker run --network <network>`
+- `docker run -p <host-port>:<container-port>`
+
 ---
 
 # 🧠 Core Concepts
@@ -190,6 +221,14 @@ The goal is to understand **how Docker works under the hood**, troubleshoot cont
 - Bind Mounts
 - Shared Volumes
 - Volume vs Bind Mount
+- Docker Networks
+- Docker DNS
+- Bridge Network
+- Custom Bridge Network
+- Host Network
+- None Network
+- Port Mapping
+- Container Communication
 
 ---
 
@@ -205,6 +244,13 @@ The goal is to understand **how Docker works under the hood**, troubleshoot cont
        ┌──────┴──────┐
        ▼             ▼
  Docker Images   Docker Containers
+                      │
+              ┌───────┴────────┐
+              ▼                ▼
+         Docker Volumes   Docker Networks
+                                │
+                                ▼
+                           Docker DNS
               │
               ▼
          Docker Hub
@@ -290,6 +336,43 @@ Data Restored
 
 ---
 
+# 🌐 Docker Networking Flow
+
+```text
+Browser
+
+localhost:8080
+      │
+      ▼
+Host Port 8080
+      │
+      ▼
+Docker Network
+      │
+      ▼
+Container Port 80
+      │
+      ▼
+Nginx
+```
+
+```text
+Container A                Container B
+   │                            │
+   ▼                            ▼
+docker run --network app-net   docker run --network app-net
+   │                            │
+   └──────────► Custom Bridge Network ◄──────────┘
+                        │
+                        ▼
+                   Docker DNS
+                        │
+                        ▼
+       Container A resolves Container B by name
+```
+
+---
+
 # 🏭 Production Workflow
 
 ```text
@@ -309,6 +392,9 @@ Docker Registry
      │
      ▼
 Production Server
+     │
+     ▼
+Docker Network
      │
      ▼
 Run Container
@@ -352,6 +438,17 @@ Run Container
 - Verified Persistent Data
 - Compared Docker Volumes with Bind Mounts
 
+### Day 04 – Docker Networking
+
+- Created a custom bridge network
+- Connected multiple containers to the same custom network
+- Resolved one container from another using Docker DNS (by container name)
+- Verified containers on the default bridge network cannot resolve each other by name
+- Mapped a container port to a host port and accessed the app via `localhost`
+- Compared Bridge, Host, and None network drivers
+- Connected and disconnected a running container from a network
+- Investigated why `localhost` inside one container doesn't reach another container
+
 ---
 
 # 💡 Key Learnings
@@ -376,6 +473,12 @@ Run Container
 - Multiple containers can share a single volume.
 - Docker Volumes are ideal for databases.
 - Bind Mounts are best suited for local development.
+- Containers on the default bridge network can't resolve each other by name — only custom bridge networks get Docker DNS.
+- Custom Bridge Networks enable automatic service discovery between containers via container name.
+- Host Network removes network isolation, binding the container directly to the host's network stack.
+- None Network disables networking entirely for a container.
+- Port Mapping (`-p host:container`) exposes a container's internal port to the host.
+- `localhost` inside one container does not refer to another container — container-to-container communication requires the Docker network, not localhost.
 
 ---
 
@@ -422,6 +525,19 @@ Run Container
 - How do you remove an unused Volume?
 - What happens to a Volume when its container is removed?
 
+## Day 04 – Docker Networking
+
+- What is Docker Networking?
+- Bridge vs Host Network?
+- What is Docker DNS?
+- How do containers communicate with each other?
+- Why use a Custom Bridge Network instead of the default bridge?
+- Docker Volume vs Bind Mount? (recap)
+- Difference between Image and Container? (recap)
+- Explain Port Mapping.
+- Why doesn't `localhost` work between containers?
+- Explain Docker Architecture end-to-end, including networking.
+
 ---
 
 # 📅 Revision Progress
@@ -429,7 +545,7 @@ Run Container
 - ✅ Day 01 – Docker Fundamentals
 - ✅ Day 02 – Docker Images & Dockerfile
 - ✅ Day 03 – Docker Volumes & Bind Mounts
-- ⏳ Day 04 – Networking
+- ✅ Day 04 – Docker Networking
 - ⏳ Day 05 – Docker Compose
 - ⏳ Day 06 – Multi-stage Builds
 - ⏳ Day 07 – Production Docker
@@ -443,6 +559,6 @@ Run Container
 
 Learn Docker the way production engineers use it.
 
-Instead of memorizing commands, understand Docker's architecture, image lifecycle, container lifecycle, storage, networking, and deployment workflows to confidently run containerized applications in production.
+Instead of memorizing commands, understand Docker's architecture, image lifecycle, container lifecycle, storage, networking, Docker DNS, and deployment workflows to confidently run containerized applications in production.
 
 > **Learn → Understand → Practice → Explain → Apply**
