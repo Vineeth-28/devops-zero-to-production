@@ -1,14 +1,14 @@
 # Docker Fundamentals
 
-Production-focused Docker revision with hands-on labs, interview preparation, Docker internals, container lifecycle, networking, and real-world troubleshooting.
+Production-focused Docker revision with hands-on labs, interview preparation, Docker internals, container lifecycle, storage, networking, Docker Compose, and real-world troubleshooting.
 
-This module focuses on understanding **how Docker works internally**, enabling developers to confidently build, run, debug, and deploy containers in production environments.
+This module focuses on understanding **how Docker works internally**, enabling developers to confidently build, run, debug, and deploy containerized applications in production environments.
 
 ---
 
 # 🎯 Objective
 
-Build a strong understanding of Docker fundamentals, containerization, Docker architecture, images, containers, storage, networking, Docker DNS, and production workflows.
+Build a strong understanding of Docker fundamentals, containerization, Docker architecture, images, containers, storage, networking, Docker DNS, Docker Compose, and production workflows.
 
 The goal is to understand **how Docker works under the hood**, troubleshoot containerized applications confidently, and use Docker effectively in real-world production environments.
 
@@ -106,34 +106,70 @@ The goal is to understand **how Docker works under the hood**, troubleshoot cont
 
 ---
 
+## ✅ Day 05 – Docker Compose
+
+- What is Docker Compose?
+- Why Docker Compose?
+- docker-compose.yml
+- Services
+- Build vs Image
+- Container Name
+- Ports
+- Environment Variables
+- Volumes
+- Networks
+- depends_on
+- `docker compose up`
+- `docker compose up -d`
+- `docker compose down`
+- `docker compose ps`
+- `docker compose logs`
+- `docker compose exec`
+- Multi-container Applications
+- Production Workflow
+
+---
+
 # 📂 Folder Structure
 
 ```text
 03-docker/
 
+├── README.md
+│
 ├── commands/
 │   ├── docker-basics.md
 │   ├── docker-images-dockerfile.md
 │   ├── docker-volumes.md
-│   └── docker-networking.md
+│   ├── docker-networking.md
+│   └── docker-compose.md
 │
 ├── troubleshooting/
 │   ├── docker-basics.md
 │   ├── docker-build-issues.md
 │   ├── docker-volumes.md
-│   └── docker-networking.md
+│   ├── docker-networking.md
+│   └── docker-compose.md
 │
 ├── workflows/
 │   ├── docker-workflow.md
 │   ├── dockerfile-build-workflow.md
 │   ├── docker-volume-workflow.md
-│   └── docker-network-workflow.md
+│   ├── docker-network-workflow.md
+│   └── docker-compose-workflow.md
+│
+├── dockerfiles/
+│   ├── 01-nginx/
+│   ├── 02-node-basics/
+│   ├── 03-networking/
+│   └── 04-compose/
 │
 ├── pdfs/
 │   ├── Day-01-Docker-Basics.pdf
 │   ├── Day-02-Docker-Images-Dockerfile.pdf
 │   ├── Day-03-Docker-Volumes.pdf
-│   └── Day-04-Docker-Networking.pdf
+│   ├── Day-04-Docker-Networking.pdf
+│   └── Day-05-Docker-Compose.pdf
 │
 └── README.md
 ```
@@ -188,6 +224,20 @@ The goal is to understand **how Docker works under the hood**, troubleshoot cont
 - `docker run --network <network>`
 - `docker run -p <host-port>:<container-port>`
 
+## Docker Compose
+
+- `docker compose up`
+- `docker compose up -d`
+- `docker compose down`
+- `docker compose ps`
+- `docker compose logs`
+- `docker compose exec`
+- `docker compose restart`
+- `docker compose stop`
+- `docker compose start`
+- `docker compose build`
+- `docker compose pull`
+
 ---
 
 # 🧠 Core Concepts
@@ -229,6 +279,12 @@ The goal is to understand **how Docker works under the hood**, troubleshoot cont
 - None Network
 - Port Mapping
 - Container Communication
+- Docker Compose
+- Services
+- Build vs Image
+- Environment Variables
+- Multi-container Applications
+- Compose Lifecycle
 
 ---
 
@@ -254,6 +310,9 @@ The goal is to understand **how Docker works under the hood**, troubleshoot cont
               │
               ▼
          Docker Hub
+              │
+              ▼
+        Docker Compose
 ```
 
 ---
@@ -373,6 +432,28 @@ docker run --network app-net   docker run --network app-net
 
 ---
 
+# 🏭 Docker Compose Workflow
+
+```text
+docker-compose.yml
+        │
+        ▼
+Docker Compose
+        │
+        ├──────────────┐
+        ▼              ▼
+Backend Service   MySQL Service
+        │              │
+        └──────┬───────┘
+               ▼
+        Docker Network
+               │
+               ▼
+        Docker Volume
+```
+
+---
+
 # 🏭 Production Workflow
 
 ```text
@@ -449,6 +530,17 @@ Run Container
 - Connected and disconnected a running container from a network
 - Investigated why `localhost` inside one container doesn't reach another container
 
+### Day 05 – Docker Compose
+
+- Node.js + MySQL
+- Backend + Redis
+- Nginx Reverse Proxy
+- Multi-container Applications
+- Local Development Environment
+- Docker Compose Projects
+- Persistent Storage
+- Production Networking
+
 ---
 
 # 💡 Key Learnings
@@ -479,6 +571,12 @@ Run Container
 - None Network disables networking entirely for a container.
 - Port Mapping (`-p host:container`) exposes a container's internal port to the host.
 - `localhost` inside one container does not refer to another container — container-to-container communication requires the Docker network, not localhost.
+- Docker Compose defines and runs multi-container applications from a single `docker-compose.yml` file.
+- `build` creates an image from a Dockerfile; `image` pulls an existing prebuilt image — a service uses one or the other.
+- `depends_on` controls startup order but does not wait for a service to be fully ready.
+- Compose automatically creates a shared network so services can resolve each other by service name.
+- Compose automatically creates named volumes declared under the top-level `volumes:` key.
+- `docker compose up -d` runs services in detached mode; `docker compose down` tears down containers, networks (and volumes with `-v`).
 
 ---
 
@@ -538,6 +636,17 @@ Run Container
 - Why doesn't `localhost` work between containers?
 - Explain Docker Architecture end-to-end, including networking.
 
+## Day 05 – Docker Compose
+
+- What is Docker Compose?
+- Dockerfile vs Docker Compose?
+- `build` vs `image`?
+- What is `depends_on`?
+- What happens during `docker compose up`?
+- Does Compose create volumes?
+- Does Compose create networks?
+- Why use Docker Compose?
+
 ---
 
 # 📅 Revision Progress
@@ -546,10 +655,10 @@ Run Container
 - ✅ Day 02 – Docker Images & Dockerfile
 - ✅ Day 03 – Docker Volumes & Bind Mounts
 - ✅ Day 04 – Docker Networking
-- ⏳ Day 05 – Docker Compose
-- ⏳ Day 06 – Multi-stage Builds
-- ⏳ Day 07 – Production Docker
-- ⏳ Day 08 – Docker Registry
+- ✅ Day 05 – Docker Compose
+- ⏳ Day 06 – Production Docker
+- ⏳ Day 07 – Docker Registry
+- ⏳ Day 08 – Docker Security
 - ⏳ Day 09 – Production Labs
 - ⏳ Day 10 – Production Challenge
 
@@ -559,6 +668,6 @@ Run Container
 
 Learn Docker the way production engineers use it.
 
-Instead of memorizing commands, understand Docker's architecture, image lifecycle, container lifecycle, storage, networking, Docker DNS, and deployment workflows to confidently run containerized applications in production.
+Instead of memorizing commands, understand Docker's architecture, image lifecycle, container lifecycle, storage, networking, Docker DNS, Docker Compose, and deployment workflows to confidently build, deploy, troubleshoot, and manage containerized applications in production.
 
 > **Learn → Understand → Practice → Explain → Apply**

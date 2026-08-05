@@ -38,7 +38,7 @@ By the end of this roadmap, I aim to confidently:
 |---------|--------|
 | 🐧 Linux | ✅ Completed |
 | 🔥 Git & GitHub | 🟡 In Progress (Day 08/09) |
-| 🐳 Docker | 🟡 In Progress (Day 04/10) |
+| 🐳 Docker | 🟡 In Progress (Day 05/10) |
 | ☸️ Kubernetes | ⏳ Planned |
 | ☁️ AWS | ⏳ Planned |
 | 🌍 Terraform | ⏳ Planned |
@@ -56,7 +56,7 @@ Linux                 ███████████████████�
 
 Git & GitHub          █████████████████░░░ 89%
 
-Docker                ████████░░░░░░░░░░░░ 40%
+Docker                ██████████░░░░░░░░░░ 50%
 
 Kubernetes            ░░░░░░░░░░░░░░░░░░░░
 
@@ -306,9 +306,47 @@ The objective is to retain knowledge through repetition and practical implementa
 - Port Mapping (`-p host:container`) exposes a container's internal port to the host.
 - `localhost` inside one container does not refer to another container — container-to-container communication requires the Docker network, not localhost.
 
+#### ✅ Day 05 – Docker Compose
+
+- What is Docker Compose?
+- Why Docker Compose?
+- docker-compose.yml
+- Services
+- Build vs Image
+- Container Name
+- Ports
+- Environment Variables
+- Volumes
+- Networks
+- depends_on
+- Multi-container Applications
+- Production Workflow
+
+**Commands Practiced (Day 05):**
+
+- `docker compose up`
+- `docker compose up -d`
+- `docker compose down`
+- `docker compose ps`
+- `docker compose logs`
+- `docker compose exec`
+- `docker compose restart`
+- `docker compose stop`
+- `docker compose start`
+- `docker compose build`
+- `docker compose pull`
+
+**Key Learnings (Day 05):**
+
+- Docker Compose defines and runs multi-container applications from a single `docker-compose.yml` file.
+- `build` creates an image from a Dockerfile; `image` pulls an existing prebuilt image — a service uses one or the other.
+- `depends_on` controls startup order but does not wait for a service to be fully ready.
+- Compose automatically creates a shared network so services can resolve each other by service name.
+- Compose automatically creates named volumes declared under the top-level `volumes:` key.
+- `docker compose up -d` runs services in detached mode; `docker compose down` tears down containers and networks (add `-v` to remove volumes too).
+
 ### ⏳ Upcoming
 
-- Docker Compose
 - Multi-stage Builds
 - Container Debugging
 - Production Docker Challenge
@@ -432,6 +470,22 @@ pdfs/
     Day-04-Docker-Networking.pdf
 ```
 
+### 03-docker/ additions for Day 05
+
+```text
+commands/
+    docker-compose.md
+
+troubleshooting/
+    docker-compose.md
+
+workflows/
+    docker-compose-workflow.md
+
+pdfs/
+    Day-05-Docker-Compose.pdf
+```
+
 ---
 
 # 🚨 Production Scenarios
@@ -507,6 +561,11 @@ pdfs/
 - Container-to-Container Communication Failure (Default Bridge vs Custom Bridge)
 - Docker DNS Resolution Investigation
 - Port Mapping / Exposed Port Troubleshooting
+- Multi-container Application Setup with Docker Compose
+- Service Communication via Compose-created Network
+- Environment Variable Configuration Across Services
+- Persistent Storage in a Multi-container Compose Stack
+- depends_on Startup Order Behavior
 
 ---
 
@@ -707,6 +766,27 @@ Volumes              Networks
 
 ---
 
+# 🏭 Docker Compose Architecture
+
+```text
+docker-compose.yml
+        │
+        ▼
+Docker Compose
+        │
+ ┌──────┴──────────────┐
+ ▼                     ▼
+Backend             MySQL
+        │
+        ▼
+Docker Network
+        │
+        ▼
+Docker Volume
+```
+
+---
+
 # 📊 Git Learning Progress
 
 ## ✅ Completed
@@ -734,10 +814,10 @@ Volumes              Networks
 - Docker Images & Dockerfile
 - Docker Volumes & Bind Mounts
 - Docker Networking
+- Docker Compose
 
 ## ⏳ Remaining
 
-- Docker Compose
 - Multi-stage Builds
 - Container Debugging
 - Production Docker Challenge
@@ -793,6 +873,26 @@ Volumes              Networks
 
 ---
 
+# 🧰 Commands Practiced — Docker Compose
+
+```md
+## Docker Compose
+
+- `docker compose up`
+- `docker compose up -d`
+- `docker compose down`
+- `docker compose ps`
+- `docker compose logs`
+- `docker compose exec`
+- `docker compose restart`
+- `docker compose stop`
+- `docker compose start`
+- `docker compose build`
+- `docker compose pull`
+```
+
+---
+
 # 🧠 Core Concepts — Git Cherry-pick
 
 ```text
@@ -838,6 +938,24 @@ Container Communication
 
 ---
 
+# 🧠 Core Concepts — Docker Compose
+
+```text
+Docker Compose
+docker-compose.yml
+Services
+Build vs Image
+Container Name
+Environment Variables
+Volumes
+Networks
+depends_on
+Multi-container Applications
+Compose Lifecycle
+```
+
+---
+
 # 🗝 Key Learnings — Git Cherry-pick
 
 - Git Cherry-pick copies commits instead of moving them.
@@ -870,6 +988,17 @@ Container Communication
 - None Network disables networking entirely for a container.
 - Port Mapping (`-p host:container`) exposes a container's internal port to the host.
 - `localhost` inside one container does not refer to another container — container-to-container communication requires the Docker network, not localhost.
+
+---
+
+# 🗝 Key Learnings — Docker Compose
+
+- Docker Compose defines and runs multi-container applications from a single `docker-compose.yml` file.
+- `build` creates an image from a Dockerfile; `image` pulls an existing prebuilt image — a service uses one or the other.
+- `depends_on` controls startup order but does not wait for a service to be fully ready.
+- Compose automatically creates a shared network so services can resolve each other by service name.
+- Compose automatically creates named volumes declared under the top-level `volumes:` key.
+- `docker compose up -d` runs services in detached mode; `docker compose down` tears down containers and networks (add `-v` to remove volumes too).
 
 ---
 
@@ -923,6 +1052,29 @@ Container Communication
 - Explain Port Mapping.
 - Why doesn't localhost work between containers?
 - Explain Docker Architecture.
+```
+
+---
+
+# 🎤 Interview Questions — Docker Compose
+
+```md
+## Docker Compose
+
+- What is Docker?
+- Docker vs Virtual Machine?
+- What is Docker Engine?
+- Difference between Image and Container?
+- Dockerfile vs Docker Compose?
+- Build vs Image?
+- What is Docker DNS?
+- What is Bridge Network?
+- Explain Port Mapping.
+- What is Docker Volume?
+- Volume vs Bind Mount?
+- What is depends_on?
+- What happens during docker compose up?
+- Why use Docker Compose?
 ```
 
 ---
@@ -997,6 +1149,8 @@ Docker Volumes decouple data from the container lifecycle, making them essential
 
 Docker Networking enables secure, isolated, and discoverable communication between containers, forming the backbone of any multi-container production application.
 
+Docker Compose ties images, volumes, and networks together into a single declarative file, making it the standard way to define and run multi-container applications in development and production.
+
 > **Learning DevOps tools is easy.**
 
 > **Operating production systems with confidence is engineering.**
@@ -1016,12 +1170,12 @@ Docker Networking enables secure, isolated, and discoverable communication betwe
 - ✅ Day 07 – Git Revert
 - ✅ Day 08 – Git Cherry-pick
 - ⏳ Day 09 – Production Git Challenge
-- 🟡 Docker Module In Progress (Day 04 of 10)
+- 🟡 Docker Module In Progress (Day 05 of 10)
 - ✅ Day 01 – Docker Fundamentals
 - ✅ Day 02 – Docker Images & Dockerfile
 - ✅ Day 03 – Docker Volumes & Bind Mounts
 - ✅ Day 04 – Docker Networking
-- ⏳ Day 05 – Docker Compose
+- ✅ Day 05 – Docker Compose
 
 Building one production-ready skill at a time.
 
