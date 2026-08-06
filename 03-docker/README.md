@@ -150,6 +150,31 @@ The goal is to understand **how Docker works under the hood**, troubleshoot cont
 
 ---
 
+## ✅ Day 07 – Docker Registry
+
+- What is a Docker Registry?
+- Docker Hub
+- Public vs Private Registries
+- Image Repositories
+- Image Tagging
+- Image Versioning
+- Semantic Versioning
+- Docker Login
+- Docker Logout
+- Docker Build
+- Docker Tag
+- Docker Push
+- Docker Pull
+- Docker Registry Workflow
+- AWS Elastic Container Registry (ECR)
+- Azure Container Registry (ACR)
+- Google Artifact Registry
+- Harbor Registry
+- Production Image Distribution
+- Registry Best Practices
+
+---
+
 # 📂 Folder Structure
 
 ```text
@@ -163,7 +188,8 @@ The goal is to understand **how Docker works under the hood**, troubleshoot cont
 │   ├── docker-volumes.md
 │   ├── docker-networking.md
 │   ├── docker-compose.md
-│   └── production-docker.md
+│   ├── production-docker.md
+│   └── docker-registry.md
 │
 ├── troubleshooting/
 │   ├── docker-basics.md
@@ -171,7 +197,8 @@ The goal is to understand **how Docker works under the hood**, troubleshoot cont
 │   ├── docker-volumes.md
 │   ├── docker-networking.md
 │   ├── docker-compose.md
-│   └── production-docker.md
+│   ├── production-docker.md
+│   └── docker-registry.md
 │
 ├── workflows/
 │   ├── docker-workflow.md
@@ -179,7 +206,8 @@ The goal is to understand **how Docker works under the hood**, troubleshoot cont
 │   ├── docker-volume-workflow.md
 │   ├── docker-network-workflow.md
 │   ├── docker-compose-workflow.md
-│   └── production-docker-workflow.md
+│   ├── production-docker-workflow.md
+│   └── docker-registry-workflow.md
 │
 ├── dockerfiles/
 │   ├── 01-nginx/
@@ -194,7 +222,8 @@ The goal is to understand **how Docker works under the hood**, troubleshoot cont
 │   ├── Day-03-Docker-Volumes.pdf
 │   ├── Day-04-Docker-Networking.pdf
 │   ├── Day-05-Docker-Compose.pdf
-│   └── Day-06-Production-Docker.pdf
+│   ├── Day-06-Production-Docker.pdf
+│   └── Day-07-Docker-Registry.pdf
 │
 └── README.md
 ```
@@ -276,6 +305,19 @@ The goal is to understand **how Docker works under the hood**, troubleshoot cont
 - `docker container prune`
 - `docker volume prune`
 
+## Docker Registry
+
+- `docker login`
+- `docker logout`
+- `docker build`
+- `docker tag`
+- `docker push`
+- `docker pull`
+- `docker images`
+- `docker image inspect`
+- `docker history`
+- `docker rmi`
+
 ---
 
 # 🧠 Core Concepts
@@ -338,6 +380,17 @@ The goal is to understand **how Docker works under the hood**, troubleshoot cont
 - Production Docker Best Practices
 - Docker Security
 - Image Optimization Strategies
+- Public Registry
+- Private Registry
+- Docker Repository
+- Version Tags
+- Semantic Versioning
+- Docker Authentication
+- Image Distribution
+- Registry Authentication
+- AWS ECR
+- Azure ACR
+- Google Artifact Registry
 
 ---
 
@@ -562,6 +615,44 @@ Running Container
 
 ---
 
+# 🏗 Docker Registry Workflow
+
+```text
+Developer
+      │
+      ▼
+Write Code
+      │
+      ▼
+docker build
+      │
+      ▼
+Docker Image
+      │
+      ▼
+docker tag
+      │
+      ▼
+docker login
+      │
+      ▼
+docker push
+      │
+      ▼
+Docker Registry
+      │
+      ▼
+Production Server
+      │
+      ▼
+docker pull
+      │
+      ▼
+docker run
+```
+
+---
+
 # 🚨 Production Scenarios
 
 ## ✅ Completed
@@ -632,6 +723,17 @@ Running Container
 - Resource Management
 - High Availability Containers
 
+### Day 07 – Docker Registry
+
+- Store Docker Images
+- Share Images Across Teams
+- CI/CD Image Distribution
+- Versioned Application Releases
+- Production Rollbacks
+- Private Enterprise Registries
+- Cloud Container Registries
+- Production Deployments
+
 ---
 
 # 💡 Key Learnings
@@ -678,6 +780,16 @@ Running Container
 - Restart Policies define how Docker responds to container failure (e.g. `on-failure`, `always`, `unless-stopped`).
 - Resource Limits (CPU/memory) prevent a single container from starving the host or other containers.
 - `docker system df` and `docker system prune` help audit and reclaim disk space used by images, containers, volumes, and build cache.
+- A Docker Registry stores and distributes Docker images; Docker Hub is the default public registry.
+- Public registries suit open-source images; private registries (Docker Hub private repos, AWS ECR, Azure ACR, Google Artifact Registry, Harbor) protect proprietary images.
+- Image tags identify specific versions of an image within a repository.
+- Semantic Versioning (`major.minor.patch`) gives image tags predictable, meaningful version numbers.
+- `docker login` authenticates the CLI against a registry before push/pull of private images.
+- `docker tag` labels a local image for a specific repository and version before pushing.
+- `docker push` uploads a tagged image to a registry; `docker pull` downloads one from a registry.
+- Relying on the `latest` tag in production is risky since it can silently change what gets deployed.
+- Cloud-managed registries like AWS ECR integrate registry access with cloud IAM permissions.
+- A production registry workflow moves an image from local build → tag → push → registry → pull on the production server → run.
 
 ---
 
@@ -764,6 +876,20 @@ Running Container
 - How do you optimize Docker images?
 - What are Docker production best practices?
 
+## Day 07 – Docker Registry
+
+- What is a Docker Registry?
+- What is Docker Hub?
+- Difference between Public and Private Registry?
+- Why do we tag Docker images?
+- Why shouldn't we use `latest` in production?
+- What is image versioning?
+- Explain the Docker Registry workflow.
+- What is AWS ECR?
+- Difference between Docker Hub and AWS ECR?
+- What happens during `docker push`?
+- What happens during `docker pull`?
+
 ---
 
 # 📅 Revision Progress
@@ -774,7 +900,7 @@ Running Container
 - ✅ Day 04 – Docker Networking
 - ✅ Day 05 – Docker Compose
 - ✅ Day 06 – Production Docker
-- ⏳ Day 07 – Docker Registry
+- ✅ Day 07 – Docker Registry
 - ⏳ Day 08 – Docker Security
 - ⏳ Day 09 – Production Labs
 - ⏳ Day 10 – Docker Interview Revision & Production Challenge

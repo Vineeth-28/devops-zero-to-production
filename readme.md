@@ -38,7 +38,7 @@ By the end of this roadmap, I aim to confidently:
 |---------|--------|
 | 🐧 Linux | ✅ Completed |
 | 🔥 Git & GitHub | 🟡 In Progress (Day 08/09) |
-| 🐳 Docker | 🟡 In Progress (Day 06/10) |
+| 🐳 Docker | 🟡 In Progress (Day 07/10) |
 | ☸️ Kubernetes | ⏳ Planned |
 | ☁️ AWS | ⏳ Planned |
 | 🌍 Terraform | ⏳ Planned |
@@ -56,7 +56,7 @@ Linux                 ███████████████████�
 
 Git & GitHub          █████████████████░░░ 89%
 
-Docker                ████████████░░░░░░░░ 60%
+Docker                ██████████████░░░░░░ 70%
 
 Kubernetes            ░░░░░░░░░░░░░░░░░░░░
 
@@ -389,9 +389,59 @@ The objective is to retain knowledge through repetition and practical implementa
 - Resource Limits (CPU/memory) prevent a single container from starving the host or other containers.
 - `docker system df` and `docker system prune` help audit and reclaim disk space used by images, containers, volumes, and build cache.
 
+#### ✅ Day 07 – Docker Registry
+
+- What is a Docker Registry?
+- Docker Hub
+- Public vs Private Registries
+- Image Repositories
+- Image Tagging
+- Image Versioning
+- Semantic Versioning
+- Docker Login
+- Docker Logout
+- Docker Build
+- Docker Tag
+- Docker Push
+- Docker Pull
+- Docker Registry Workflow
+- AWS Elastic Container Registry (ECR)
+- Azure Container Registry (ACR)
+- Google Artifact Registry
+- Harbor Registry
+- Production Image Distribution
+- Registry Best Practices
+
+**Commands Practiced (Day 07):**
+
+- `docker login`
+- `docker logout`
+- `docker build`
+- `docker tag`
+- `docker push`
+- `docker pull`
+- `docker images`
+- `docker image inspect`
+- `docker history`
+- `docker rmi`
+
+**Key Learnings (Day 07):**
+
+- A Docker Registry stores and distributes Docker images; Docker Hub is the default public registry.
+- Public registries suit open-source images; private registries (Docker Hub private repos, AWS ECR, Azure ACR, Google Artifact Registry, Harbor) protect proprietary images.
+- Image tags identify specific versions of an image within a repository.
+- Semantic Versioning (`major.minor.patch`) gives image tags predictable, meaningful version numbers.
+- `docker login` authenticates the CLI against a registry before push/pull of private images.
+- `docker tag` labels a local image for a specific repository and version before pushing.
+- `docker push` uploads a tagged image to a registry; `docker pull` downloads one from a registry.
+- Relying on the `latest` tag in production is risky since it can silently change what gets deployed.
+- Cloud-managed registries like AWS ECR integrate registry access with cloud IAM permissions.
+- A production registry workflow moves an image from local build → tag → push → registry → pull on the production server → run.
+
 ### ⏳ Upcoming
 
 - Container Debugging
+- Docker Security
 - Production Docker Challenge
 
 ---
@@ -545,6 +595,22 @@ pdfs/
     Day-06-Production-Docker.pdf
 ```
 
+### 03-docker/ additions for Day 07
+
+```text
+commands/
+    docker-registry.md
+
+troubleshooting/
+    docker-registry.md
+
+workflows/
+    docker-registry-workflow.md
+
+pdfs/
+    Day-07-Docker-Registry.pdf
+```
+
 ---
 
 # 🚨 Production Scenarios
@@ -634,12 +700,21 @@ pdfs/
 - Production Container Deployment
 - Resource Management
 - High Availability Containers
+- Store Docker Images
+- Share Images Across Teams
+- CI/CD Image Distribution
+- Versioned Application Releases
+- Production Rollbacks
+- Private Enterprise Registries
+- Cloud Container Registries
+- Production Deployments (Registry-based)
 
 ---
 
 ## ⏳ Upcoming
 
 - Docker Container Debugging
+- Docker Security Hardening
 - Kubernetes CrashLoopBackOff
 - ImagePullBackOff
 - Jenkins Pipeline Failures
@@ -881,6 +956,44 @@ Running Container
 
 ---
 
+# 🏗 Docker Registry Workflow
+
+```text
+Developer
+      │
+      ▼
+Write Code
+      │
+      ▼
+docker build
+      │
+      ▼
+Docker Image
+      │
+      ▼
+docker tag
+      │
+      ▼
+docker login
+      │
+      ▼
+docker push
+      │
+      ▼
+Docker Registry
+      │
+      ▼
+Production Server
+      │
+      ▼
+docker pull
+      │
+      ▼
+docker run
+```
+
+---
+
 # 📊 Git Learning Progress
 
 ## ✅ Completed
@@ -910,10 +1023,12 @@ Running Container
 - Docker Networking
 - Docker Compose
 - Production Docker (Multi-stage Builds, Image Optimization, Health Checks, Restart Policies, Resource Limits)
+- Docker Registry (Docker Hub, Private Registries, Tagging & Versioning, Push/Pull Workflow, AWS ECR)
 
 ## ⏳ Remaining
 
 - Container Debugging
+- Docker Security
 - Production Docker Challenge
 
 ---
@@ -1006,6 +1121,25 @@ Running Container
 
 ---
 
+# 🧰 Commands Practiced — Docker Registry
+
+```md
+## Docker Registry
+
+- `docker login`
+- `docker logout`
+- `docker build`
+- `docker tag`
+- `docker push`
+- `docker pull`
+- `docker images`
+- `docker image inspect`
+- `docker history`
+- `docker rmi`
+```
+
+---
+
 # 🧠 Core Concepts — Git Cherry-pick
 
 ```text
@@ -1091,6 +1225,29 @@ Image Optimization Strategies
 
 ---
 
+# 🧠 Core Concepts — Docker Registry
+
+```text
+Docker Registry
+Docker Hub
+Public Registry
+Private Registry
+Docker Repository
+Image Tagging
+Version Tags
+Semantic Versioning
+Docker Authentication
+Image Distribution
+Production Deployment
+Registry Authentication
+Image Lifecycle
+AWS ECR
+Azure ACR
+Google Artifact Registry
+```
+
+---
+
 # 🗝 Key Learnings — Git Cherry-pick
 
 - Git Cherry-pick copies commits instead of moving them.
@@ -1149,6 +1306,21 @@ Image Optimization Strategies
 - Restart Policies define how Docker responds to container failure (e.g. `on-failure`, `always`, `unless-stopped`).
 - Resource Limits (CPU/memory) prevent a single container from starving the host or other containers.
 - `docker system df` and `docker system prune` help audit and reclaim disk space used by images, containers, volumes, and build cache.
+
+---
+
+# 🗝 Key Learnings — Docker Registry
+
+- A Docker Registry stores and distributes Docker images; Docker Hub is the default public registry.
+- Public registries suit open-source images; private registries (Docker Hub private repos, AWS ECR, Azure ACR, Google Artifact Registry, Harbor) protect proprietary images.
+- Image tags identify specific versions of an image within a repository.
+- Semantic Versioning (`major.minor.patch`) gives image tags predictable, meaningful version numbers.
+- `docker login` authenticates the CLI against a registry before push/pull of private images.
+- `docker tag` labels a local image for a specific repository and version before pushing.
+- `docker push` uploads a tagged image to a registry; `docker pull` downloads one from a registry.
+- Relying on the `latest` tag in production is risky since it can silently change what gets deployed.
+- Cloud-managed registries like AWS ECR integrate registry access with cloud IAM permissions.
+- A production registry workflow moves an image from local build → tag → push → registry → pull on the production server → run.
 
 ---
 
@@ -1251,6 +1423,26 @@ Image Optimization Strategies
 
 ---
 
+# 🎤 Interview Questions — Docker Registry
+
+```md
+## Docker Registry
+
+- What is a Docker Registry?
+- What is Docker Hub?
+- Difference between Public and Private Registry?
+- Why do we tag Docker images?
+- Why shouldn't we use `latest` in production?
+- What is image versioning?
+- Explain the Docker Registry workflow.
+- What is AWS ECR?
+- Difference between Docker Hub and AWS ECR?
+- What happens during `docker push`?
+- What happens during `docker pull`?
+```
+
+---
+
 # 🗺 Git Revision Cheat Sheet
 
 ```text
@@ -1295,6 +1487,9 @@ Docker Compose
 Production Docker (Multi-stage Builds)
    │
    ▼
+Docker Registry
+   │
+   ▼
 Production Docker Challenge
 ```
 
@@ -1325,6 +1520,8 @@ Docker Compose ties images, volumes, and networks together into a single declara
 
 Production Docker turns a working container into a deployable one — small, cached, health-checked, resource-bound, and secure enough to run reliably in production.
 
+Docker Registry is the bridge between a built image and a running production container — it's how images get versioned, distributed, and pulled onto servers reliably and repeatably.
+
 > **Learning DevOps tools is easy.**
 
 > **Operating production systems with confidence is engineering.**
@@ -1344,13 +1541,14 @@ Production Docker turns a working container into a deployable one — small, cac
 - ✅ Day 07 – Git Revert
 - ✅ Day 08 – Git Cherry-pick
 - ⏳ Day 09 – Production Git Challenge
-- 🟡 Docker Module In Progress (Day 06 of 10)
+- 🟡 Docker Module In Progress (Day 07 of 10)
 - ✅ Day 01 – Docker Fundamentals
 - ✅ Day 02 – Docker Images & Dockerfile
 - ✅ Day 03 – Docker Volumes & Bind Mounts
 - ✅ Day 04 – Docker Networking
 - ✅ Day 05 – Docker Compose
 - ✅ Day 06 – Production Docker
+- ✅ Day 07 – Docker Registry
 
 Building one production-ready skill at a time.
 
