@@ -38,7 +38,7 @@ By the end of this roadmap, I aim to confidently:
 |---------|--------|
 | 🐧 Linux | ✅ Completed |
 | 🔥 Git & GitHub | 🟡 In Progress (Day 08/09) |
-| 🐳 Docker | 🟡 In Progress (Day 05/10) |
+| 🐳 Docker | 🟡 In Progress (Day 06/10) |
 | ☸️ Kubernetes | ⏳ Planned |
 | ☁️ AWS | ⏳ Planned |
 | 🌍 Terraform | ⏳ Planned |
@@ -56,7 +56,7 @@ Linux                 ███████████████████�
 
 Git & GitHub          █████████████████░░░ 89%
 
-Docker                ██████████░░░░░░░░░░ 50%
+Docker                ████████████░░░░░░░░ 60%
 
 Kubernetes            ░░░░░░░░░░░░░░░░░░░░
 
@@ -345,9 +345,52 @@ The objective is to retain knowledge through repetition and practical implementa
 - Compose automatically creates named volumes declared under the top-level `volumes:` key.
 - `docker compose up -d` runs services in detached mode; `docker compose down` tears down containers and networks (add `-v` to remove volumes too).
 
+#### ✅ Day 06 – Production Docker
+
+- Development vs Production Docker
+- Image Optimization
+- Multi-stage Builds
+- `.dockerignore`
+- Docker Layer Caching
+- Lightweight Base Images (Alpine)
+- Health Checks
+- Restart Policies
+- Resource Limits
+- Production Security Best Practices
+- Production Docker Workflow
+- Optimized Dockerfiles
+- Build Context Optimization
+- Production Deployment
+- Docker Performance Optimization
+
+**Commands Practiced (Day 06):**
+
+- `docker images`
+- `docker history`
+- `docker stats`
+- `docker logs`
+- `docker inspect`
+- `docker system df`
+- `docker system prune`
+- `docker image prune`
+- `docker container prune`
+- `docker volume prune`
+
+**Key Learnings (Day 06):**
+
+- Production Docker prioritizes small, secure, and predictable images over convenience.
+- Multi-stage builds separate the build environment from the runtime environment, keeping only what's needed to run the app.
+- The builder stage can include compilers and dev dependencies; the runtime stage copies only the final artifacts.
+- Alpine and other minimal base images shrink image size and reduce the attack surface.
+- Docker Layer Caching speeds up rebuilds by reusing unchanged layers — ordering instructions from least- to most-frequently-changed matters.
+- `.dockerignore` also reduces the build context sent to the Docker daemon, speeding up builds.
+- Health Checks let Docker (and orchestrators) know whether a container is actually ready, not just running.
+- Restart Policies define how Docker responds to container failure (e.g. `on-failure`, `always`, `unless-stopped`).
+- Resource Limits (CPU/memory) prevent a single container from starving the host or other containers.
+- `docker system df` and `docker system prune` help audit and reclaim disk space used by images, containers, volumes, and build cache.
+
 ### ⏳ Upcoming
 
-- Multi-stage Builds
 - Container Debugging
 - Production Docker Challenge
 
@@ -486,6 +529,22 @@ pdfs/
     Day-05-Docker-Compose.pdf
 ```
 
+### 03-docker/ additions for Day 06
+
+```text
+commands/
+    production-docker.md
+
+troubleshooting/
+    production-docker.md
+
+workflows/
+    production-docker-workflow.md
+
+pdfs/
+    Day-06-Production-Docker.pdf
+```
+
 ---
 
 # 🚨 Production Scenarios
@@ -566,12 +625,21 @@ pdfs/
 - Environment Variable Configuration Across Services
 - Persistent Storage in a Multi-container Compose Stack
 - depends_on Startup Order Behavior
+- Production Node.js Deployment
+- Multi-stage Docker Builds
+- Optimizing Large Docker Images
+- CI/CD Docker Pipelines
+- Docker Image Security
+- Docker Performance Optimization
+- Production Container Deployment
+- Resource Management
+- High Availability Containers
 
 ---
 
 ## ⏳ Upcoming
 
-- Docker Compose Multi-Container Issues
+- Docker Container Debugging
 - Kubernetes CrashLoopBackOff
 - ImagePullBackOff
 - Jenkins Pipeline Failures
@@ -787,6 +855,32 @@ Docker Volume
 
 ---
 
+# 🏗 Production Docker Workflow
+
+```text
+Developer
+      │
+      ▼
+Dockerfile
+      │
+      ▼
+Multi-stage Build
+      │
+      ▼
+Optimized Docker Image
+      │
+      ▼
+Docker Registry
+      │
+      ▼
+Production Server
+      │
+      ▼
+Running Container
+```
+
+---
+
 # 📊 Git Learning Progress
 
 ## ✅ Completed
@@ -815,10 +909,10 @@ Docker Volume
 - Docker Volumes & Bind Mounts
 - Docker Networking
 - Docker Compose
+- Production Docker (Multi-stage Builds, Image Optimization, Health Checks, Restart Policies, Resource Limits)
 
 ## ⏳ Remaining
 
-- Multi-stage Builds
 - Container Debugging
 - Production Docker Challenge
 
@@ -893,6 +987,25 @@ Docker Volume
 
 ---
 
+# 🧰 Commands Practiced — Production Docker
+
+```md
+## Production Docker
+
+- `docker images`
+- `docker history`
+- `docker stats`
+- `docker logs`
+- `docker inspect`
+- `docker system df`
+- `docker system prune`
+- `docker image prune`
+- `docker container prune`
+- `docker volume prune`
+```
+
+---
+
 # 🧠 Core Concepts — Git Cherry-pick
 
 ```text
@@ -956,6 +1069,28 @@ Compose Lifecycle
 
 ---
 
+# 🧠 Core Concepts — Production Docker
+
+```text
+Production Docker
+Development vs Production
+Image Optimization
+Multi-stage Builds
+Builder Stage
+Runtime Stage
+Docker Build Context
+Docker Layer Caching
+Lightweight Base Images
+Health Checks
+Restart Policies
+Resource Limits
+Production Docker Best Practices
+Docker Security
+Image Optimization Strategies
+```
+
+---
+
 # 🗝 Key Learnings — Git Cherry-pick
 
 - Git Cherry-pick copies commits instead of moving them.
@@ -999,6 +1134,21 @@ Compose Lifecycle
 - Compose automatically creates a shared network so services can resolve each other by service name.
 - Compose automatically creates named volumes declared under the top-level `volumes:` key.
 - `docker compose up -d` runs services in detached mode; `docker compose down` tears down containers and networks (add `-v` to remove volumes too).
+
+---
+
+# 🗝 Key Learnings — Production Docker
+
+- Production Docker prioritizes small, secure, and predictable images over convenience.
+- Multi-stage builds separate the build environment from the runtime environment, keeping only what's needed to run the app.
+- The builder stage can include compilers and dev dependencies; the runtime stage copies only the final artifacts.
+- Alpine and other minimal base images shrink image size and reduce the attack surface.
+- Docker Layer Caching speeds up rebuilds by reusing unchanged layers — ordering instructions from least- to most-frequently-changed matters.
+- `.dockerignore` also reduces the build context sent to the Docker daemon, speeding up builds.
+- Health Checks let Docker (and orchestrators) know whether a container is actually ready, not just running.
+- Restart Policies define how Docker responds to container failure (e.g. `on-failure`, `always`, `unless-stopped`).
+- Resource Limits (CPU/memory) prevent a single container from starving the host or other containers.
+- `docker system df` and `docker system prune` help audit and reclaim disk space used by images, containers, volumes, and build cache.
 
 ---
 
@@ -1079,6 +1229,28 @@ Compose Lifecycle
 
 ---
 
+# 🎤 Interview Questions — Production Docker
+
+```md
+## Production Docker
+
+- What is Production Docker?
+- Development vs Production Docker?
+- What is a Multi-stage Build?
+- Why use Multi-stage Builds?
+- What is `.dockerignore`?
+- What is Docker Build Context?
+- What is Docker Layer Caching?
+- Why use Alpine Images?
+- What is a Docker Health Check?
+- Why use Restart Policies?
+- Why configure Resource Limits?
+- How do you optimize Docker images?
+- What are Docker production best practices?
+```
+
+---
+
 # 🗺 Git Revision Cheat Sheet
 
 ```text
@@ -1120,7 +1292,7 @@ Docker Networks
 Docker Compose
    │
    ▼
-Multi-stage Builds
+Production Docker (Multi-stage Builds)
    │
    ▼
 Production Docker Challenge
@@ -1151,6 +1323,8 @@ Docker Networking enables secure, isolated, and discoverable communication betwe
 
 Docker Compose ties images, volumes, and networks together into a single declarative file, making it the standard way to define and run multi-container applications in development and production.
 
+Production Docker turns a working container into a deployable one — small, cached, health-checked, resource-bound, and secure enough to run reliably in production.
+
 > **Learning DevOps tools is easy.**
 
 > **Operating production systems with confidence is engineering.**
@@ -1170,12 +1344,13 @@ Docker Compose ties images, volumes, and networks together into a single declara
 - ✅ Day 07 – Git Revert
 - ✅ Day 08 – Git Cherry-pick
 - ⏳ Day 09 – Production Git Challenge
-- 🟡 Docker Module In Progress (Day 05 of 10)
+- 🟡 Docker Module In Progress (Day 06 of 10)
 - ✅ Day 01 – Docker Fundamentals
 - ✅ Day 02 – Docker Images & Dockerfile
 - ✅ Day 03 – Docker Volumes & Bind Mounts
 - ✅ Day 04 – Docker Networking
 - ✅ Day 05 – Docker Compose
+- ✅ Day 06 – Production Docker
 
 Building one production-ready skill at a time.
 

@@ -130,6 +130,26 @@ The goal is to understand **how Docker works under the hood**, troubleshoot cont
 
 ---
 
+## ✅ Day 06 – Production Docker
+
+- Development vs Production Docker
+- Image Optimization
+- Multi-stage Builds
+- `.dockerignore`
+- Docker Layer Caching
+- Lightweight Base Images (Alpine)
+- Health Checks
+- Restart Policies
+- Resource Limits
+- Production Security Best Practices
+- Production Docker Workflow
+- Optimized Dockerfiles
+- Build Context Optimization
+- Production Deployment
+- Docker Performance Optimization
+
+---
+
 # 📂 Folder Structure
 
 ```text
@@ -142,34 +162,39 @@ The goal is to understand **how Docker works under the hood**, troubleshoot cont
 │   ├── docker-images-dockerfile.md
 │   ├── docker-volumes.md
 │   ├── docker-networking.md
-│   └── docker-compose.md
+│   ├── docker-compose.md
+│   └── production-docker.md
 │
 ├── troubleshooting/
 │   ├── docker-basics.md
 │   ├── docker-build-issues.md
 │   ├── docker-volumes.md
 │   ├── docker-networking.md
-│   └── docker-compose.md
+│   ├── docker-compose.md
+│   └── production-docker.md
 │
 ├── workflows/
 │   ├── docker-workflow.md
 │   ├── dockerfile-build-workflow.md
 │   ├── docker-volume-workflow.md
 │   ├── docker-network-workflow.md
-│   └── docker-compose-workflow.md
+│   ├── docker-compose-workflow.md
+│   └── production-docker-workflow.md
 │
 ├── dockerfiles/
 │   ├── 01-nginx/
 │   ├── 02-node-basics/
 │   ├── 03-networking/
-│   └── 04-compose/
+│   ├── 04-compose/
+│   └── 05-production/
 │
 ├── pdfs/
 │   ├── Day-01-Docker-Basics.pdf
 │   ├── Day-02-Docker-Images-Dockerfile.pdf
 │   ├── Day-03-Docker-Volumes.pdf
 │   ├── Day-04-Docker-Networking.pdf
-│   └── Day-05-Docker-Compose.pdf
+│   ├── Day-05-Docker-Compose.pdf
+│   └── Day-06-Production-Docker.pdf
 │
 └── README.md
 ```
@@ -238,6 +263,19 @@ The goal is to understand **how Docker works under the hood**, troubleshoot cont
 - `docker compose build`
 - `docker compose pull`
 
+## Production Docker
+
+- `docker images`
+- `docker history`
+- `docker stats`
+- `docker logs`
+- `docker inspect`
+- `docker system df`
+- `docker system prune`
+- `docker image prune`
+- `docker container prune`
+- `docker volume prune`
+
 ---
 
 # 🧠 Core Concepts
@@ -285,6 +323,21 @@ The goal is to understand **how Docker works under the hood**, troubleshoot cont
 - Environment Variables
 - Multi-container Applications
 - Compose Lifecycle
+- Production Docker
+- Development vs Production
+- Image Optimization
+- Multi-stage Builds
+- Builder Stage
+- Runtime Stage
+- Docker Build Context
+- Docker Layer Caching
+- Lightweight Base Images
+- Health Checks
+- Restart Policies
+- Resource Limits
+- Production Docker Best Practices
+- Docker Security
+- Image Optimization Strategies
 
 ---
 
@@ -483,6 +536,32 @@ Run Container
 
 ---
 
+# 🏗 Production Docker Workflow
+
+```text
+Developer
+      │
+      ▼
+Dockerfile
+      │
+      ▼
+Multi-stage Build
+      │
+      ▼
+Optimized Docker Image
+      │
+      ▼
+Docker Registry
+      │
+      ▼
+Production Server
+      │
+      ▼
+Running Container
+```
+
+---
+
 # 🚨 Production Scenarios
 
 ## ✅ Completed
@@ -541,6 +620,18 @@ Run Container
 - Persistent Storage
 - Production Networking
 
+### Day 06 – Production Docker
+
+- Production Node.js Deployment
+- Multi-stage Docker Builds
+- Optimizing Large Docker Images
+- CI/CD Docker Pipelines
+- Docker Image Security
+- Docker Performance Optimization
+- Production Container Deployment
+- Resource Management
+- High Availability Containers
+
 ---
 
 # 💡 Key Learnings
@@ -577,6 +668,16 @@ Run Container
 - Compose automatically creates a shared network so services can resolve each other by service name.
 - Compose automatically creates named volumes declared under the top-level `volumes:` key.
 - `docker compose up -d` runs services in detached mode; `docker compose down` tears down containers, networks (and volumes with `-v`).
+- Production Docker prioritizes small, secure, and predictable images over convenience.
+- Multi-stage builds separate the build environment from the runtime environment, keeping only what's needed to run the app.
+- The builder stage can include compilers and dev dependencies; the runtime stage copies only the final artifacts.
+- Alpine and other minimal base images shrink image size and reduce the attack surface.
+- Docker Layer Caching speeds up rebuilds by reusing unchanged layers — ordering instructions from least- to most-frequently-changed matters.
+- `.dockerignore` also reduces the build context sent to the Docker daemon, speeding up builds.
+- Health Checks let Docker (and orchestrators) know whether a container is actually ready, not just running.
+- Restart Policies define how Docker responds to container failure (e.g. `on-failure`, `always`, `unless-stopped`).
+- Resource Limits (CPU/memory) prevent a single container from starving the host or other containers.
+- `docker system df` and `docker system prune` help audit and reclaim disk space used by images, containers, volumes, and build cache.
 
 ---
 
@@ -647,6 +748,22 @@ Run Container
 - Does Compose create networks?
 - Why use Docker Compose?
 
+## Day 06 – Production Docker
+
+- What is Production Docker?
+- Development vs Production Docker?
+- What is a Multi-stage Build?
+- Why use Multi-stage Builds?
+- What is `.dockerignore`?
+- What is Docker Build Context?
+- What is Docker Layer Caching?
+- Why use Alpine Images?
+- What is a Docker Health Check?
+- Why use Restart Policies?
+- Why configure Resource Limits?
+- How do you optimize Docker images?
+- What are Docker production best practices?
+
 ---
 
 # 📅 Revision Progress
@@ -656,11 +773,11 @@ Run Container
 - ✅ Day 03 – Docker Volumes & Bind Mounts
 - ✅ Day 04 – Docker Networking
 - ✅ Day 05 – Docker Compose
-- ⏳ Day 06 – Production Docker
+- ✅ Day 06 – Production Docker
 - ⏳ Day 07 – Docker Registry
 - ⏳ Day 08 – Docker Security
 - ⏳ Day 09 – Production Labs
-- ⏳ Day 10 – Production Challenge
+- ⏳ Day 10 – Docker Interview Revision & Production Challenge
 
 ---
 
