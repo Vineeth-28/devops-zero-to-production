@@ -38,7 +38,7 @@ By the end of this roadmap, I aim to confidently:
 |---------|--------|
 | 🐧 Linux | ✅ Completed |
 | 🔥 Git & GitHub | 🟡 In Progress (Day 08/09) |
-| 🐳 Docker | 🟡 In Progress (Day 07/10) |
+| 🐳 Docker | 🟡 In Progress (Day 10/10 — Security day pending) |
 | ☸️ Kubernetes | ⏳ Planned |
 | ☁️ AWS | ⏳ Planned |
 | 🌍 Terraform | ⏳ Planned |
@@ -56,7 +56,7 @@ Linux                 ███████████████████�
 
 Git & GitHub          █████████████████░░░ 89%
 
-Docker                ██████████████░░░░░░ 70%
+Docker                ██████████████████░░ 90%
 
 Kubernetes            ░░░░░░░░░░░░░░░░░░░░
 
@@ -438,11 +438,70 @@ The objective is to retain knowledge through repetition and practical implementa
 - Cloud-managed registries like AWS ECR integrate registry access with cloud IAM permissions.
 - A production registry workflow moves an image from local build → tag → push → registry → pull on the production server → run.
 
+#### ✅ Day 09 – Production Docker Lab
+
+- Production Node.js + MySQL Docker Compose Application
+- Production Dockerfile
+- Node.js Docker Image
+- Docker Compose (multi-service)
+- Docker Networking (service-name DNS)
+- Environment Variables (`.env`, `.env.example`)
+- `.gitignore` for secrets
+- MySQL Persistent Volumes
+- Database Persistence
+- MySQL Health Checks
+- `depends_on` + `service_healthy`
+- Restart Policies
+- Container Troubleshooting
+- Database Authentication Troubleshooting
+
+**Commands Practiced (Day 09):**
+
+- `docker build`
+- `docker run`
+- `docker compose up`
+- `docker compose down`
+- `docker compose ps`
+- `docker compose logs`
+- `docker compose exec`
+- `docker volume ls`
+
+**Key Learnings (Day 09):**
+
+- `service_healthy` in `depends_on` is stricter than default `depends_on` — it waits for the health check to pass, not just for the container to start.
+- Database authentication failures are diagnosed by checking logs, then verifying credentials match between the app's env vars and the database service.
+- Real `.env` files stay out of Git via `.gitignore`; an `.env.example` is committed instead.
+- MySQL health checks combined with `depends_on: service_healthy` prevent the backend from starting before the database is actually ready.
+
+#### ✅ Day 10 – Final Docker Challenge & Interview Revision
+
+- Docker Compose Architecture (end-to-end review)
+- Production Dockerfiles (review)
+- Docker Networking & DNS (review)
+- Docker Volumes (review)
+- Health Checks & `depends_on` (review)
+- Environment Variables & Secrets Management
+- Non-root Containers
+- Docker Registry, Image Tagging & Production Rollback
+- Container Troubleshooting (review)
+- Multi-stage Docker Builds (review)
+
+**Commands Practiced (Day 10):**
+
+- `docker login`
+- `docker tag backend:v1.4 <user>/backend:v1.4`
+- `docker push <user>/backend:v1.4`
+
+**Key Learnings (Day 10):**
+
+- Hardcoding secrets in a Dockerfile (`ENV DB_PASSWORD=...`) bakes them into every image layer and image history — secrets belong in runtime `.env` files instead.
+- Running containers as a dedicated non-root user (`addgroup`/`adduser` + `USER`) limits the blast radius if the application is compromised.
+- Predictable rollback in production depends on versioned tags (e.g. `v1.9`, `v2.0`) rather than mutable tags like `latest`.
+- Production Dockerfiles combine Alpine base images, multi-stage builds, non-root users, `NODE_ENV=production`, and a minimal runtime image.
+
 ### ⏳ Upcoming
 
-- Container Debugging
-- Docker Security
-- Production Docker Challenge
+- Docker Security (Day 08)
 
 ---
 
@@ -611,6 +670,14 @@ pdfs/
     Day-07-Docker-Registry.pdf
 ```
 
+### 03-docker/ additions for Day 09–10
+
+```text
+pdfs/
+    Day-09-Production-Docker-Lab.pdf
+    Day-10-Final-Challenge-Interview.pdf
+```
+
 ---
 
 # 🚨 Production Scenarios
@@ -708,12 +775,17 @@ pdfs/
 - Private Enterprise Registries
 - Cloud Container Registries
 - Production Deployments (Registry-based)
+- Production Node.js + MySQL Compose Stack with Health Checks and `service_healthy`
+- Database Authentication Failure Troubleshooting (simulated)
+- Secrets Management via `.env` / `.gitignore` vs Hardcoded `ENV`
+- Non-root Container Users
+- Production Rollback via Versioned Image Tags
+- Full Registry Workflow Applied End-to-End (build → tag → login → push → pull → run)
 
 ---
 
 ## ⏳ Upcoming
 
-- Docker Container Debugging
 - Docker Security Hardening
 - Kubernetes CrashLoopBackOff
 - ImagePullBackOff
@@ -994,6 +1066,45 @@ docker run
 
 ---
 
+# 🏗 Day 09 – Production Docker Lab Architecture
+
+```text
+                 Browser
+                    │
+                    ▼
+             Node.js Backend
+                 :3000
+                    │
+             Docker Network
+                    │
+                    ▼
+                MySQL :3306
+                    │
+                    ▼
+              mysql-data Volume
+```
+
+---
+
+# 🏗 Day 10 – Final Challenge Production Architecture
+
+```text
+                 Docker Compose
+                       │
+             ┌─────────┴─────────┐
+             ▼                   ▼
+          Backend              MySQL
+          :3000                :3306
+             │                   │
+             └── Docker Network ─┘
+                                 │
+                                 ▼
+                           mysql-data
+                              Volume
+```
+
+---
+
 # 📊 Git Learning Progress
 
 ## ✅ Completed
@@ -1024,12 +1135,12 @@ docker run
 - Docker Compose
 - Production Docker (Multi-stage Builds, Image Optimization, Health Checks, Restart Policies, Resource Limits)
 - Docker Registry (Docker Hub, Private Registries, Tagging & Versioning, Push/Pull Workflow, AWS ECR)
+- Production Docker Lab (Node.js + MySQL Compose stack, health checks, `service_healthy`, DB auth troubleshooting)
+- Final Docker Challenge & Interview Revision (secrets management, non-root containers, production rollback, full registry workflow)
 
 ## ⏳ Remaining
 
-- Container Debugging
-- Docker Security
-- Production Docker Challenge
+- Docker Security (Day 08)
 
 ---
 
@@ -1136,6 +1247,26 @@ docker run
 - `docker image inspect`
 - `docker history`
 - `docker rmi`
+```
+
+---
+
+# 🧰 Commands Practiced — Production Lab & Final Challenge (Day 09–10)
+
+```md
+## Production Lab & Final Challenge
+
+- `docker build`
+- `docker run`
+- `docker compose up`
+- `docker compose down`
+- `docker compose ps`
+- `docker compose logs`
+- `docker compose exec`
+- `docker volume ls`
+- `docker login`
+- `docker tag backend:v1.4 <user>/backend:v1.4`
+- `docker push <user>/backend:v1.4`
 ```
 
 ---
@@ -1248,6 +1379,18 @@ Google Artifact Registry
 
 ---
 
+# 🧠 Core Concepts — Production Lab & Final Challenge (Day 09–10)
+
+```text
+service_healthy Condition
+Non-root Containers / Least Privilege
+Secrets Management (.env vs hardcoded ENV)
+Production Rollback via Versioned Tags
+Database Authentication Troubleshooting
+```
+
+---
+
 # 🗝 Key Learnings — Git Cherry-pick
 
 - Git Cherry-pick copies commits instead of moving them.
@@ -1321,6 +1464,16 @@ Google Artifact Registry
 - Relying on the `latest` tag in production is risky since it can silently change what gets deployed.
 - Cloud-managed registries like AWS ECR integrate registry access with cloud IAM permissions.
 - A production registry workflow moves an image from local build → tag → push → registry → pull on the production server → run.
+
+---
+
+# 🗝 Key Learnings — Production Lab & Final Challenge (Day 09–10)
+
+- `service_healthy` in `depends_on` is stricter than default `depends_on` — it waits for the health check to pass, not just for the container to start.
+- Database authentication failures are diagnosed by checking logs, then verifying credentials match between the app's env vars and the database service.
+- Hardcoding secrets in a Dockerfile (`ENV DB_PASSWORD=...`) bakes them into every image layer and image history — secrets belong in runtime `.env` files instead.
+- Running containers as a dedicated non-root user (`addgroup`/`adduser` + `USER`) limits the blast radius if the application is compromised.
+- Predictable rollback in production depends on versioned tags (e.g. `v1.9`, `v2.0`) rather than mutable tags like `latest`.
 
 ---
 
@@ -1443,6 +1596,39 @@ Google Artifact Registry
 
 ---
 
+# 🎤 Interview Questions — Production Lab & Final Challenge (Day 09–10)
+
+```md
+## Production Docker Lab
+
+- Why use `DB_HOST=mysql` instead of `localhost`?
+- Why use Docker volumes for databases?
+- Difference between running and healthy containers?
+- Why use `service_healthy`?
+- Why keep secrets outside Docker images?
+- How do you troubleshoot database connection failures?
+- Why use restart policies?
+
+## Final Interview Areas
+
+- Docker image vs container
+- Docker networking
+- Docker volumes
+- Docker Compose
+- Health checks
+- `depends_on`
+- Docker Registry
+- Image tagging
+- Production rollback
+- Container security
+- Non-root containers
+- Secrets management
+- Production troubleshooting
+- Multi-stage builds
+```
+
+---
+
 # 🗺 Git Revision Cheat Sheet
 
 ```text
@@ -1490,7 +1676,13 @@ Production Docker (Multi-stage Builds)
 Docker Registry
    │
    ▼
-Production Docker Challenge
+Production Docker Lab
+   │
+   ▼
+Final Docker Challenge & Interview Revision
+   │
+   ▼
+Docker Security (remaining)
 ```
 
 ---
@@ -1522,6 +1714,8 @@ Production Docker turns a working container into a deployable one — small, cac
 
 Docker Registry is the bridge between a built image and a running production container — it's how images get versioned, distributed, and pulled onto servers reliably and repeatably.
 
+The Production Docker Lab and Final Challenge tie every prior Docker topic together into a single working, troubleshot, secured, and versioned production application.
+
 > **Learning DevOps tools is easy.**
 
 > **Operating production systems with confidence is engineering.**
@@ -1541,7 +1735,7 @@ Docker Registry is the bridge between a built image and a running production con
 - ✅ Day 07 – Git Revert
 - ✅ Day 08 – Git Cherry-pick
 - ⏳ Day 09 – Production Git Challenge
-- 🟡 Docker Module In Progress (Day 07 of 10)
+- 🟡 Docker Module In Progress (Day 10 of 10 — Day 08 Security remaining)
 - ✅ Day 01 – Docker Fundamentals
 - ✅ Day 02 – Docker Images & Dockerfile
 - ✅ Day 03 – Docker Volumes & Bind Mounts
@@ -1549,6 +1743,9 @@ Docker Registry is the bridge between a built image and a running production con
 - ✅ Day 05 – Docker Compose
 - ✅ Day 06 – Production Docker
 - ✅ Day 07 – Docker Registry
+- ⏳ Day 08 – Docker Security
+- ✅ Day 09 – Production Docker Lab
+- ✅ Day 10 – Final Docker Challenge & Interview Revision
 
 Building one production-ready skill at a time.
 

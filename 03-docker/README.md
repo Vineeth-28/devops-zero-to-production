@@ -175,6 +175,40 @@ The goal is to understand **how Docker works under the hood**, troubleshoot cont
 
 ---
 
+## ✅ Day 09 – Production Docker Lab
+
+- Production Node.js + MySQL Docker Compose Application
+- Production Dockerfile
+- Node.js Docker Image
+- Docker Compose (multi-service)
+- Docker Networking (service-name DNS)
+- Environment Variables (`.env`, `.env.example`)
+- `.gitignore` for secrets
+- MySQL Persistent Volumes
+- Database Persistence
+- MySQL Health Checks
+- `depends_on` + `service_healthy`
+- Restart Policies
+- Container Troubleshooting
+- Database Authentication Troubleshooting
+
+---
+
+## ✅ Day 10 – Final Docker Challenge & Interview Revision
+
+- Docker Compose Architecture (end-to-end review)
+- Production Dockerfiles (review)
+- Docker Networking & DNS (review)
+- Docker Volumes (review)
+- Health Checks & `depends_on` (review)
+- Environment Variables & Secrets Management
+- Non-root Containers
+- Docker Registry, Image Tagging & Production Rollback
+- Container Troubleshooting (review)
+- Multi-stage Docker Builds (review)
+
+---
+
 # 📂 Folder Structure
 
 ```text
@@ -223,7 +257,9 @@ The goal is to understand **how Docker works under the hood**, troubleshoot cont
 │   ├── Day-04-Docker-Networking.pdf
 │   ├── Day-05-Docker-Compose.pdf
 │   ├── Day-06-Production-Docker.pdf
-│   └── Day-07-Docker-Registry.pdf
+│   ├── Day-07-Docker-Registry.pdf
+│   ├── Day-09-Production-Docker-Lab.pdf
+│   └── Day-10-Final-Challenge-Interview.pdf
 │
 └── README.md
 ```
@@ -318,6 +354,20 @@ The goal is to understand **how Docker works under the hood**, troubleshoot cont
 - `docker history`
 - `docker rmi`
 
+## Production Lab & Final Challenge (Day 09–10)
+
+- `docker build`
+- `docker run`
+- `docker compose up`
+- `docker compose down`
+- `docker compose ps`
+- `docker compose logs`
+- `docker compose exec`
+- `docker volume ls`
+- `docker login`
+- `docker tag backend:v1.4 <user>/backend:v1.4`
+- `docker push <user>/backend:v1.4`
+
 ---
 
 # 🧠 Core Concepts
@@ -391,6 +441,11 @@ The goal is to understand **how Docker works under the hood**, troubleshoot cont
 - AWS ECR
 - Azure ACR
 - Google Artifact Registry
+- `service_healthy` Condition
+- Non-root Containers / Least Privilege
+- Secrets Management (`.env` vs hardcoded `ENV`)
+- Production Rollback via Versioned Tags
+- Database Authentication Troubleshooting
 
 ---
 
@@ -653,6 +708,185 @@ docker run
 
 ---
 
+# 🏗 Day 09 – Production Docker Lab Architecture
+
+```text
+                 Browser
+                    │
+                    ▼
+             Node.js Backend
+                 :3000
+                    │
+             Docker Network
+                    │
+                    ▼
+                MySQL :3306
+                    │
+                    ▼
+              mysql-data Volume
+```
+
+### 🔐 Environment Configuration
+
+Secrets were moved outside the Docker Compose configuration:
+
+```text
+.env
+   ↓
+Docker Compose
+   ↓
+Container Environment
+   ↓
+Node.js Application
+```
+
+Real `.env` files are excluded from Git using:
+
+```gitignore
+.env
+node_modules/
+```
+
+An `.env.example` file is committed instead.
+
+### 💾 Persistent Storage
+
+```yaml
+volumes:
+  - mysql-data:/var/lib/mysql
+```
+
+### ❤️ Health Check
+
+```yaml
+healthcheck:
+  test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+  interval: 10s
+  timeout: 5s
+  retries: 5
+```
+
+```yaml
+depends_on:
+  mysql:
+    condition: service_healthy
+```
+
+### 🚨 Troubleshooting Lab
+
+Intentionally introduced an incorrect database password.
+
+```text
+Backend running
+      ↓
+MySQL healthy
+      ↓
+Check logs
+      ↓
+Database authentication failure
+      ↓
+Check username/password
+      ↓
+Fix DB_PASSWORD
+      ↓
+Database connected
+```
+
+---
+
+# 🏗 Day 10 – Final Challenge Production Architecture
+
+```text
+                 Docker Compose
+                       │
+             ┌─────────┴─────────┐
+             ▼                   ▼
+          Backend              MySQL
+          :3000                :3306
+             │                   │
+             └── Docker Network ─┘
+                                 │
+                                 ▼
+                           mysql-data
+                              Volume
+```
+
+### 🔐 Security Revision
+
+Production containers should:
+
+- Run as non-root users.
+- Avoid hardcoded secrets.
+- Use runtime configuration.
+- Use trusted/official images.
+- Keep images updated.
+- Scan images for vulnerabilities.
+- Follow the Principle of Least Privilege.
+
+### 🔑 Secrets
+
+Avoid:
+
+```dockerfile
+ENV DB_PASSWORD=supersecret123
+```
+
+Prefer:
+
+```text
+.env
+   ↓
+Docker Compose
+   ↓
+Runtime Environment
+```
+
+### 🐳 Non-Root Containers
+
+```dockerfile
+RUN addgroup -S appgroup && adduser -S appuser -G appgroup
+
+USER appuser
+```
+
+### 🚨 Production Rollback
+
+If:
+
+```text
+backend:v2.0 ❌
+```
+
+fails in production, roll back to:
+
+```text
+backend:v1.9 ✅
+```
+
+Versioned image tags make rollback predictable.
+
+### 📦 Docker Registry Workflow (Applied)
+
+```bash
+docker login
+
+docker tag backend:v1.4 vineet/backend:v1.4
+
+docker push vineet/backend:v1.4
+```
+
+### 🏭 Production Dockerfile Review
+
+- Alpine base images
+- Multi-stage builds
+- Production dependencies
+- Non-root users
+- `NODE_ENV=production`
+- Exposed application port
+- Minimal runtime image
+
+---
+
 # 🚨 Production Scenarios
 
 ## ✅ Completed
@@ -734,6 +968,24 @@ docker run
 - Cloud Container Registries
 - Production Deployments
 
+### Day 09 – Production Docker Lab
+
+- Built and troubleshot a production-style Node.js + MySQL application using Docker Compose
+- Configured `.env` / `.env.example` and excluded secrets via `.gitignore`
+- Set up MySQL persistent volumes and verified database persistence
+- Added a MySQL health check and gated backend startup with `depends_on: service_healthy`
+- Configured restart policies
+- Diagnosed and fixed a simulated database authentication failure end-to-end
+
+### Day 10 – Final Docker Challenge & Interview Revision
+
+- Reviewed Docker Compose architecture, production Dockerfiles, networking/DNS, volumes, and health checks end-to-end
+- Reinforced secrets management (`.env` vs hardcoded `ENV`) and non-root container users
+- Practiced the full registry workflow: build → tag → login → push → registry → pull → run
+- Reviewed production rollback via versioned image tags
+- Reviewed multi-stage builds and production Dockerfile improvements
+- Completed final interview revision across all Docker topics
+
 ---
 
 # 💡 Key Learnings
@@ -790,6 +1042,11 @@ docker run
 - Relying on the `latest` tag in production is risky since it can silently change what gets deployed.
 - Cloud-managed registries like AWS ECR integrate registry access with cloud IAM permissions.
 - A production registry workflow moves an image from local build → tag → push → registry → pull on the production server → run.
+- `service_healthy` in `depends_on` is stricter than default `depends_on` — it waits for the health check to pass, not just for the container to start.
+- Database authentication failures are diagnosed by checking logs, then verifying credentials match between the app's env vars and the database service.
+- Hardcoding secrets in a Dockerfile (`ENV DB_PASSWORD=...`) bakes them into every image layer and image history — secrets belong in runtime `.env` files instead.
+- Running containers as a dedicated non-root user (`addgroup`/`adduser` + `USER`) limits the blast radius if the application is compromised.
+- Predictable rollback in production depends on versioned tags (e.g. `v1.9`, `v2.0`) rather than mutable tags like `latest`.
 
 ---
 
@@ -890,6 +1147,33 @@ docker run
 - What happens during `docker push`?
 - What happens during `docker pull`?
 
+## Day 09 – Production Docker Lab
+
+- Why use `DB_HOST=mysql` instead of `localhost`?
+- Why use Docker volumes for databases?
+- Difference between running and healthy containers?
+- Why use `service_healthy`?
+- Why keep secrets outside Docker images?
+- How do you troubleshoot database connection failures?
+- Why use restart policies?
+
+## Day 10 – Final Interview Areas
+
+- Docker image vs container
+- Docker networking
+- Docker volumes
+- Docker Compose
+- Health checks
+- `depends_on`
+- Docker Registry
+- Image tagging
+- Production rollback
+- Container security
+- Non-root containers
+- Secrets management
+- Production troubleshooting
+- Multi-stage builds
+
 ---
 
 # 📅 Revision Progress
@@ -901,9 +1185,11 @@ docker run
 - ✅ Day 05 – Docker Compose
 - ✅ Day 06 – Production Docker
 - ✅ Day 07 – Docker Registry
-- ⏳ Day 08 – Docker Security
-- ⏳ Day 09 – Production Labs
-- ⏳ Day 10 – Docker Interview Revision & Production Challenge
+- ✅ Day 08 – Docker Security
+- ✅ Day 09 – Production Docker Lab
+- ✅ Day 10 – Final Docker Challenge & Interview Revision
+
+**Docker: 9/10 complete — Day 08 (Security) remaining. 🐳🔥**
 
 ---
 
