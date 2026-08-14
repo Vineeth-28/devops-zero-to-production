@@ -38,12 +38,12 @@ By the end of this roadmap, I aim to confidently:
 |---------|--------|
 | 🐧 Linux | ✅ Completed |
 | 🔥 Git & GitHub | 🟡 In Progress (Day 08/09) |
-| 🐳 Docker | 🟡 In Progress (Day 10/10 — Security day pending) |
+| 🐳 Docker | ✅ Completed |
+| 🚀 CI/CD | 🟡 In Progress (Jenkins Day 11/15) |
 | ☸️ Kubernetes | ⏳ Planned |
 | ☁️ AWS | ⏳ Planned |
 | 🌍 Terraform | ⏳ Planned |
 | ⚙️ Ansible | ⏳ Planned |
-| 🚀 CI/CD | ⏳ Planned |
 | 📊 Monitoring | ⏳ Planned |
 | 📦 Projects | ⏳ Planned |
 
@@ -56,15 +56,15 @@ Linux                 ███████████████████�
 
 Git & GitHub          █████████████████░░░ 89%
 
-Docker                ██████████████████░░ 90%
+Docker                ████████████████████ 100%
+
+CI/CD (Jenkins)       ████░░░░░░░░░░░░░░░░ 20%
 
 Kubernetes            ░░░░░░░░░░░░░░░░░░░░
 
 Terraform             ░░░░░░░░░░░░░░░░░░░░
 
 Ansible               ░░░░░░░░░░░░░░░░░░░░
-
-CI/CD                 ░░░░░░░░░░░░░░░░░░░░
 
 Monitoring            ░░░░░░░░░░░░░░░░░░░░
 ```
@@ -206,7 +206,7 @@ The objective is to retain knowledge through repetition and practical implementa
 
 ---
 
-## 🐳 Docker 🟡
+## 🐳 Docker ✅
 
 ### ✅ Completed
 
@@ -438,6 +438,17 @@ The objective is to retain knowledge through repetition and practical implementa
 - Cloud-managed registries like AWS ECR integrate registry access with cloud IAM permissions.
 - A production registry workflow moves an image from local build → tag → push → registry → pull on the production server → run.
 
+#### ✅ Day 08 – Docker Security
+
+- Container Isolation Boundaries
+- Non-root Containers
+- Least Privilege Principle
+- Image Vulnerability Scanning
+- Trusted Base Images
+- Secrets Management
+- Read-only Filesystems
+- Docker Security Best Practices
+
 #### ✅ Day 09 – Production Docker Lab
 
 - Production Node.js + MySQL Docker Compose Application
@@ -499,9 +510,84 @@ The objective is to retain knowledge through repetition and practical implementa
 - Predictable rollback in production depends on versioned tags (e.g. `v1.9`, `v2.0`) rather than mutable tags like `latest`.
 - Production Dockerfiles combine Alpine base images, multi-stage builds, non-root users, `NODE_ENV=production`, and a minimal runtime image.
 
+**🐳 Docker Module: 10/10 complete. ✅**
+
+---
+
+## 🚀 CI/CD 🟡
+
+### Jenkins — Production Focused Revision
+
+Hands-on labs covering CI/CD concepts, Jenkins architecture, jobs, builds, pipelines, Jenkinsfiles, troubleshooting, and real-world production workflows — focused on understanding how Jenkins fits into a production CI/CD system.
+
+#### ✅ Day 11 – Jenkins Fundamentals
+
+- What is Jenkins?
+- Why Jenkins?
+- Problems with Manual Software Delivery
+- Continuous Integration (CI)
+- Continuous Delivery (CD)
+- Continuous Deployment
+- Jenkins Automation Server
+- Jenkins Architecture
+- Jenkins Controller
+- Jenkins Agents
+- Jenkins Jobs
+- Jenkins Builds
+- Jenkins Pipelines
+- Jenkinsfile
+- Pipeline as Code
+- Basic Production CI/CD Workflow
+- Jenkins Interview Fundamentals
+
+**Commands Practiced (Day 11):**
+
+```bash
+sudo systemctl status jenkins
+sudo systemctl start jenkins
+sudo systemctl stop jenkins
+sudo systemctl restart jenkins
+sudo journalctl -u jenkins
+sudo journalctl -u jenkins -f
+java -version
+git clone <repository>
+git checkout <branch>
+git pull
+docker build -t backend:v1 .
+docker tag backend:v1 vineet/backend:v1
+docker push vineet/backend:v1
+```
+
+**Key Learnings (Day 11):**
+
+- Jenkins is an automation server used to automate CI/CD workflows.
+- Jenkins can automate checkout, build, testing, packaging, Docker image creation, registry operations, and deployment.
+- Continuous Integration means frequently integrating code changes and automatically building/testing them to detect problems early.
+- Continuous Delivery/Deployment extends the pipeline toward delivering or deploying validated software.
+- The Jenkins Controller manages and coordinates jobs and schedules work.
+- Jenkins Agents execute the actual build, test, and deployment work.
+- A Job contains configured instructions.
+- A Build is one execution of a Job.
+- A Pipeline defines the sequence of stages and steps in a CI/CD workflow.
+- A Jenkinsfile stores the Pipeline definition as code.
+- Pipeline as Code makes CI/CD configuration version-controlled and reviewable.
+- GitHub can act as the source repository for Jenkins pipelines.
+- Jenkins can integrate with Docker to build and distribute application images.
+- Jenkins credentials should be used instead of hardcoding secrets in pipeline code.
+- Console Output is one of the first places to investigate a failed build.
+- Production troubleshooting should identify the exact failed stage before changing configuration.
+- CI/CD pipelines should be repeatable and automated rather than dependent on manual steps.
+- Jenkins can connect the Git → Build → Test → Docker → Registry → Deployment workflow.
+
 ### ⏳ Upcoming
 
-- Docker Security (Day 08)
+- Day 12 – Jenkins Jobs & Pipelines (Freestyle vs Pipeline Jobs, stages, steps, declarative vs scripted, build history, console output, artifacts)
+- Day 13 – Jenkinsfile & GitHub Integration (repo checkout, branches, webhooks, build triggers, credentials, environment variables)
+- Day 14 – Jenkins + Docker (Docker build/tag/push from Jenkins, registry auth, image versioning, Jenkins credentials, Docker permissions)
+- Day 15 – Production Jenkins CI/CD & Interview Revision (full pipeline troubleshooting, agent/git/docker/credential/deployment failures, final revision)
+- GitHub Actions (not started)
+
+**🚀 Jenkins: 1/5 complete. 🔥**
 
 ---
 
@@ -529,16 +615,6 @@ The objective is to retain knowledge through repetition and practical implementa
 - Auto Scaling
 - Terraform
 - Ansible
-
----
-
-## 🚀 CI/CD
-
-- Jenkins
-- GitHub Actions
-- Build Pipelines
-- Automated Deployment
-- Rollback Strategy
 
 ---
 
@@ -572,6 +648,57 @@ devops-zero-to-production/
 ├── production-runbooks/
 │
 └── README.md
+```
+
+### 07-cicd/ structure (Jenkins)
+
+```text
+07-cicd/
+
+├── README.md
+│
+├── jenkins/
+│   ├── README.md
+│   ├── jenkins-notes.md
+│   │
+│   ├── commands/
+│   │   ├── jenkins.md
+│   │   ├── jenkins-jobs.md
+│   │   ├── jenkins-pipeline.md
+│   │   └── jenkins-credentials.md
+│   │
+│   ├── jenkinsfiles/
+│   │   ├── basic/
+│   │   ├── node/
+│   │   └── docker/
+│   │
+│   ├── labs/
+│   │   ├── 01-first-job/
+│   │   ├── 02-first-pipeline/
+│   │   ├── 03-github-pipeline/
+│   │   └── 04-docker-pipeline/
+│   │
+│   ├── troubleshooting/
+│   │   ├── jenkins.md
+│   │   ├── pipeline-failures.md
+│   │   ├── agent-issues.md
+│   │   ├── git-issues.md
+│   │   └── docker-issues.md
+│   │
+│   ├── workflows/
+│   │   ├── jenkins-ci-workflow.md
+│   │   ├── jenkins-github-workflow.md
+│   │   └── jenkins-docker-workflow.md
+│   │
+│   └── pdfs/
+│       ├── Day-11-Jenkins-Fundamentals.pdf
+│       ├── Day-12-Jenkins-Pipelines.pdf
+│       ├── Day-13-Jenkins-GitHub.pdf
+│       ├── Day-14-Jenkins-Docker.pdf
+│       └── Day-15-Jenkins-Production.pdf
+│
+└── github-actions/
+    └── ...
 ```
 
 ### 02-git-github/ additions for Day 08
@@ -670,10 +797,11 @@ pdfs/
     Day-07-Docker-Registry.pdf
 ```
 
-### 03-docker/ additions for Day 09–10
+### 03-docker/ additions for Day 08–10
 
 ```text
 pdfs/
+    Day-08-Docker-Security.pdf
     Day-09-Production-Docker-Lab.pdf
     Day-10-Final-Challenge-Interview.pdf
 ```
@@ -782,14 +910,27 @@ pdfs/
 - Production Rollback via Versioned Image Tags
 - Full Registry Workflow Applied End-to-End (build → tag → login → push → pull → run)
 
+### CI/CD (Jenkins)
+
+- Understand Jenkins as an automation server
+- Explain CI/CD
+- Explain Jenkins architecture
+- Explain Controller vs Agent
+- Explain Job vs Build
+- Explain Pipeline
+- Explain Jenkinsfile
+- Explain the basic production CI/CD workflow
+
 ---
 
 ## ⏳ Upcoming
 
-- Docker Security Hardening
+- Jenkins Jobs & Pipelines (Freestyle, Pipeline, stages/steps, build history)
+- Jenkinsfile & GitHub Integration (webhooks, triggers, credentials)
+- Jenkins + Docker Pipelines (build, tag, push, registry auth)
+- Jenkins Pipeline Failures (agent, git, credentials, Docker, deployment)
 - Kubernetes CrashLoopBackOff
 - ImagePullBackOff
-- Jenkins Pipeline Failures
 - AWS Infrastructure Issues
 - Terraform State Problems
 
@@ -806,6 +947,7 @@ The goal is to understand systems well enough to answer questions like:
 - Why is memory increasing?
 - Why is the deployment failing?
 - Why is Kubernetes restarting the pod?
+- Why did the Jenkins pipeline fail at this stage?
 
 Every production issue should be investigated before applying a fix.
 
@@ -1105,6 +1247,290 @@ docker run
 
 ---
 
+# 🏗 Jenkins Architecture
+
+```text
+                 GitHub
+                    │
+                    │ Code
+                    ▼
+           Jenkins Controller
+                 🧠
+                    │
+             Schedules Work
+                    │
+                    ▼
+              Jenkins Agent
+                 💪
+                    │
+          ┌─────────┼─────────┐
+          ▼         ▼         ▼
+       Checkout   Build      Test
+                              │
+                              ▼
+                         Docker Build
+                              │
+                              ▼
+                           Registry
+                              │
+                              ▼
+                          Production
+```
+
+### Controller
+
+```text
+Controller = 🧠 Brain / Coordinator
+```
+
+The Controller manages and coordinates Jenkins jobs and schedules work.
+
+### Agent
+
+```text
+Agent = 💪 Worker
+```
+
+The Agent executes the actual build, test, and deployment work assigned by Jenkins.
+
+---
+
+# 🔄 Jenkins CI Workflow
+
+```text
+Developer
+    │
+    ▼
+Write Code
+    │
+    ▼
+git push
+    │
+    ▼
+GitHub
+    │
+    ▼
+Jenkins Trigger
+    │
+    ▼
+Jenkins Controller
+    │
+    ▼
+Jenkins Agent
+    │
+    ▼
+Checkout Code
+    │
+    ▼
+Build
+    │
+    ▼
+Test
+    │
+    ▼
+Result
+```
+
+---
+
+# 🏭 Jenkins Production CI/CD Workflow
+
+```text
+Developer
+      │
+      ▼
+    GitHub
+      │
+      ▼
+Jenkins Controller
+      │
+      ▼
+Jenkins Agent
+      │
+      ▼
+   Checkout
+      │
+      ▼
+     Build
+      │
+      ▼
+     Test
+      │
+      ▼
+ Docker Build
+      │
+      ▼
+ Docker Tag
+      │
+      ▼
+ Docker Push
+      │
+      ▼
+Docker Registry
+      │
+      ▼
+ Production Deployment
+```
+
+---
+
+# 📦 Jenkins Job vs Build
+
+A Jenkins **Job** contains the configured instructions.
+
+A Jenkins **Build** is one execution of that Job.
+
+```text
+Job: backend-build
+       │
+       ├── Build #1
+       ├── Build #2
+       ├── Build #3
+       └── Build #4
+```
+
+Remember:
+
+```text
+Job   = What Jenkins is configured to do
+Build = One execution of that Job
+```
+
+---
+
+# 🔄 Jenkins Pipeline Workflow
+
+```text
+Pipeline
+    │
+    ├── Checkout
+    │
+    ├── Build
+    │
+    ├── Test
+    │
+    ├── Docker Build
+    │
+    ├── Docker Push
+    │
+    └── Deploy
+```
+
+A Pipeline defines the sequence of stages and steps used to automate a CI/CD workflow.
+
+---
+
+# 📄 Jenkinsfile Workflow
+
+```text
+GitHub Repository
+       │
+       ├── Application Code
+       ├── Dockerfile
+       └── Jenkinsfile
+                │
+                ▼
+        Pipeline Definition
+                │
+                ▼
+             Jenkins
+                │
+                ▼
+          CI/CD Workflow
+```
+
+A Jenkinsfile stores the pipeline definition as code.
+
+Benefits:
+
+- Version controlled
+- Reviewable
+- Reproducible
+- Stored alongside application code
+
+---
+
+# 🚨 Jenkins Troubleshooting Workflow
+
+```text
+Pipeline Failure
+      │
+      ▼
+Read Console Output
+      │
+      ▼
+Identify Failed Stage
+      │
+      ▼
+Check Logs
+      │
+      ▼
+Check Configuration
+      │
+      ▼
+Test Smallest Failing Component
+      │
+      ▼
+Fix
+      │
+      ▼
+Re-run Pipeline
+      │
+      ▼
+Verify
+```
+
+Common failure areas:
+
+- Source code
+- Dependencies
+- Build commands
+- Test failures
+- Git authentication
+- Jenkins credentials
+- Agent connectivity
+- Agent runtime
+- Docker permissions
+- Docker authentication
+- Registry access
+- Deployment configuration
+
+---
+
+# 🏗 Jenkins + Docker Workflow
+
+```text
+GitHub
+   │
+   ▼
+Jenkins
+   │
+   ▼
+Checkout Code
+   │
+   ▼
+Run Tests
+   │
+   ▼
+Docker Build
+   │
+   ▼
+Docker Tag
+   │
+   ▼
+Docker Push
+   │
+   ▼
+Docker Registry
+   │
+   ▼
+Production
+```
+
+This connects the Jenkins module directly with the Docker knowledge completed in the previous module.
+
+---
+
 # 📊 Git Learning Progress
 
 ## ✅ Completed
@@ -1135,12 +1561,28 @@ docker run
 - Docker Compose
 - Production Docker (Multi-stage Builds, Image Optimization, Health Checks, Restart Policies, Resource Limits)
 - Docker Registry (Docker Hub, Private Registries, Tagging & Versioning, Push/Pull Workflow, AWS ECR)
+- Docker Security (Non-root Containers, Least Privilege, Secrets Management)
 - Production Docker Lab (Node.js + MySQL Compose stack, health checks, `service_healthy`, DB auth troubleshooting)
 - Final Docker Challenge & Interview Revision (secrets management, non-root containers, production rollback, full registry workflow)
 
+**🐳 Docker Module: 10/10 complete. ✅**
+
+---
+
+# 📊 Jenkins Learning Progress
+
+## ✅ Completed
+
+- Day 11 – Jenkins Fundamentals
+
 ## ⏳ Remaining
 
-- Docker Security (Day 08)
+- Day 12 – Jenkins Jobs & Pipelines
+- Day 13 – Jenkinsfile & GitHub Integration
+- Day 14 – Jenkins + Docker
+- Day 15 – Production Jenkins CI/CD & Interview Revision
+
+**🚀 Jenkins: 1/5 complete. 🔥**
 
 ---
 
@@ -1271,6 +1713,40 @@ docker run
 
 ---
 
+# 🧰 Commands Practiced — Jenkins (Day 11)
+
+```md
+## Jenkins Service
+
+sudo systemctl status jenkins
+sudo systemctl start jenkins
+sudo systemctl stop jenkins
+sudo systemctl restart jenkins
+
+## Jenkins Logs
+
+sudo journalctl -u jenkins
+sudo journalctl -u jenkins -f
+
+## Java
+
+java -version
+
+## Git Commands Used by Jenkins
+
+git clone <repository>
+git checkout <branch>
+git pull
+
+## Docker Commands Jenkins May Execute
+
+docker build -t backend:v1 .
+docker tag backend:v1 vineet/backend:v1
+docker push vineet/backend:v1
+```
+
+---
+
 # 🧠 Core Concepts — Git Cherry-pick
 
 ```text
@@ -1391,6 +1867,47 @@ Database Authentication Troubleshooting
 
 ---
 
+# 🧠 Core Concepts — Jenkins
+
+```text
+Jenkins
+Automation Server
+Continuous Integration
+Continuous Delivery
+Continuous Deployment
+CI/CD
+Jenkins Controller
+Jenkins Agent
+Jenkins Architecture
+Jenkins Job
+Jenkins Build
+Jenkins Pipeline
+Jenkinsfile
+Pipeline as Code
+Pipeline Stage
+Pipeline Step
+Freestyle Job
+Declarative Pipeline
+Scripted Pipeline
+Build Trigger
+Webhook
+Jenkins Workspace
+Console Output
+Build History
+Artifacts
+Environment Variables
+Jenkins Credentials
+Git Integration
+Docker Integration
+Docker Registry
+Pipeline Failure
+Agent Failure
+CI/CD Troubleshooting
+Production Deployment
+```
+
+---
+
 # 🗝 Key Learnings — Git Cherry-pick
 
 - Git Cherry-pick copies commits instead of moving them.
@@ -1474,6 +1991,23 @@ Database Authentication Troubleshooting
 - Hardcoding secrets in a Dockerfile (`ENV DB_PASSWORD=...`) bakes them into every image layer and image history — secrets belong in runtime `.env` files instead.
 - Running containers as a dedicated non-root user (`addgroup`/`adduser` + `USER`) limits the blast radius if the application is compromised.
 - Predictable rollback in production depends on versioned tags (e.g. `v1.9`, `v2.0`) rather than mutable tags like `latest`.
+
+---
+
+# 🗝 Key Learnings — Jenkins (Day 11)
+
+- Jenkins is an automation server used to automate CI/CD workflows.
+- Jenkins can automate checkout, build, testing, packaging, Docker image creation, registry operations, and deployment.
+- Continuous Integration means frequently integrating code changes and automatically building/testing them to detect problems early.
+- Continuous Delivery/Deployment extends the pipeline toward delivering or deploying validated software.
+- The Jenkins Controller manages and coordinates jobs and schedules work.
+- Jenkins Agents execute the actual build, test, and deployment work.
+- A Job contains configured instructions; a Build is one execution of a Job.
+- A Pipeline defines the sequence of stages and steps in a CI/CD workflow.
+- A Jenkinsfile stores the Pipeline definition as code, making it version-controlled and reviewable.
+- Jenkins credentials should be used instead of hardcoding secrets in pipeline code.
+- Console Output is one of the first places to investigate a failed build.
+- Production troubleshooting should identify the exact failed stage before changing configuration.
 
 ---
 
@@ -1629,6 +2163,40 @@ Database Authentication Troubleshooting
 
 ---
 
+# 🎤 Interview Questions — Jenkins (Day 11)
+
+```md
+## Jenkins Fundamentals
+
+- What is Jenkins?
+- What problem does Jenkins solve?
+- Is Jenkins only a CI tool?
+- What is Continuous Integration?
+- What is Continuous Delivery?
+- What is Continuous Deployment?
+- Explain Jenkins architecture.
+- What is a Jenkins Controller?
+- What is a Jenkins Agent?
+- Controller vs Agent?
+- Why do we need Agents?
+- What is a Jenkins Job?
+- What is a Jenkins Build?
+- Job vs Build?
+- What is a Jenkins Pipeline?
+- What is a Jenkinsfile?
+- Why use Pipeline as Code?
+- What is the Jenkins production workflow?
+```
+
+### ⏳ Upcoming Interview Areas (Day 12–15)
+
+- Freestyle vs Pipeline Jobs, stages/steps, declarative vs scripted, build artifacts
+- Jenkins–GitHub integration, webhooks, triggers, credentials, checkout troubleshooting
+- Jenkins Docker image build/auth/push, permission troubleshooting
+- Full production pipeline troubleshooting, agent offline handling, secure credentials, Jenkins vs GitHub Actions
+
+---
+
 # 🗺 Git Revision Cheat Sheet
 
 ```text
@@ -1676,13 +2244,36 @@ Production Docker (Multi-stage Builds)
 Docker Registry
    │
    ▼
+Docker Security
+   │
+   ▼
 Production Docker Lab
    │
    ▼
 Final Docker Challenge & Interview Revision
    │
    ▼
-Docker Security (remaining)
+✅ Docker Module Complete
+```
+
+---
+
+# 🗺 Jenkins Revision Cheat Sheet
+
+```text
+Jenkins Fundamentals
+   │
+   ▼
+Jenkins Jobs & Pipelines
+   │
+   ▼
+Jenkinsfile & GitHub Integration
+   │
+   ▼
+Jenkins + Docker
+   │
+   ▼
+Production Jenkins CI/CD & Interview Revision
 ```
 
 ---
@@ -1694,6 +2285,7 @@ Become confident handling:
 - Linux Production Servers
 - Git Collaboration
 - Dockerized Applications
+- Jenkins CI/CD Pipelines
 - Kubernetes Clusters
 - AWS Infrastructure
 - Infrastructure as Code
@@ -1716,6 +2308,8 @@ Docker Registry is the bridge between a built image and a running production con
 
 The Production Docker Lab and Final Challenge tie every prior Docker topic together into a single working, troubleshot, secured, and versioned production application.
 
+Jenkins connects Git, Build, Test, Docker, Registry, and Deployment into a single automated production CI/CD workflow — turning the Docker module's manual `build → tag → push → pull → run` sequence into something that runs itself on every commit.
+
 > **Learning DevOps tools is easy.**
 
 > **Operating production systems with confidence is engineering.**
@@ -1735,7 +2329,7 @@ The Production Docker Lab and Final Challenge tie every prior Docker topic toget
 - ✅ Day 07 – Git Revert
 - ✅ Day 08 – Git Cherry-pick
 - ⏳ Day 09 – Production Git Challenge
-- 🟡 Docker Module In Progress (Day 10 of 10 — Day 08 Security remaining)
+- ✅ Docker Module Completed (10/10)
 - ✅ Day 01 – Docker Fundamentals
 - ✅ Day 02 – Docker Images & Dockerfile
 - ✅ Day 03 – Docker Volumes & Bind Mounts
@@ -1743,9 +2337,15 @@ The Production Docker Lab and Final Challenge tie every prior Docker topic toget
 - ✅ Day 05 – Docker Compose
 - ✅ Day 06 – Production Docker
 - ✅ Day 07 – Docker Registry
-- ⏳ Day 08 – Docker Security
+- ✅ Day 08 – Docker Security
 - ✅ Day 09 – Production Docker Lab
 - ✅ Day 10 – Final Docker Challenge & Interview Revision
+- 🟡 CI/CD Module In Progress (Jenkins Day 11 of 15)
+- ✅ Day 11 – Jenkins Fundamentals
+- ⏳ Day 12 – Jenkins Jobs & Pipelines
+- ⏳ Day 13 – Jenkinsfile & GitHub Integration
+- ⏳ Day 14 – Jenkins + Docker
+- ⏳ Day 15 – Production Jenkins CI/CD & Interview Revision
 
 Building one production-ready skill at a time.
 
