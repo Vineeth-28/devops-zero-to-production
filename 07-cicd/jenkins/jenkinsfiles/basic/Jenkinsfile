@@ -1,0 +1,48 @@
+pipeline {
+    agent any
+
+    options {
+        timeout(time: 15, unit: 'MINUTES')
+        buildDiscarder(logRotator(numToKeepStr: '10'))
+    }
+
+    stages {
+        stage('Checkout') {
+            steps {
+                checkout scm
+            }
+        }
+
+        stage('Build') {
+            steps {
+                echo 'Building...'
+                sh 'echo "build step placeholder"'
+            }
+        }
+
+        stage('Test') {
+            steps {
+                echo 'Testing...'
+                sh 'echo "test step placeholder"'
+            }
+        }
+
+        stage('Archive') {
+            steps {
+                archiveArtifacts artifacts: '**/*.log', allowEmptyArchive: true
+            }
+        }
+    }
+
+    post {
+        success {
+            echo 'Pipeline succeeded ✅'
+        }
+        failure {
+            echo 'Pipeline failed ❌'
+        }
+        always {
+            cleanWs()
+        }
+    }
+}
