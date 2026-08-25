@@ -39,7 +39,7 @@ By the end of this roadmap, I aim to confidently:
 | 🐧 Linux | ✅ Completed |
 | 🔥 Git & GitHub | 🟡 In Progress (Day 08/09) |
 | 🐳 Docker | ✅ Completed |
-| 🚀 CI/CD | 🟡 In Progress (Jenkins Day 11/15) |
+| 🚀 CI/CD | ✅ Jenkins Completed (5/5) |
 | ☸️ Kubernetes | ⏳ Planned |
 | ☁️ AWS | ⏳ Planned |
 | 🌍 Terraform | ⏳ Planned |
@@ -58,7 +58,7 @@ Git & GitHub          █████████████████░░�
 
 Docker                ████████████████████ 100%
 
-CI/CD (Jenkins)       ████░░░░░░░░░░░░░░░░ 20%
+CI/CD (Jenkins)       ████████████████████ 100%
 
 Kubernetes            ░░░░░░░░░░░░░░░░░░░░
 
@@ -514,7 +514,7 @@ The objective is to retain knowledge through repetition and practical implementa
 
 ---
 
-## 🚀 CI/CD 🟡
+## 🚀 CI/CD ✅
 
 ### Jenkins — Production Focused Revision
 
@@ -579,15 +579,163 @@ docker push vineet/backend:v1
 - CI/CD pipelines should be repeatable and automated rather than dependent on manual steps.
 - Jenkins can connect the Git → Build → Test → Docker → Registry → Deployment workflow.
 
-### ⏳ Upcoming
+#### ✅ Day 12 – Jenkins Jobs & Pipelines
 
-- Day 12 – Jenkins Jobs & Pipelines (Freestyle vs Pipeline Jobs, stages, steps, declarative vs scripted, build history, console output, artifacts)
-- Day 13 – Jenkinsfile & GitHub Integration (repo checkout, branches, webhooks, build triggers, credentials, environment variables)
-- Day 14 – Jenkins + Docker (Docker build/tag/push from Jenkins, registry auth, image versioning, Jenkins credentials, Docker permissions)
-- Day 15 – Production Jenkins CI/CD & Interview Revision (full pipeline troubleshooting, agent/git/docker/credential/deployment failures, final revision)
-- GitHub Actions (not started)
+- Freestyle Project vs Pipeline Job
+- Declarative Pipeline vs Scripted Pipeline
+- Pipeline Stages & Steps
+- `pipeline { agent stages post }` block structure
+- Pipeline Parameters (`choice`, `booleanParam`)
+- Environment Variables in Pipelines
+- `when` Conditions (branch, expression, environment)
+- Parallel Stages
+- `post { success failure always }` Actions
+- Build History & Console Output
+- Archiving Artifacts
+- `junit` Test Reports
+- Retry & Timeout Wrappers
+- Jenkins Shared Libraries (introduced)
 
-**🚀 Jenkins: 1/5 complete. 🔥**
+**Commands Practiced (Day 12):**
+
+```bash
+# CLI job operations
+java -jar jenkins-cli.jar -s http://localhost:8080/ -auth user:token create-job my-job < config.xml
+java -jar jenkins-cli.jar -s http://localhost:8080/ -auth user:token build my-job -p ENV=staging
+java -jar jenkins-cli.jar -s http://localhost:8080/ -auth user:token console my-job
+
+# Declarative pipeline validation
+curl -X POST -F "jenkinsfile=<Jenkinsfile" http://localhost:8080/pipeline-model-converter/validate
+
+# REST API build trigger
+curl -X POST "http://localhost:8080/job/my-job/buildWithParameters?ENV=staging" --user user:api-token
+```
+
+**Key Learnings (Day 12):**
+
+- Declarative pipelines are validated before any stage runs — catching syntax errors upfront, unlike Scripted pipelines where errors surface at runtime.
+- `environment {}` block variables are only available once that block is entered — not before.
+- `when` directives (`branch`, `expression`, `environment`, `changeRequest()`) make stage execution conditional without needing separate jobs per environment.
+- `parallel {}` cuts pipeline wall-clock time by running independent stages (like lint and unit tests) simultaneously.
+- `post { success failure always }` blocks are the standard place for notifications, cleanup (`cleanWs()`), and reporting — not the stages themselves.
+- `retry(n) { }` and `timeout(time: n, unit: 'MINUTES') { }` protect a pipeline from flaky steps and indefinite hangs.
+- Parameters make one Jenkinsfile reusable across environments instead of duplicating jobs.
+
+#### ✅ Day 13 – Jenkinsfile & GitHub Integration
+
+- GitHub Credentials in Jenkins (PAT, SSH key, GitHub App)
+- GitHub Webhooks
+- `github-webhook/` Payload URL
+- Multibranch Pipeline
+- Branch Auto-discovery
+- Pull Request Builds
+- Merge vs Source-only PR Build Strategy
+- GitHub Commit Status / Checks
+- Branch Protection Rules
+- Poll SCM vs Webhook Triggers
+
+**Commands Practiced (Day 13):**
+
+```bash
+# Test SCM connectivity from an agent
+git ls-remote https://github.com/org/repo.git
+ssh -T git@github.com
+
+# Webhook payload URL (configured in GitHub repo settings)
+http://<jenkins-host>/github-webhook/
+
+# Credential-scoped clone inside a pipeline
+sshagent(['github-ssh-key']) { sh 'git clone git@github.com:org/repo.git' }
+```
+
+**Key Learnings (Day 13):**
+
+- Webhooks are push-based and near-instant; Poll SCM adds latency and unnecessary load, so webhooks are the production default.
+- Multibranch Pipelines auto-discover branches and PRs from a Jenkinsfile in the repo — no need to hand-create a job per branch.
+- "Merging the PR with the current target branch base" simulates the real post-merge result and is the safer default for gating merges, versus testing the PR's source branch in isolation.
+- Credential type must match the Git URL scheme: HTTPS URLs need a PAT/username-password credential, SSH URLs need an SSH key credential.
+- Publishing commit status back to GitHub is what powers required-check branch protection rules on PRs.
+- A failing webhook is diagnosed via GitHub's "Recent Deliveries" log — response code first, then payload URL and job trigger config.
+
+#### ✅ Day 14 – Jenkins + Docker
+
+- Docker Pipeline Plugin
+- Docker Agents (`agent { docker { image '...' } }`)
+- Docker-outside-of-Docker (socket mounting) vs Docker-in-Docker (DinD)
+- Building & Tagging Images in a Pipeline
+- Pushing Images to a Registry
+- Registry Authentication via Jenkins Credentials
+- Image Tagging Strategy (build number + `latest`)
+- Image Vulnerability Scanning (introduced)
+- Deploy Stage (stop/remove/run container)
+- Docker Disk Space Management
+
+**Commands Practiced (Day 14):**
+
+```bash
+# Docker socket permissions for the Jenkins user
+sudo usermod -aG docker jenkins
+sudo systemctl restart jenkins
+
+# Registry login/push inside a pipeline (via withCredentials)
+echo $REGISTRY_CREDS_PSW | docker login -u $REGISTRY_CREDS_USR --password-stdin
+docker build -t $IMAGE_NAME:$IMAGE_TAG .
+docker push $IMAGE_NAME:$IMAGE_TAG
+
+# Disk cleanup
+docker system df
+docker system prune -af --volumes
+```
+
+**Key Learnings (Day 14):**
+
+- Docker agents give every build a clean, disposable environment — no leftover state between runs.
+- Docker-outside-of-Docker (mounting `/var/run/docker.sock`) is the common Jenkins pattern: simpler and shares the host's image cache, but it grants effectively root-equivalent host access to anything that can run `docker` commands.
+- Docker-in-Docker gives stronger isolation between builds at the cost of more complex networking and overhead.
+- Registry credentials must be injected via Jenkins credentials (`withCredentials` / `environment { X = credentials('id') }`) — never hardcoded in a Jenkinsfile.
+- Tagging images with a unique build identifier (not just `latest`) is what makes rollback to a specific version possible.
+- Unbounded image/layer buildup is a common cause of Jenkins hosts running out of disk — scheduled `docker system prune` or ephemeral agents prevent it.
+
+#### ✅ Day 15 – Production Jenkins CI/CD & Interview Revision
+
+- Role-based Authorization Strategy (RBAC)
+- Credential Scoping (folder-level vs Global)
+- CSRF Protection & Reverse Proxy / TLS Setup
+- Backup & Restore (`JENKINS_HOME`, `thinBackup`)
+- Disaster Recovery Drills
+- Static vs Dynamic (Docker/Kubernetes) Agents
+- Jenkins Shared Libraries (`vars/` step reuse across teams)
+- Monitoring (Prometheus plugin) & Failure Notifications
+- Groovy Sandbox & Script Approval
+- Full Pipeline Failure Troubleshooting (agent, git, credentials, Docker, deployment)
+- Jenkins vs GitHub Actions
+
+**Commands Practiced (Day 15):**
+
+```bash
+# Backup / restore
+sudo tar -czf jenkins-backup-$(date +%F).tar.gz -C /var/lib/jenkins .
+sudo tar -xzf jenkins-backup-2026-08-18.tar.gz -C /var/lib/jenkins
+sudo chown -R jenkins:jenkins /var/lib/jenkins
+
+# Config reload without full restart
+java -jar jenkins-cli.jar -s http://localhost:8080/ -auth user:token reload-configuration
+java -jar jenkins-cli.jar -s http://localhost:8080/ -auth user:token safe-restart
+
+# Recover from a locked-out security config
+sudo sed -i 's/<useSecurity>true<\/useSecurity>/<useSecurity>false<\/useSecurity>/' /var/lib/jenkins/config.xml
+```
+
+**Key Learnings (Day 15):**
+
+- Jenkins has no native multi-controller clustering — production HA is really about fast, tested backup/restore (RTO measured in minutes) plus durable storage for `JENKINS_HOME`, not built-in failover.
+- Folder-scoped credential stores plus RBAC keep one team's secrets out of another team's pipelines on a shared instance.
+- Shared Libraries (`vars/standardPipeline.groovy` + `@Library('name') _`) stop teams from copy-pasting Jenkinsfile boilerplate and centralize governance.
+- Backups are only as good as the last successful *restore test* — a backup that's never been restored is unverified.
+- Leaving the Groovy sandbox unrestricted is a real risk; script approvals should be scoped to specific signatures, not blanket-approved.
+- Diagnosing a stuck pipeline follows a fixed order: node/label match → agent online status → executor availability → `disableConcurrentBuilds()` blocking → dynamic agent provisioning failures.
+
+**🚀 Jenkins Module: 5/5 complete. ✅**
 
 ---
 
@@ -669,33 +817,53 @@ devops-zero-to-production/
 │   │
 │   ├── jenkinsfiles/
 │   │   ├── basic/
+│   │   │   └── Jenkinsfile
 │   │   ├── node/
+│   │   │   └── Jenkinsfile
 │   │   └── docker/
+│   │       └── Jenkinsfile
 │   │
 │   ├── labs/
-│   │   ├── 01-first-job/
-│   │   ├── 02-first-pipeline/
-│   │   ├── 03-github-pipeline/
-│   │   └── 04-docker-pipeline/
+│   │   ├── day-11-jenkins-fundamentals/
+│   │   │   └── README.md
+│   │   ├── day-12-jobs-pipelines/
+│   │   │   └── README.md
+│   │   ├── day-13-github-integration/
+│   │   │   └── README.md
+│   │   ├── day-14-jenkins-docker/
+│   │   │   └── README.md
+│   │   └── day-15-production-jenkins/
+│   │       └── README.md
 │   │
 │   ├── troubleshooting/
 │   │   ├── jenkins.md
 │   │   ├── pipeline-failures.md
 │   │   ├── agent-issues.md
 │   │   ├── git-issues.md
-│   │   └── docker-issues.md
+│   │   ├── docker-issues.md
+│   │   └── production-jenkins.md
 │   │
 │   ├── workflows/
 │   │   ├── jenkins-ci-workflow.md
 │   │   ├── jenkins-github-workflow.md
-│   │   └── jenkins-docker-workflow.md
+│   │   ├── jenkins-docker-workflow.md
+│   │   └── complete-jenkins-cicd.md
+│   │
+│   ├── interview/
+│   │   ├── day-11-questions.md
+│   │   ├── day-12-questions.md
+│   │   ├── day-13-questions.md
+│   │   ├── day-14-questions.md
+│   │   ├── day-15-production-questions.md
+│   │   └── final-jenkins-quiz.md
 │   │
 │   └── pdfs/
-│       ├── Day-11-Jenkins-Fundamentals.pdf
-│       ├── Day-12-Jenkins-Pipelines.pdf
-│       ├── Day-13-Jenkins-GitHub.pdf
-│       ├── Day-14-Jenkins-Docker.pdf
-│       └── Day-15-Jenkins-Production.pdf
+│       ├── day-11-jenkins-fundamentals.pdf
+│       ├── day-12-jenkins-pipelines.pdf
+│       ├── day-13-jenkins-github.pdf
+│       ├── day-14-jenkins-docker.pdf
+│       ├── day-15-production-jenkins.pdf
+│       └── jenkins-final-revision.pdf
 │
 └── github-actions/
     └── ...
@@ -920,15 +1088,19 @@ pdfs/
 - Explain Pipeline
 - Explain Jenkinsfile
 - Explain the basic production CI/CD workflow
+- Freestyle vs Pipeline Jobs, build parameters, conditional stages
+- Multibranch Pipelines & GitHub webhook-triggered builds
+- PR build strategy (merge vs source-only) and commit status checks
+- Docker agents, image build/tag/push, registry authentication
+- Docker socket mounting vs Docker-in-Docker trade-offs
+- RBAC, credential scoping, and production backup/restore
+- Shared Libraries for cross-team pipeline reuse
+- End-to-end pipeline failure triage (agent, git, credentials, Docker, deployment)
 
 ---
 
 ## ⏳ Upcoming
 
-- Jenkins Jobs & Pipelines (Freestyle, Pipeline, stages/steps, build history)
-- Jenkinsfile & GitHub Integration (webhooks, triggers, credentials)
-- Jenkins + Docker Pipelines (build, tag, push, registry auth)
-- Jenkins Pipeline Failures (agent, git, credentials, Docker, deployment)
 - Kubernetes CrashLoopBackOff
 - ImagePullBackOff
 - AWS Infrastructure Issues
@@ -1574,15 +1746,12 @@ This connects the Jenkins module directly with the Docker knowledge completed in
 ## ✅ Completed
 
 - Day 11 – Jenkins Fundamentals
-
-## ⏳ Remaining
-
 - Day 12 – Jenkins Jobs & Pipelines
 - Day 13 – Jenkinsfile & GitHub Integration
 - Day 14 – Jenkins + Docker
 - Day 15 – Production Jenkins CI/CD & Interview Revision
 
-**🚀 Jenkins: 1/5 complete. 🔥**
+**🚀 Jenkins Module: 5/5 complete. ✅**
 
 ---
 
@@ -1743,6 +1912,44 @@ git pull
 docker build -t backend:v1 .
 docker tag backend:v1 vineet/backend:v1
 docker push vineet/backend:v1
+```
+
+---
+
+# 🧰 Commands Practiced — Jenkins (Day 12–15)
+
+```md
+## Day 12 — Jobs & Pipelines
+
+java -jar jenkins-cli.jar -s http://localhost:8080/ -auth user:token create-job my-job < config.xml
+java -jar jenkins-cli.jar -s http://localhost:8080/ -auth user:token build my-job -p ENV=staging
+java -jar jenkins-cli.jar -s http://localhost:8080/ -auth user:token console my-job
+curl -X POST -F "jenkinsfile=<Jenkinsfile" http://localhost:8080/pipeline-model-converter/validate
+curl -X POST "http://localhost:8080/job/my-job/buildWithParameters?ENV=staging" --user user:api-token
+
+## Day 13 — GitHub Integration
+
+git ls-remote https://github.com/org/repo.git
+ssh -T git@github.com
+# Webhook payload URL: http://<jenkins-host>/github-webhook/
+
+## Day 14 — Jenkins + Docker
+
+sudo usermod -aG docker jenkins
+sudo systemctl restart jenkins
+echo $REGISTRY_CREDS_PSW | docker login -u $REGISTRY_CREDS_USR --password-stdin
+docker build -t $IMAGE_NAME:$IMAGE_TAG .
+docker push $IMAGE_NAME:$IMAGE_TAG
+docker system df
+docker system prune -af --volumes
+
+## Day 15 — Production Jenkins
+
+sudo tar -czf jenkins-backup-$(date +%F).tar.gz -C /var/lib/jenkins .
+sudo tar -xzf jenkins-backup-2026-08-18.tar.gz -C /var/lib/jenkins
+sudo chown -R jenkins:jenkins /var/lib/jenkins
+java -jar jenkins-cli.jar -s http://localhost:8080/ -auth user:token reload-configuration
+java -jar jenkins-cli.jar -s http://localhost:8080/ -auth user:token safe-restart
 ```
 
 ---
@@ -2011,6 +2218,19 @@ Production Deployment
 
 ---
 
+# 🗝 Key Learnings — Jenkins (Day 12–15)
+
+- Declarative pipelines are validated before any stage runs; Scripted pipeline errors only surface at runtime.
+- `when` directives make stage execution conditional (branch, expression, environment) without duplicating jobs per environment.
+- Webhooks beat SCM polling for both latency and load; Multibranch Pipelines remove the need to hand-create a job per branch.
+- Building the PR merged with its target branch catches integration issues that testing the source branch alone would miss.
+- Docker agents give every build a clean, disposable environment; mounting the Docker socket is simpler than Docker-in-Docker but grants host-level access to anything that can run `docker` commands.
+- Image tags should include a unique build identifier, not just `latest`, so any deployed version can be pinned and rolled back precisely.
+- Jenkins has no native multi-controller HA — production resilience comes from fast, tested backup/restore and durable `JENKINS_HOME` storage.
+- Shared Libraries and folder-scoped credentials/RBAC are what keep a multi-team Jenkins instance maintainable and secure at scale.
+
+---
+
 # 🎤 Interview Questions — Git Cherry-pick
 
 ```md
@@ -2188,12 +2408,47 @@ Production Deployment
 - What is the Jenkins production workflow?
 ```
 
-### ⏳ Upcoming Interview Areas (Day 12–15)
+---
 
-- Freestyle vs Pipeline Jobs, stages/steps, declarative vs scripted, build artifacts
-- Jenkins–GitHub integration, webhooks, triggers, credentials, checkout troubleshooting
-- Jenkins Docker image build/auth/push, permission troubleshooting
-- Full production pipeline troubleshooting, agent offline handling, secure credentials, Jenkins vs GitHub Actions
+# 🎤 Interview Questions — Jenkins (Day 12–15)
+
+```md
+## Day 12 — Jobs & Pipelines
+
+- Declarative vs Scripted pipeline syntax?
+- Why are Declarative pipelines validated before any stage runs?
+- How do you pass and access pipeline parameters?
+- When does an `environment {}` variable become available?
+- What does `when` do, and what are three example conditions?
+- How do you run stages in parallel, and why?
+- What is the `post {}` block for?
+- How do Shared Libraries reduce duplicated pipeline code?
+
+## Day 13 — GitHub Integration
+
+- Why prefer webhooks over SCM polling?
+- What's a Multibranch Pipeline, and how is it different from one job per branch?
+- PAT vs SSH key vs GitHub App credentials — when would you use each?
+- Building a PR's head vs merging it with the target branch — what's the difference and which do you choose?
+- How would you debug a webhook that isn't triggering builds?
+
+## Day 14 — Jenkins + Docker
+
+- Benefits of Docker build agents?
+- Docker-outside-of-Docker vs Docker-in-Docker — trade-offs?
+- Why is mounting `/var/run/docker.sock` a security consideration?
+- How do you authenticate to a private registry from a pipeline without hardcoding credentials?
+- Why avoid relying solely on the `latest` tag?
+
+## Day 15 — Production Jenkins
+
+- How do you design RBAC for a multi-team Jenkins instance?
+- What's Jenkins's story on high availability?
+- What should a production backup strategy include beyond `config.xml`?
+- Static vs dynamic/cloud agents — when would you choose each?
+- How do you scope credentials so one team can't access another's secrets?
+- What's the risk of an unrestricted Groovy sandbox?
+```
 
 ---
 
@@ -2274,6 +2529,9 @@ Jenkins + Docker
    │
    ▼
 Production Jenkins CI/CD & Interview Revision
+   │
+   ▼
+✅ Jenkins Module Complete
 ```
 
 ---
@@ -2310,6 +2568,8 @@ The Production Docker Lab and Final Challenge tie every prior Docker topic toget
 
 Jenkins connects Git, Build, Test, Docker, Registry, and Deployment into a single automated production CI/CD workflow — turning the Docker module's manual `build → tag → push → pull → run` sequence into something that runs itself on every commit.
 
+The completed Jenkins module ties fundamentals, pipelines, GitHub integration, Docker, and production hardening into one coherent CI/CD skillset — from a first Freestyle job through RBAC, backups, and Shared Libraries on a production instance.
+
 > **Learning DevOps tools is easy.**
 
 > **Operating production systems with confidence is engineering.**
@@ -2340,12 +2600,12 @@ Jenkins connects Git, Build, Test, Docker, Registry, and Deployment into a singl
 - ✅ Day 08 – Docker Security
 - ✅ Day 09 – Production Docker Lab
 - ✅ Day 10 – Final Docker Challenge & Interview Revision
-- 🟡 CI/CD Module In Progress (Jenkins Day 11 of 15)
+- ✅ CI/CD Module Completed (Jenkins 5/5)
 - ✅ Day 11 – Jenkins Fundamentals
-- ⏳ Day 12 – Jenkins Jobs & Pipelines
-- ⏳ Day 13 – Jenkinsfile & GitHub Integration
-- ⏳ Day 14 – Jenkins + Docker
-- ⏳ Day 15 – Production Jenkins CI/CD & Interview Revision
+- ✅ Day 12 – Jenkins Jobs & Pipelines
+- ✅ Day 13 – Jenkinsfile & GitHub Integration
+- ✅ Day 14 – Jenkins + Docker
+- ✅ Day 15 – Production Jenkins CI/CD & Interview Revision
 
 Building one production-ready skill at a time.
 
