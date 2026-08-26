@@ -1,0 +1,28 @@
+# Basic CI Workflow
+# Triggers on every push and pull request to main.
+# Demonstrates the minimum shape of a working GitHub Actions pipeline.
+
+name: Basic CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Print environment info
+        run: |
+          echo "Running on: $(uname -a)"
+          echo "Workspace: $GITHUB_WORKSPACE"
+          echo "Branch: $GITHUB_REF_NAME"
+
+      - name: Run a placeholder build step
+        run: echo "Build step goes here"

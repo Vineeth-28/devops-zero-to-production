@@ -1,0 +1,37 @@
+# Example: Artifacts
+# Passes build output from one job to another using upload/download-artifact.
+
+name: Artifacts Example
+
+on: push
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Create build output
+        run: |
+          mkdir -p dist
+          echo "build output" > dist/app.txt
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: dist-files
+          path: dist/
+          retention-days: 5
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: dist-files
+          path: dist/
+
+      - name: Show downloaded files
+        run: cat dist/app.txt

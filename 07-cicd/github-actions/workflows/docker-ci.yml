@@ -1,0 +1,37 @@
+# Docker CI Workflow
+# Builds a Docker image and pushes it to a registry using GitHub Secrets.
+# Tags the image with the commit SHA for traceability.
+
+name: Docker CI
+
+on:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+  packages: write
+
+jobs:
+  docker:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Log in to Docker Hub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+      - name: Build Docker image
+        run: |
+          docker build -t myapp:${{ github.sha }} .
+          docker tag myapp:${{ github.sha }} myapp:latest
+
+      - name: Push Docker image
+        run: |
+          docker push myapp:${{ github.sha }}
+          docker push myapp:latest

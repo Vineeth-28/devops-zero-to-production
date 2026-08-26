@@ -1,0 +1,40 @@
+# Example: Conditional Execution (if)
+# Steps and jobs can be skipped based on branch, event type, or job status.
+
+name: Conditions Example
+
+on:
+  push:
+    branches: [main, develop]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Build
+        run: echo "Building..."
+
+  deploy-production:
+    needs: build
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main'
+    steps:
+      - name: Deploy to production
+        run: echo "Deploying to production (main branch only)"
+
+  deploy-staging:
+    needs: build
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/develop'
+    steps:
+      - name: Deploy to staging
+        run: echo "Deploying to staging (develop branch only)"
+
+  notify-on-failure:
+    needs: [build, deploy-production, deploy-staging]
+    runs-on: ubuntu-latest
+    if: failure()
+    steps:
+      - name: Send failure notification
+        run: echo "A previous job failed - sending alert"

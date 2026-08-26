@@ -1,0 +1,29 @@
+# Example: Job Dependencies (needs)
+# "test" waits for "build" to succeed. "deploy" waits for "test".
+# This creates a linear pipeline: build -> test -> deploy.
+
+name: Job Dependencies Example
+
+on: push
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Build
+        run: echo "Building..."
+
+  test:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Test
+        run: echo "Testing after build succeeded..."
+
+  deploy:
+    needs: test
+    runs-on: ubuntu-latest
+    steps:
+      - name: Deploy
+        run: echo "Deploying after tests passed..."

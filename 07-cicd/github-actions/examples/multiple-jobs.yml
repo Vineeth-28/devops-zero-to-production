@@ -1,0 +1,28 @@
+# Example: Multiple Jobs
+# Jobs run in parallel by default (no needs: between them).
+
+name: Multiple Jobs Example
+
+on: push
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Run lint
+        run: echo "Linting code..."
+
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Run tests
+        run: echo "Running tests..."
+
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Build project
+        run: echo "Building project..."

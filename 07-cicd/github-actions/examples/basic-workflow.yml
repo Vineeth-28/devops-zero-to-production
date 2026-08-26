@@ -1,0 +1,13 @@
+# Example: Basic Workflow
+# The smallest complete workflow: one trigger, one job, one step.
+
+name: Basic Workflow Example
+
+on: push
+
+jobs:
+  hello:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Say hello
+        run: echo "Hello, GitHub Actions!"
