@@ -39,7 +39,7 @@ By the end of this roadmap, I aim to confidently:
 | 🐧 Linux | ✅ Completed |
 | 🔥 Git & GitHub | 🟡 In Progress (Day 08/09) |
 | 🐳 Docker | ✅ Completed |
-| 🚀 CI/CD | ✅ Jenkins Completed (5/5) |
+| 🚀 CI/CD | ✅ Jenkins (5/5) + GitHub Actions (3/3) Completed |
 | ☸️ Kubernetes | ⏳ Planned |
 | ☁️ AWS | ⏳ Planned |
 | 🌍 Terraform | ⏳ Planned |
@@ -58,7 +58,7 @@ Git & GitHub          █████████████████░░�
 
 Docker                ████████████████████ 100%
 
-CI/CD (Jenkins)       ████████████████████ 100%
+CI/CD (Jenkins + GA)  ████████████████████ 100%
 
 Kubernetes            ░░░░░░░░░░░░░░░░░░░░
 
@@ -739,6 +739,73 @@ sudo sed -i 's/<useSecurity>true<\/useSecurity>/<useSecurity>false<\/useSecurity
 
 ---
 
+### GitHub Actions — Production Focused Revision
+
+Hands-on labs covering GitHub Actions fundamentals, advanced workflow control (dependencies, conditions, matrix builds), and production CI/CD with Docker — built as a native, cloud-hosted alternative to the Jenkins track above.
+
+#### ✅ Day 16 – GitHub Actions Fundamentals
+
+- What is GitHub Actions?
+- Why GitHub Actions?
+- Workflow, Events/Triggers, Jobs, Steps, Runner
+- `runs-on`, `uses`, `run`
+- YAML Workflow Structure
+- `.github/workflows/`
+- Basic CI Workflow
+- Jenkins vs GitHub Actions
+
+**Key Learnings (Day 16):**
+
+- A workflow is a YAML file in `.github/workflows/` — the top-level automation definition; a job is a group of steps run on the same runner, and jobs run in parallel by default.
+- `uses:` invokes a packaged, reusable Action; `run:` executes raw shell commands directly on the runner.
+- Unlike Jenkins, GitHub Actions needs no separate server to install or maintain for hosted runners — the pipeline lives in the repo it builds.
+
+#### ✅ Day 17 – Advanced GitHub Actions
+
+- `needs` (Job Dependencies)
+- `if` Conditions
+- Matrix Strategy
+- GitHub Secrets
+- Environment Variables
+- GitHub Environments
+- Artifacts
+- Caching
+- Permissions & Least Privilege
+- Third-party Actions & Supply-chain Security
+- Passing Artifacts Between Jobs
+
+**Key Learnings (Day 17):**
+
+- `needs` turns independent parallel jobs into an ordered pipeline; `if` (branch, event, `success()`/`failure()`/`always()`) controls conditional execution.
+- A matrix strategy expands one job definition into a job per combination (e.g. OS x language version); `fail-fast: false` lets every combination finish independently.
+- Secrets are masked in logs and referenced via `${{ secrets.NAME }}` — never hardcoded; environment variables are for non-sensitive config only.
+- Since each job runs on an isolated runner with no shared filesystem, `upload-artifact`/`download-artifact` is the explicit hand-off mechanism between jobs, while `actions/cache` (keyed on a lockfile hash) speeds up repeated dependency installs.
+- Explicit least-privilege `permissions:` blocks and pinning third-party Actions to a version tag (not `@main`) reduce the supply-chain attack surface.
+
+#### ✅ Day 18 – Production GitHub Actions
+
+- GitHub Actions + Docker (Build, Tag, Login, Push, Registry)
+- `github.sha` & Image Traceability
+- Branch-based Deployment
+- Production Environments & Environment Protection
+- Approval / Protection Rules
+- Quality Gates
+- CI/CD Troubleshooting (Checkout, Build, Test, Docker, Runner, Secret/Configuration Failures)
+- Complete Production CI/CD Workflow
+- Final GitHub Actions Interview Revision
+
+**Key Learnings (Day 18):**
+
+- Tagging Docker images with `${{ github.sha }}` (alongside any floating tag like `latest`) gives every image traceability back to the exact commit that built it — critical for production rollback.
+- Declaring `environment: production` on a deploy job enables protection rules (required reviewers, wait timers, deployment branch restrictions) — the manual quality gate before anything reaches production.
+- Most CI/CD failures are diagnosed by reading the first failing step (not the last log line): checkout issues are usually `ref`/`fetch-depth`/submodules, Docker push failures are usually registry permissions or secret name mismatches, and a job stuck "Queued" points to runner/label availability rather than the workflow itself.
+
+**🚀 GitHub Actions Module: 3/3 complete. ✅**
+
+**🚀 CI/CD Module: Jenkins (5/5) + GitHub Actions (3/3) complete. ✅**
+
+---
+
 ## ☸️ Kubernetes
 
 - Pods
@@ -798,7 +865,7 @@ devops-zero-to-production/
 └── README.md
 ```
 
-### 07-cicd/ structure (Jenkins)
+### 07-cicd/ structure (Jenkins + GitHub Actions)
 
 ```text
 07-cicd/
@@ -866,7 +933,54 @@ devops-zero-to-production/
 │       └── jenkins-final-revision.pdf
 │
 └── github-actions/
-    └── ...
+    ├── README.md
+    ├── github-actions-notes.md
+    │
+    ├── workflows/
+    │   ├── basic-ci.yml
+    │   ├── node-ci.yml
+    │   ├── docker-ci.yml
+    │   ├── production-cicd.yml
+    │   ├── github-actions-ci.md
+    │   ├── github-actions-docker.md
+    │   └── complete-production-cicd.md
+    │
+    ├── examples/
+    │   ├── basic-workflow.yml
+    │   ├── multiple-jobs.yml
+    │   ├── job-dependencies.yml
+    │   ├── conditions.yml
+    │   ├── matrix-strategy.yml
+    │   ├── artifacts.yml
+    │   ├── caching.yml
+    │   └── secrets.yml
+    │
+    ├── labs/
+    │   ├── day-16-fundamentals/
+    │   │   └── README.md
+    │   ├── day-17-advanced-workflows/
+    │   │   └── README.md
+    │   └── day-18-production-cicd/
+    │       └── README.md
+    │
+    ├── troubleshooting/
+    │   ├── github-actions.md
+    │   ├── workflow-failures.md
+    │   ├── runner-issues.md
+    │   ├── docker-issues.md
+    │   └── secrets-issues.md
+    │
+    ├── interview/
+    │   ├── day-16-questions.md
+    │   ├── day-17-questions.md
+    │   ├── day-18-questions.md
+    │   └── final-github-actions-quiz.md
+    │
+    └── pdfs/
+        ├── day-16-github-actions-fundamentals.pdf
+        ├── day-17-advanced-github-actions.pdf
+        ├── day-18-production-github-actions.pdf
+        └── github-actions-final-revision.pdf
 ```
 
 ### 02-git-github/ additions for Day 08
@@ -1096,6 +1210,21 @@ pdfs/
 - RBAC, credential scoping, and production backup/restore
 - Shared Libraries for cross-team pipeline reuse
 - End-to-end pipeline failure triage (agent, git, credentials, Docker, deployment)
+
+### CI/CD (GitHub Actions)
+
+- Explain GitHub Actions workflow/job/step/runner architecture
+- Explain triggers and event-based automation
+- Job dependencies (`needs`) and conditional execution (`if`)
+- Matrix strategy across multiple configurations
+- Secrets, environment variables, and GitHub Environments
+- Passing build output between jobs via artifacts
+- Speeding up installs with dependency caching
+- Least-privilege permissions and third-party Action supply-chain security
+- Docker build/tag/login/push inside a workflow
+- Image traceability via `github.sha`
+- Protected production environments with required-reviewer approval
+- End-to-end CI/CD troubleshooting (checkout, build, test, Docker, runner, secrets)
 
 ---
 
@@ -1703,6 +1832,78 @@ This connects the Jenkins module directly with the Docker knowledge completed in
 
 ---
 
+# 🏗 GitHub Actions Architecture
+
+```text
+                 GitHub Repository
+                        │
+                  Push / PR / Event
+                        │
+                        ▼
+                 GitHub Actions
+                        │
+                        ▼
+                    Workflow
+                        │
+          ┌─────────────┼─────────────┐
+          ▼             ▼             ▼
+        Job 1         Job 2         Job 3
+          │             │             │
+      ┌───┴───┐     ┌───┴───┐     ┌───┴───┐
+      ▼       ▼     ▼       ▼     ▼       ▼
+    Step    Step  Step    Step  Step    Step
+      │
+      ▼
+    Runner
+ (GitHub-hosted or self-hosted)
+```
+
+---
+
+# 🔄 GitHub Actions Production CI/CD Workflow
+
+```text
+Developer
+      │
+      ▼
+   git push
+      │
+      ▼
+    GitHub
+      │
+      ▼
+GitHub Actions
+      │
+      ▼
+     Build
+      │
+      ▼
+     Test
+      │
+      ▼
+ Docker Build
+      │
+      ▼
+ Docker Tag (github.sha)
+      │
+      ▼
+ Docker Push
+      │
+      ▼
+Docker Registry
+      │
+      ▼
+Production Environment
+      │
+      ▼
+   Approval
+      │
+      ▼
+    Deploy
+```
+
+---
+
 # 📊 Git Learning Progress
 
 ## ✅ Completed
@@ -1752,6 +1953,18 @@ This connects the Jenkins module directly with the Docker knowledge completed in
 - Day 15 – Production Jenkins CI/CD & Interview Revision
 
 **🚀 Jenkins Module: 5/5 complete. ✅**
+
+---
+
+# 📊 GitHub Actions Learning Progress
+
+## ✅ Completed
+
+- Day 16 – GitHub Actions Fundamentals
+- Day 17 – Advanced GitHub Actions
+- Day 18 – Production GitHub Actions & Interview Revision
+
+**🚀 GitHub Actions Module: 3/3 complete. ✅**
 
 ---
 
@@ -1954,6 +2167,46 @@ java -jar jenkins-cli.jar -s http://localhost:8080/ -auth user:token safe-restar
 
 ---
 
+# 🧰 Commands Practiced — GitHub Actions (Day 16–18)
+
+```md
+## Workflow file location
+
+.github/workflows/*.yml
+
+## Core workflow keys used across examples
+
+on:
+jobs:
+runs-on:
+uses:
+run:
+needs:
+if:
+strategy: matrix:
+permissions:
+env:
+environment:
+
+## Docker-in-CI (docker-ci.yml, production-cicd.yml)
+
+docker build -t myapp:${{ github.sha }} .
+docker tag myapp:${{ github.sha }} myapp:latest
+docker push myapp:${{ github.sha }}
+docker push myapp:latest
+
+## Reusable Actions used
+
+actions/checkout@v4
+actions/setup-node@v4
+actions/cache@v4
+actions/upload-artifact@v4
+actions/download-artifact@v4
+docker/login-action@v3
+```
+
+---
+
 # 🧠 Core Concepts — Git Cherry-pick
 
 ```text
@@ -2115,6 +2368,41 @@ Production Deployment
 
 ---
 
+# 🧠 Core Concepts — GitHub Actions
+
+```text
+GitHub Actions
+Workflow
+Job
+Step
+Runner
+GitHub-hosted Runner
+Self-hosted Runner
+Event / Trigger
+runs-on
+uses
+run
+needs
+if Condition
+Matrix Strategy
+GitHub Secrets
+Environment Variables
+GitHub Environments
+Artifacts
+Caching
+Permissions / Least Privilege
+Supply-chain Security
+Docker Integration
+github.sha
+Image Traceability
+Environment Protection Rules
+Quality Gates
+CI/CD Troubleshooting
+Production Deployment
+```
+
+---
+
 # 🗝 Key Learnings — Git Cherry-pick
 
 - Git Cherry-pick copies commits instead of moving them.
@@ -2228,6 +2516,16 @@ Production Deployment
 - Image tags should include a unique build identifier, not just `latest`, so any deployed version can be pinned and rolled back precisely.
 - Jenkins has no native multi-controller HA — production resilience comes from fast, tested backup/restore and durable `JENKINS_HOME` storage.
 - Shared Libraries and folder-scoped credentials/RBAC are what keep a multi-team Jenkins instance maintainable and secure at scale.
+
+---
+
+# 🗝 Key Learnings — GitHub Actions (Day 16–18)
+
+- A workflow is just YAML — most failures are structural (bad indentation, wrong trigger, wrong branch filter) before they're ever logical.
+- `needs` and `if` turn a flat list of jobs into an actual pipeline with gates, the same role `needs`/`when` play in a Jenkins Declarative Pipeline.
+- Artifacts and caching solve two different problems: artifacts move files between jobs (isolated runners share no filesystem), caching speeds up repeated work within a job.
+- Production-readiness = SHA-based image traceability + environment protection (required reviewers) + least-privilege permissions, not just "the pipeline goes green."
+- Compared to Jenkins, GitHub Actions trades self-managed Controller/Agent infrastructure for fully managed hosted runners, at the cost of being tied to GitHub as the source of truth for triggers and secrets.
 
 ---
 
@@ -2452,6 +2750,43 @@ Production Deployment
 
 ---
 
+# 🎤 Interview Questions — GitHub Actions (Day 16–18)
+
+```md
+## Day 16 — Fundamentals
+
+- What is GitHub Actions?
+- What is a workflow, job, step, and runner?
+- Difference between `uses` and `run`?
+- Where must workflow files live for GitHub to discover them?
+- What triggers a workflow?
+- Name two differences between Jenkins and GitHub Actions.
+
+## Day 17 — Advanced Workflows
+
+- What does `needs` do?
+- How do you conditionally run a job or step?
+- What is a matrix strategy, and what does `fail-fast: false` change?
+- Secrets vs environment variables — what's the difference?
+- What is a GitHub Environment, and what protection rules can it hold?
+- Why are artifacts needed to pass files between jobs?
+- How does a cache key typically get built, and why?
+- Why scope `permissions:` explicitly instead of relying on the default?
+- What's a supply-chain risk with an unpinned third-party Action?
+
+## Day 18 — Production GitHub Actions
+
+- Walk through a production CI/CD pipeline end-to-end.
+- Why tag Docker images with `github.sha` instead of only `latest`?
+- How do you gate a production deploy behind manual approval?
+- Docker push fails with "access denied" — likely causes?
+- A secret appears empty when used — how do you debug it?
+- Difference between a build failure and a runner failure?
+- How do you design branch-based deployment (e.g. develop → staging, main → production)?
+```
+
+---
+
 # 🗺 Git Revision Cheat Sheet
 
 ```text
@@ -2536,6 +2871,23 @@ Production Jenkins CI/CD & Interview Revision
 
 ---
 
+# 🗺 GitHub Actions Revision Cheat Sheet
+
+```text
+GitHub Actions Fundamentals
+   │
+   ▼
+Advanced Workflows (needs, if, matrix, secrets, artifacts, caching)
+   │
+   ▼
+Production GitHub Actions & Docker Integration
+   │
+   ▼
+✅ GitHub Actions Module Complete
+```
+
+---
+
 # 🎯 Final Objective
 
 Become confident handling:
@@ -2544,6 +2896,7 @@ Become confident handling:
 - Git Collaboration
 - Dockerized Applications
 - Jenkins CI/CD Pipelines
+- GitHub Actions CI/CD Pipelines
 - Kubernetes Clusters
 - AWS Infrastructure
 - Infrastructure as Code
@@ -2569,6 +2922,8 @@ The Production Docker Lab and Final Challenge tie every prior Docker topic toget
 Jenkins connects Git, Build, Test, Docker, Registry, and Deployment into a single automated production CI/CD workflow — turning the Docker module's manual `build → tag → push → pull → run` sequence into something that runs itself on every commit.
 
 The completed Jenkins module ties fundamentals, pipelines, GitHub integration, Docker, and production hardening into one coherent CI/CD skillset — from a first Freestyle job through RBAC, backups, and Shared Libraries on a production instance.
+
+GitHub Actions completes the CI/CD module with a second, natively-hosted way to run the same Git → Build → Test → Docker → Registry → Deployment workflow — trading self-managed Jenkins infrastructure for workflows that live and run directly inside GitHub.
 
 > **Learning DevOps tools is easy.**
 
@@ -2600,12 +2955,15 @@ The completed Jenkins module ties fundamentals, pipelines, GitHub integration, D
 - ✅ Day 08 – Docker Security
 - ✅ Day 09 – Production Docker Lab
 - ✅ Day 10 – Final Docker Challenge & Interview Revision
-- ✅ CI/CD Module Completed (Jenkins 5/5)
+- ✅ CI/CD Module Completed (Jenkins 5/5 + GitHub Actions 3/3)
 - ✅ Day 11 – Jenkins Fundamentals
 - ✅ Day 12 – Jenkins Jobs & Pipelines
 - ✅ Day 13 – Jenkinsfile & GitHub Integration
 - ✅ Day 14 – Jenkins + Docker
 - ✅ Day 15 – Production Jenkins CI/CD & Interview Revision
+- ✅ Day 16 – GitHub Actions Fundamentals
+- ✅ Day 17 – Advanced GitHub Actions
+- ✅ Day 18 – Production GitHub Actions & Interview Revision
 
 Building one production-ready skill at a time.
 
