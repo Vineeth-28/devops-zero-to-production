@@ -1,0 +1,9 @@
+# ConfigMap: non-sensitive configuration, consumed as env vars or a mounted file.
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: backend-config
+data:
+  APP_ENV: "production"
+  LOG_LEVEL: "info"
+  DB_HOST: "mysql"                # resolves via Kubernetes DNS to the mysql Service

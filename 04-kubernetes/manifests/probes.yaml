@@ -1,0 +1,39 @@
+# Example Deployment demonstrating all three probe types together.
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: backend-probes-demo
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: backend-probes-demo
+  template:
+    metadata:
+      labels:
+        app: backend-probes-demo
+    spec:
+      containers:
+        - name: backend
+          image: myapp/backend:v1.0.0
+          ports:
+            - containerPort: 3000
+          startupProbe:
+            httpGet:
+              path: /health
+              port: 3000
+            failureThreshold: 30    # allows up to 30 * periodSeconds to start
+            periodSeconds: 10
+          readinessProbe:
+            httpGet:
+              path: /ready
+              port: 3000
+            initialDelaySeconds: 5
+            periodSeconds: 10
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: 3000
+            initialDelaySeconds: 15
+            periodSeconds: 20
+            failureThreshold: 3

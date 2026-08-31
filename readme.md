@@ -39,8 +39,8 @@ By the end of this roadmap, I aim to confidently:
 | 🐧 Linux | ✅ Completed |
 | 🔥 Git & GitHub | 🟡 In Progress (Day 08/09) |
 | 🐳 Docker | ✅ Completed |
-| 🚀 CI/CD | ✅ Jenkins (5/5) + GitHub Actions (3/3) Completed |
-| ☸️ Kubernetes | ⏳ Planned |
+| 🚀 CI/CD | ✅ Jenkins + GitHub Actions Completed |
+| ☸️ Kubernetes | ✅ Completed |
 | ☁️ AWS | ⏳ Planned |
 | 🌍 Terraform | ⏳ Planned |
 | ⚙️ Ansible | ⏳ Planned |
@@ -53,19 +53,12 @@ By the end of this roadmap, I aim to confidently:
 
 ```text
 Linux                 ████████████████████ 100%
-
 Git & GitHub          █████████████████░░░ 89%
-
 Docker                ████████████████████ 100%
-
 CI/CD (Jenkins + GA)  ████████████████████ 100%
-
-Kubernetes            ░░░░░░░░░░░░░░░░░░░░
-
+Kubernetes            ████████████████████ 100%
 Terraform             ░░░░░░░░░░░░░░░░░░░░
-
 Ansible               ░░░░░░░░░░░░░░░░░░░░
-
 Monitoring            ░░░░░░░░░░░░░░░░░░░░
 ```
 
@@ -184,7 +177,7 @@ The objective is to retain knowledge through repetition and practical implementa
 - Reverting Merge Commits (git revert -m 1)
 - Production Rollback Workflow
 
-#### ✅ Day 08 – Git Cherry-pick
+#### Day 08 – Git Cherry-pick
 
 - What is Git Cherry-pick?
 - Cherry-pick vs Merge
@@ -263,16 +256,7 @@ The objective is to retain knowledge through repetition and practical implementa
 - Verified Persistent Data
 - Compared Docker Volumes with Bind Mounts
 
-**Key Learnings (Day 03):**
-
-- Containers are ephemeral.
-- Writable layers are deleted with containers.
-- Docker Volumes persist independently.
-- Multiple containers can share a single volume.
-- Docker Volumes are ideal for databases.
-- Bind Mounts are best suited for local development.
-
-#### ✅ Day 04 – Docker Networking
+#### Day 04 – Docker Networking
 
 - Docker Networks
 - Bridge Network
@@ -297,16 +281,7 @@ The objective is to retain knowledge through repetition and practical implementa
 - `docker run --network`
 - `docker run -p`
 
-**Key Learnings (Day 04):**
-
-- Containers on the default bridge network can't resolve each other by name — only custom bridge networks get Docker DNS.
-- Custom Bridge Networks enable automatic service discovery between containers via container name.
-- Host Network removes network isolation, binding the container directly to the host's network stack.
-- None Network disables networking entirely for a container.
-- Port Mapping (`-p host:container`) exposes a container's internal port to the host.
-- `localhost` inside one container does not refer to another container — container-to-container communication requires the Docker network, not localhost.
-
-#### ✅ Day 05 – Docker Compose
+#### Day 05 – Docker Compose
 
 - What is Docker Compose?
 - Why Docker Compose?
@@ -336,16 +311,7 @@ The objective is to retain knowledge through repetition and practical implementa
 - `docker compose build`
 - `docker compose pull`
 
-**Key Learnings (Day 05):**
-
-- Docker Compose defines and runs multi-container applications from a single `docker-compose.yml` file.
-- `build` creates an image from a Dockerfile; `image` pulls an existing prebuilt image — a service uses one or the other.
-- `depends_on` controls startup order but does not wait for a service to be fully ready.
-- Compose automatically creates a shared network so services can resolve each other by service name.
-- Compose automatically creates named volumes declared under the top-level `volumes:` key.
-- `docker compose up -d` runs services in detached mode; `docker compose down` tears down containers and networks (add `-v` to remove volumes too).
-
-#### ✅ Day 06 – Production Docker
+#### Day 06 – Production Docker
 
 - Development vs Production Docker
 - Image Optimization
@@ -376,20 +342,7 @@ The objective is to retain knowledge through repetition and practical implementa
 - `docker container prune`
 - `docker volume prune`
 
-**Key Learnings (Day 06):**
-
-- Production Docker prioritizes small, secure, and predictable images over convenience.
-- Multi-stage builds separate the build environment from the runtime environment, keeping only what's needed to run the app.
-- The builder stage can include compilers and dev dependencies; the runtime stage copies only the final artifacts.
-- Alpine and other minimal base images shrink image size and reduce the attack surface.
-- Docker Layer Caching speeds up rebuilds by reusing unchanged layers — ordering instructions from least- to most-frequently-changed matters.
-- `.dockerignore` also reduces the build context sent to the Docker daemon, speeding up builds.
-- Health Checks let Docker (and orchestrators) know whether a container is actually ready, not just running.
-- Restart Policies define how Docker responds to container failure (e.g. `on-failure`, `always`, `unless-stopped`).
-- Resource Limits (CPU/memory) prevent a single container from starving the host or other containers.
-- `docker system df` and `docker system prune` help audit and reclaim disk space used by images, containers, volumes, and build cache.
-
-#### ✅ Day 07 – Docker Registry
+#### Day 07 – Docker Registry
 
 - What is a Docker Registry?
 - Docker Hub
@@ -425,20 +378,7 @@ The objective is to retain knowledge through repetition and practical implementa
 - `docker history`
 - `docker rmi`
 
-**Key Learnings (Day 07):**
-
-- A Docker Registry stores and distributes Docker images; Docker Hub is the default public registry.
-- Public registries suit open-source images; private registries (Docker Hub private repos, AWS ECR, Azure ACR, Google Artifact Registry, Harbor) protect proprietary images.
-- Image tags identify specific versions of an image within a repository.
-- Semantic Versioning (`major.minor.patch`) gives image tags predictable, meaningful version numbers.
-- `docker login` authenticates the CLI against a registry before push/pull of private images.
-- `docker tag` labels a local image for a specific repository and version before pushing.
-- `docker push` uploads a tagged image to a registry; `docker pull` downloads one from a registry.
-- Relying on the `latest` tag in production is risky since it can silently change what gets deployed.
-- Cloud-managed registries like AWS ECR integrate registry access with cloud IAM permissions.
-- A production registry workflow moves an image from local build → tag → push → registry → pull on the production server → run.
-
-#### ✅ Day 08 – Docker Security
+#### Day 08 – Docker Security
 
 - Container Isolation Boundaries
 - Non-root Containers
@@ -449,7 +389,7 @@ The objective is to retain knowledge through repetition and practical implementa
 - Read-only Filesystems
 - Docker Security Best Practices
 
-#### ✅ Day 09 – Production Docker Lab
+#### Day 09 – Production Docker Lab
 
 - Production Node.js + MySQL Docker Compose Application
 - Production Dockerfile
@@ -477,14 +417,7 @@ The objective is to retain knowledge through repetition and practical implementa
 - `docker compose exec`
 - `docker volume ls`
 
-**Key Learnings (Day 09):**
-
-- `service_healthy` in `depends_on` is stricter than default `depends_on` — it waits for the health check to pass, not just for the container to start.
-- Database authentication failures are diagnosed by checking logs, then verifying credentials match between the app's env vars and the database service.
-- Real `.env` files stay out of Git via `.gitignore`; an `.env.example` is committed instead.
-- MySQL health checks combined with `depends_on: service_healthy` prevent the backend from starting before the database is actually ready.
-
-#### ✅ Day 10 – Final Docker Challenge & Interview Revision
+#### Day 10 – Final Docker Challenge & Interview Revision
 
 - Docker Compose Architecture (end-to-end review)
 - Production Dockerfiles (review)
@@ -503,14 +436,7 @@ The objective is to retain knowledge through repetition and practical implementa
 - `docker tag backend:v1.4 <user>/backend:v1.4`
 - `docker push <user>/backend:v1.4`
 
-**Key Learnings (Day 10):**
-
-- Hardcoding secrets in a Dockerfile (`ENV DB_PASSWORD=...`) bakes them into every image layer and image history — secrets belong in runtime `.env` files instead.
-- Running containers as a dedicated non-root user (`addgroup`/`adduser` + `USER`) limits the blast radius if the application is compromised.
-- Predictable rollback in production depends on versioned tags (e.g. `v1.9`, `v2.0`) rather than mutable tags like `latest`.
-- Production Dockerfiles combine Alpine base images, multi-stage builds, non-root users, `NODE_ENV=production`, and a minimal runtime image.
-
-**🐳 Docker Module: 10/10 complete. ✅**
+**🐳 Docker Module Complete. ✅**
 
 ---
 
@@ -520,7 +446,7 @@ The objective is to retain knowledge through repetition and practical implementa
 
 Hands-on labs covering CI/CD concepts, Jenkins architecture, jobs, builds, pipelines, Jenkinsfiles, troubleshooting, and real-world production workflows — focused on understanding how Jenkins fits into a production CI/CD system.
 
-#### ✅ Day 11 – Jenkins Fundamentals
+#### Day 11 – Jenkins Fundamentals
 
 - What is Jenkins?
 - Why Jenkins?
@@ -558,28 +484,7 @@ docker tag backend:v1 vineet/backend:v1
 docker push vineet/backend:v1
 ```
 
-**Key Learnings (Day 11):**
-
-- Jenkins is an automation server used to automate CI/CD workflows.
-- Jenkins can automate checkout, build, testing, packaging, Docker image creation, registry operations, and deployment.
-- Continuous Integration means frequently integrating code changes and automatically building/testing them to detect problems early.
-- Continuous Delivery/Deployment extends the pipeline toward delivering or deploying validated software.
-- The Jenkins Controller manages and coordinates jobs and schedules work.
-- Jenkins Agents execute the actual build, test, and deployment work.
-- A Job contains configured instructions.
-- A Build is one execution of a Job.
-- A Pipeline defines the sequence of stages and steps in a CI/CD workflow.
-- A Jenkinsfile stores the Pipeline definition as code.
-- Pipeline as Code makes CI/CD configuration version-controlled and reviewable.
-- GitHub can act as the source repository for Jenkins pipelines.
-- Jenkins can integrate with Docker to build and distribute application images.
-- Jenkins credentials should be used instead of hardcoding secrets in pipeline code.
-- Console Output is one of the first places to investigate a failed build.
-- Production troubleshooting should identify the exact failed stage before changing configuration.
-- CI/CD pipelines should be repeatable and automated rather than dependent on manual steps.
-- Jenkins can connect the Git → Build → Test → Docker → Registry → Deployment workflow.
-
-#### ✅ Day 12 – Jenkins Jobs & Pipelines
+#### Day 12 – Jenkins Jobs & Pipelines
 
 - Freestyle Project vs Pipeline Job
 - Declarative Pipeline vs Scripted Pipeline
@@ -611,17 +516,7 @@ curl -X POST -F "jenkinsfile=<Jenkinsfile" http://localhost:8080/pipeline-model-
 curl -X POST "http://localhost:8080/job/my-job/buildWithParameters?ENV=staging" --user user:api-token
 ```
 
-**Key Learnings (Day 12):**
-
-- Declarative pipelines are validated before any stage runs — catching syntax errors upfront, unlike Scripted pipelines where errors surface at runtime.
-- `environment {}` block variables are only available once that block is entered — not before.
-- `when` directives (`branch`, `expression`, `environment`, `changeRequest()`) make stage execution conditional without needing separate jobs per environment.
-- `parallel {}` cuts pipeline wall-clock time by running independent stages (like lint and unit tests) simultaneously.
-- `post { success failure always }` blocks are the standard place for notifications, cleanup (`cleanWs()`), and reporting — not the stages themselves.
-- `retry(n) { }` and `timeout(time: n, unit: 'MINUTES') { }` protect a pipeline from flaky steps and indefinite hangs.
-- Parameters make one Jenkinsfile reusable across environments instead of duplicating jobs.
-
-#### ✅ Day 13 – Jenkinsfile & GitHub Integration
+#### Day 13 – Jenkinsfile & GitHub Integration
 
 - GitHub Credentials in Jenkins (PAT, SSH key, GitHub App)
 - GitHub Webhooks
@@ -648,16 +543,7 @@ http://<jenkins-host>/github-webhook/
 sshagent(['github-ssh-key']) { sh 'git clone git@github.com:org/repo.git' }
 ```
 
-**Key Learnings (Day 13):**
-
-- Webhooks are push-based and near-instant; Poll SCM adds latency and unnecessary load, so webhooks are the production default.
-- Multibranch Pipelines auto-discover branches and PRs from a Jenkinsfile in the repo — no need to hand-create a job per branch.
-- "Merging the PR with the current target branch base" simulates the real post-merge result and is the safer default for gating merges, versus testing the PR's source branch in isolation.
-- Credential type must match the Git URL scheme: HTTPS URLs need a PAT/username-password credential, SSH URLs need an SSH key credential.
-- Publishing commit status back to GitHub is what powers required-check branch protection rules on PRs.
-- A failing webhook is diagnosed via GitHub's "Recent Deliveries" log — response code first, then payload URL and job trigger config.
-
-#### ✅ Day 14 – Jenkins + Docker
+#### Day 14 – Jenkins + Docker
 
 - Docker Pipeline Plugin
 - Docker Agents (`agent { docker { image '...' } }`)
@@ -687,16 +573,7 @@ docker system df
 docker system prune -af --volumes
 ```
 
-**Key Learnings (Day 14):**
-
-- Docker agents give every build a clean, disposable environment — no leftover state between runs.
-- Docker-outside-of-Docker (mounting `/var/run/docker.sock`) is the common Jenkins pattern: simpler and shares the host's image cache, but it grants effectively root-equivalent host access to anything that can run `docker` commands.
-- Docker-in-Docker gives stronger isolation between builds at the cost of more complex networking and overhead.
-- Registry credentials must be injected via Jenkins credentials (`withCredentials` / `environment { X = credentials('id') }`) — never hardcoded in a Jenkinsfile.
-- Tagging images with a unique build identifier (not just `latest`) is what makes rollback to a specific version possible.
-- Unbounded image/layer buildup is a common cause of Jenkins hosts running out of disk — scheduled `docker system prune` or ephemeral agents prevent it.
-
-#### ✅ Day 15 – Production Jenkins CI/CD & Interview Revision
+#### Day 15 – Production Jenkins CI/CD & Interview Revision
 
 - Role-based Authorization Strategy (RBAC)
 - Credential Scoping (folder-level vs Global)
@@ -715,7 +592,7 @@ docker system prune -af --volumes
 ```bash
 # Backup / restore
 sudo tar -czf jenkins-backup-$(date +%F).tar.gz -C /var/lib/jenkins .
-sudo tar -xzf jenkins-backup-2026-08-18.tar.gz -C /var/lib/jenkins
+sudo tar -xzf jenkins-backup-<date>.tar.gz -C /var/lib/jenkins
 sudo chown -R jenkins:jenkins /var/lib/jenkins
 
 # Config reload without full restart
@@ -726,16 +603,7 @@ java -jar jenkins-cli.jar -s http://localhost:8080/ -auth user:token safe-restar
 sudo sed -i 's/<useSecurity>true<\/useSecurity>/<useSecurity>false<\/useSecurity>/' /var/lib/jenkins/config.xml
 ```
 
-**Key Learnings (Day 15):**
-
-- Jenkins has no native multi-controller clustering — production HA is really about fast, tested backup/restore (RTO measured in minutes) plus durable storage for `JENKINS_HOME`, not built-in failover.
-- Folder-scoped credential stores plus RBAC keep one team's secrets out of another team's pipelines on a shared instance.
-- Shared Libraries (`vars/standardPipeline.groovy` + `@Library('name') _`) stop teams from copy-pasting Jenkinsfile boilerplate and centralize governance.
-- Backups are only as good as the last successful *restore test* — a backup that's never been restored is unverified.
-- Leaving the Groovy sandbox unrestricted is a real risk; script approvals should be scoped to specific signatures, not blanket-approved.
-- Diagnosing a stuck pipeline follows a fixed order: node/label match → agent online status → executor availability → `disableConcurrentBuilds()` blocking → dynamic agent provisioning failures.
-
-**🚀 Jenkins Module: 5/5 complete. ✅**
+**🚀 Jenkins Module Complete. ✅**
 
 ---
 
@@ -743,7 +611,7 @@ sudo sed -i 's/<useSecurity>true<\/useSecurity>/<useSecurity>false<\/useSecurity
 
 Hands-on labs covering GitHub Actions fundamentals, advanced workflow control (dependencies, conditions, matrix builds), and production CI/CD with Docker — built as a native, cloud-hosted alternative to the Jenkins track above.
 
-#### ✅ Day 16 – GitHub Actions Fundamentals
+#### Day 16 – GitHub Actions Fundamentals
 
 - What is GitHub Actions?
 - Why GitHub Actions?
@@ -754,13 +622,7 @@ Hands-on labs covering GitHub Actions fundamentals, advanced workflow control (d
 - Basic CI Workflow
 - Jenkins vs GitHub Actions
 
-**Key Learnings (Day 16):**
-
-- A workflow is a YAML file in `.github/workflows/` — the top-level automation definition; a job is a group of steps run on the same runner, and jobs run in parallel by default.
-- `uses:` invokes a packaged, reusable Action; `run:` executes raw shell commands directly on the runner.
-- Unlike Jenkins, GitHub Actions needs no separate server to install or maintain for hosted runners — the pipeline lives in the repo it builds.
-
-#### ✅ Day 17 – Advanced GitHub Actions
+#### Day 17 – Advanced GitHub Actions
 
 - `needs` (Job Dependencies)
 - `if` Conditions
@@ -774,15 +636,7 @@ Hands-on labs covering GitHub Actions fundamentals, advanced workflow control (d
 - Third-party Actions & Supply-chain Security
 - Passing Artifacts Between Jobs
 
-**Key Learnings (Day 17):**
-
-- `needs` turns independent parallel jobs into an ordered pipeline; `if` (branch, event, `success()`/`failure()`/`always()`) controls conditional execution.
-- A matrix strategy expands one job definition into a job per combination (e.g. OS x language version); `fail-fast: false` lets every combination finish independently.
-- Secrets are masked in logs and referenced via `${{ secrets.NAME }}` — never hardcoded; environment variables are for non-sensitive config only.
-- Since each job runs on an isolated runner with no shared filesystem, `upload-artifact`/`download-artifact` is the explicit hand-off mechanism between jobs, while `actions/cache` (keyed on a lockfile hash) speeds up repeated dependency installs.
-- Explicit least-privilege `permissions:` blocks and pinning third-party Actions to a version tag (not `@main`) reduce the supply-chain attack surface.
-
-#### ✅ Day 18 – Production GitHub Actions
+#### Day 18 – Production GitHub Actions
 
 - GitHub Actions + Docker (Build, Tag, Login, Push, Registry)
 - `github.sha` & Image Traceability
@@ -794,29 +648,98 @@ Hands-on labs covering GitHub Actions fundamentals, advanced workflow control (d
 - Complete Production CI/CD Workflow
 - Final GitHub Actions Interview Revision
 
-**Key Learnings (Day 18):**
+**🚀 GitHub Actions Module Complete. ✅**
 
-- Tagging Docker images with `${{ github.sha }}` (alongside any floating tag like `latest`) gives every image traceability back to the exact commit that built it — critical for production rollback.
-- Declaring `environment: production` on a deploy job enables protection rules (required reviewers, wait timers, deployment branch restrictions) — the manual quality gate before anything reaches production.
-- Most CI/CD failures are diagnosed by reading the first failing step (not the last log line): checkout issues are usually `ref`/`fetch-depth`/submodules, Docker push failures are usually registry permissions or secret name mismatches, and a job stuck "Queued" points to runner/label availability rather than the workflow itself.
-
-**🚀 GitHub Actions Module: 3/3 complete. ✅**
-
-**🚀 CI/CD Module: Jenkins (5/5) + GitHub Actions (3/3) complete. ✅**
+**🚀 CI/CD Module: Jenkins + GitHub Actions Complete. ✅**
 
 ---
 
-## ☸️ Kubernetes
+## ☸️ Kubernetes ✅
 
-- Pods
-- Deployments
-- ReplicaSets
-- Services
-- ConfigMaps
-- Secrets
-- Ingress
-- Helm
-- Production Troubleshooting
+### Kubernetes — Production Focused Revision
+
+Hands-on labs covering Kubernetes architecture, workloads, networking,
+storage, configuration, health checks, scheduling, and production
+troubleshooting — continuing the CI/CD module's Git → Build → Docker →
+Registry pipeline into how those images actually run in a cluster.
+
+#### Day 22 – Kubernetes Architecture
+
+- Kubernetes, Cluster, Control Plane, Worker Nodes
+- API Server, etcd, Scheduler, Controller Manager
+- Kubelet, Kube Proxy, Container Runtime
+
+  nodes directly, only to the API Server.
+- The Scheduler only decides *placement*; the Kubelet on the assigned node
+  is what actually starts the containers via the container runtime.
+- etcd is the cluster's single source of truth — losing it without a
+  tested backup means losing cluster state entirely.
+
+#### Day 23 – Pods, Deployments & ReplicaSets
+
+- Pod vs Container, Pod lifecycle & states
+- Multi-container Pods
+- Deployment, ReplicaSet, desired state, self-healing
+- Rolling updates, rollback, rollout history/status
+
+  gives self-healing and rolling updates that a standalone Pod doesn't
+  have.
+- A container restarting inside a Pod (`CrashLoopBackOff`) is a different
+  event from a Pod being recreated by its controller.
+- A rolling update creates a *new* ReplicaSet and shifts replicas from old
+  to new only as new Pods pass readiness — a broken rollout stalls safely
+  instead of taking the app down.
+
+#### Day 24 – Services, Networking & DNS
+
+- Why Pods need Services (unstable Pod IPs)
+- Service discovery, Kubernetes DNS, Labels & Selectors, EndpointSlices
+- Service types: ClusterIP, NodePort, LoadBalancer, ExternalName
+- `port`, `targetPort`, `nodePort`
+
+  membership — a mismatch silently produces zero endpoints.
+- EndpointSlices only ever include Pods that are currently *Ready* — a
+  Running-but-not-Ready Pod is excluded from traffic automatically.
+- `DB_HOST=mysql` works because Kubernetes DNS resolves a Service name to
+  its ClusterIP within the same namespace — no manual DNS setup required.
+
+#### Day 25 – Storage, ConfigMaps, Secrets & Health Checks
+
+- Ephemeral vs persistent storage, Volumes, PV, PVC, StorageClass, dynamic
+  provisioning
+- ConfigMaps vs Secrets, `env` vs `envFrom`
+- Liveness, Readiness, and Startup Probes
+- CPU/memory `requests` vs `limits`, OOMKilled
+
+  underlying PV) is a separate object with its own lifecycle.
+- A Kubernetes Secret is base64-**encoded**, not encrypted, by default —
+  real security needs etcd encryption at rest or an external secrets
+  manager.
+- Liveness failing restarts the container; Readiness failing only removes
+  the Pod from Service endpoints — mixing these two up causes very
+  different (and sometimes worse) incidents.
+- Exceeding a memory `limit` triggers OOMKilled; exceeding a CPU `limit`
+  only throttles — the two behave very differently when hit.
+
+#### Day 26 – Kubernetes Troubleshooting
+
+- Pod Pending, CrashLoopBackOff, ImagePullBackOff, OOMKilled, 0/1 Ready
+- Service Not Working (selector → labels → endpoints → ports)
+- PVC Pending, Node problems (`NotReady`, `DiskPressure`, `MemoryPressure`)
+- Master production incident troubleshooting flow
+
+  often explain why a Pod never got far enough to produce a useful log
+  line.
+- The master flow (`get pods` → `describe pod` → `logs` → `logs
+  --previous` → `get events` → check Service → EndpointSlices → ConfigMaps/
+  Secrets → PVC → Nodes) works because it's ordered from cheapest, most
+  informative checks first.
+- Root causes are often several layers away from the visible symptom (e.g.
+  a crashing backend caused by an unrelated database PVC that never
+  bound) — trace the whole chain instead of fixing only the first
+  abnormal-looking thing.
+
+**☸️ Kubernetes Module Complete. ✅**
 
 ---
 
@@ -869,223 +792,102 @@ devops-zero-to-production/
 
 ```text
 07-cicd/
-
 ├── README.md
 │
 ├── jenkins/
 │   ├── README.md
 │   ├── jenkins-notes.md
-│   │
 │   ├── commands/
-│   │   ├── jenkins.md
-│   │   ├── jenkins-jobs.md
-│   │   ├── jenkins-pipeline.md
-│   │   └── jenkins-credentials.md
-│   │
 │   ├── jenkinsfiles/
-│   │   ├── basic/
-│   │   │   └── Jenkinsfile
-│   │   ├── node/
-│   │   │   └── Jenkinsfile
-│   │   └── docker/
-│   │       └── Jenkinsfile
-│   │
 │   ├── labs/
-│   │   ├── day-11-jenkins-fundamentals/
-│   │   │   └── README.md
-│   │   ├── day-12-jobs-pipelines/
-│   │   │   └── README.md
-│   │   ├── day-13-github-integration/
-│   │   │   └── README.md
-│   │   ├── day-14-jenkins-docker/
-│   │   │   └── README.md
-│   │   └── day-15-production-jenkins/
-│   │       └── README.md
-│   │
 │   ├── troubleshooting/
-│   │   ├── jenkins.md
-│   │   ├── pipeline-failures.md
-│   │   ├── agent-issues.md
-│   │   ├── git-issues.md
-│   │   ├── docker-issues.md
-│   │   └── production-jenkins.md
-│   │
 │   ├── workflows/
-│   │   ├── jenkins-ci-workflow.md
-│   │   ├── jenkins-github-workflow.md
-│   │   ├── jenkins-docker-workflow.md
-│   │   └── complete-jenkins-cicd.md
-│   │
 │   ├── interview/
-│   │   ├── day-11-questions.md
-│   │   ├── day-12-questions.md
-│   │   ├── day-13-questions.md
-│   │   ├── day-14-questions.md
-│   │   ├── day-15-production-questions.md
-│   │   └── final-jenkins-quiz.md
-│   │
 │   └── pdfs/
-│       ├── day-11-jenkins-fundamentals.pdf
-│       ├── day-12-jenkins-pipelines.pdf
-│       ├── day-13-jenkins-github.pdf
-│       ├── day-14-jenkins-docker.pdf
-│       ├── day-15-production-jenkins.pdf
-│       └── jenkins-final-revision.pdf
 │
 └── github-actions/
     ├── README.md
     ├── github-actions-notes.md
-    │
     ├── workflows/
-    │   ├── basic-ci.yml
-    │   ├── node-ci.yml
-    │   ├── docker-ci.yml
-    │   ├── production-cicd.yml
-    │   ├── github-actions-ci.md
-    │   ├── github-actions-docker.md
-    │   └── complete-production-cicd.md
-    │
     ├── examples/
-    │   ├── basic-workflow.yml
-    │   ├── multiple-jobs.yml
-    │   ├── job-dependencies.yml
-    │   ├── conditions.yml
-    │   ├── matrix-strategy.yml
-    │   ├── artifacts.yml
-    │   ├── caching.yml
-    │   └── secrets.yml
-    │
     ├── labs/
-    │   ├── day-16-fundamentals/
-    │   │   └── README.md
-    │   ├── day-17-advanced-workflows/
-    │   │   └── README.md
-    │   └── day-18-production-cicd/
-    │       └── README.md
-    │
     ├── troubleshooting/
-    │   ├── github-actions.md
-    │   ├── workflow-failures.md
-    │   ├── runner-issues.md
-    │   ├── docker-issues.md
-    │   └── secrets-issues.md
-    │
     ├── interview/
-    │   ├── day-16-questions.md
-    │   ├── day-17-questions.md
-    │   ├── day-18-questions.md
-    │   └── final-github-actions-quiz.md
-    │
     └── pdfs/
-        ├── day-16-github-actions-fundamentals.pdf
-        ├── day-17-advanced-github-actions.pdf
-        ├── day-18-production-github-actions.pdf
-        └── github-actions-final-revision.pdf
+```
+
+### 04-kubernetes/ structure
+
+```text
+04-kubernetes/
+├── README.md
+├── commands/
+├── manifests/
+├── concepts/
+├── troubleshooting/
+├── workflows/
+├── labs/
+└── interview/
 ```
 
 ### 02-git-github/ additions for Day 08
 
 ```text
 commands/
-    cherry-pick.md
-
 troubleshooting/
-    cherry-pick-recovery.md
-
 workflows/
-    cherry-pick-workflow.md
-
 pdfs/
-    Day-08-Cherry-pick.pdf
 ```
 
 ### 03-docker/ additions for Day 03
 
 ```text
 commands/
-    docker-volumes.md
-
 troubleshooting/
-    docker-volumes.md
-
 workflows/
-    docker-volume-workflow.md
-
 pdfs/
-    Day-03-Docker-Volumes.pdf
 ```
 
 ### 03-docker/ additions for Day 04
 
 ```text
 commands/
-    docker-networking.md
-
 troubleshooting/
-    docker-networking.md
-
 workflows/
-    docker-network-workflow.md
-
 pdfs/
-    Day-04-Docker-Networking.pdf
 ```
 
 ### 03-docker/ additions for Day 05
 
 ```text
 commands/
-    docker-compose.md
-
 troubleshooting/
-    docker-compose.md
-
 workflows/
-    docker-compose-workflow.md
-
 pdfs/
-    Day-05-Docker-Compose.pdf
 ```
 
 ### 03-docker/ additions for Day 06
 
 ```text
 commands/
-    production-docker.md
-
 troubleshooting/
-    production-docker.md
-
 workflows/
-    production-docker-workflow.md
-
 pdfs/
-    Day-06-Production-Docker.pdf
 ```
 
 ### 03-docker/ additions for Day 07
 
 ```text
 commands/
-    docker-registry.md
-
 troubleshooting/
-    docker-registry.md
-
 workflows/
-    docker-registry-workflow.md
-
 pdfs/
-    Day-07-Docker-Registry.pdf
 ```
 
 ### 03-docker/ additions for Day 08–10
 
 ```text
 pdfs/
-    Day-08-Docker-Security.pdf
-    Day-09-Production-Docker-Lab.pdf
-    Day-10-Final-Challenge-Interview.pdf
 ```
 
 ---
@@ -1226,12 +1028,27 @@ pdfs/
 - Protected production environments with required-reviewer approval
 - End-to-end CI/CD troubleshooting (checkout, build, test, Docker, runner, secrets)
 
+### Kubernetes
+
+- Explain Control Plane vs Worker Node architecture end-to-end
+- Trace a request from `kubectl apply` to a running container
+- Pod vs Deployment/ReplicaSet, self-healing, rolling updates and rollback
+- Service discovery via labels/selectors, EndpointSlices, and Kubernetes DNS
+- ConfigMap vs Secret injection (`env` vs `envFrom`), and why base64 isn't encryption
+- PV/PVC/StorageClass and why deleting a Pod doesn't delete persistent data
+- Liveness vs Readiness vs Startup probes and their production impact
+- Requests vs Limits, scheduling, and OOMKilled root-causing
+- Ingress host/path routing vs Ingress Controller responsibilities
+- Horizontal Pod Autoscaler behavior and its dependency on requests
+- Pod Pending / CrashLoopBackOff / ImagePullBackOff / OOMKilled / 0/1 Ready triage
+- Service-not-working troubleshooting (selector → labels → endpoints → ports)
+- PVC Pending and Node-level (`NotReady`, `DiskPressure`) troubleshooting
+- Master production incident flow, tracing root cause across multiple layers
+
 ---
 
 ## ⏳ Upcoming
 
-- Kubernetes CrashLoopBackOff
-- ImagePullBackOff
 - AWS Infrastructure Issues
 - Terraform State Problems
 
@@ -1904,6 +1721,121 @@ Production Environment
 
 ---
 
+# ☸️ Kubernetes Architecture
+
+```text
+Developer
+   │
+   ▼
+kubectl
+   │
+   ▼
+API Server
+   │
+   ▼
+Control Plane
+   │
+   ▼
+Scheduler
+   │
+   ▼
+Worker Node
+   │
+   ▼
+Kubelet
+   │
+   ▼
+Container Runtime
+   │
+   ▼
+Pod
+```
+
+---
+
+# 🌐 Kubernetes Request Flow
+
+```text
+Client
+   │
+   ▼
+Service
+   │
+   ▼
+EndpointSlice
+   │
+   ▼
+Pod
+   │
+   ▼
+Container
+```
+
+---
+
+# 💾 Kubernetes Storage Flow
+
+```text
+Pod
+ │
+ ▼
+PVC
+ │
+ ▼
+PV
+ │
+ ▼
+Storage
+```
+
+---
+
+# 🚨 Kubernetes Master Troubleshooting Flow
+
+```text
+Production Backend Down
+        │
+        ▼
+kubectl get pods
+        │
+        ▼
+Identify abnormal Pods
+        │
+        ▼
+kubectl describe pod
+        │
+        ▼
+kubectl logs
+        │
+        ▼
+kubectl logs --previous
+        │
+        ▼
+kubectl get events
+        │
+        ▼
+Check Service
+        │
+        ▼
+Check EndpointSlices
+        │
+        ▼
+Check ConfigMaps / Secrets
+        │
+        ▼
+Check PVC
+        │
+        ▼
+Check Nodes
+```
+
+This connects the Kubernetes module's troubleshooting flow directly with
+the CI/CD module's image-tagging discipline (`github.sha` / build-number
+tags) — a precise rollback in Kubernetes depends on the same traceable
+image tags built in `07-cicd/`.
+
+---
+
 # 📊 Git Learning Progress
 
 ## ✅ Completed
@@ -1938,7 +1870,7 @@ Production Environment
 - Production Docker Lab (Node.js + MySQL Compose stack, health checks, `service_healthy`, DB auth troubleshooting)
 - Final Docker Challenge & Interview Revision (secrets management, non-root containers, production rollback, full registry workflow)
 
-**🐳 Docker Module: 10/10 complete. ✅**
+**🐳 Docker Module Complete. ✅**
 
 ---
 
@@ -1952,7 +1884,7 @@ Production Environment
 - Day 14 – Jenkins + Docker
 - Day 15 – Production Jenkins CI/CD & Interview Revision
 
-**🚀 Jenkins Module: 5/5 complete. ✅**
+**🚀 Jenkins Module Complete. ✅**
 
 ---
 
@@ -1964,7 +1896,21 @@ Production Environment
 - Day 17 – Advanced GitHub Actions
 - Day 18 – Production GitHub Actions & Interview Revision
 
-**🚀 GitHub Actions Module: 3/3 complete. ✅**
+**🚀 GitHub Actions Module Complete. ✅**
+
+---
+
+# 📊 Kubernetes Learning Progress
+
+## ✅ Completed
+
+- Day 22 – Kubernetes Architecture
+- Day 23 – Pods, Deployments & ReplicaSets
+- Day 24 – Services, Networking & DNS
+- Day 25 – Storage, ConfigMaps, Secrets & Health Checks
+- Day 26 – Kubernetes Troubleshooting
+
+**☸️ Kubernetes Module Complete. ✅**
 
 ---
 
@@ -2159,7 +2105,7 @@ docker system prune -af --volumes
 ## Day 15 — Production Jenkins
 
 sudo tar -czf jenkins-backup-$(date +%F).tar.gz -C /var/lib/jenkins .
-sudo tar -xzf jenkins-backup-2026-08-18.tar.gz -C /var/lib/jenkins
+sudo tar -xzf jenkins-backup-<date>.tar.gz -C /var/lib/jenkins
 sudo chown -R jenkins:jenkins /var/lib/jenkins
 java -jar jenkins-cli.jar -s http://localhost:8080/ -auth user:token reload-configuration
 java -jar jenkins-cli.jar -s http://localhost:8080/ -auth user:token safe-restart
@@ -2203,6 +2149,69 @@ actions/cache@v4
 actions/upload-artifact@v4
 actions/download-artifact@v4
 docker/login-action@v3
+```
+
+---
+
+# 🧰 Commands Practiced — Kubernetes (Day 22–26)
+
+```md
+## Cluster & context
+
+kubectl cluster-info
+kubectl config get-contexts
+kubectl config use-context <context-name>
+
+## Pods
+
+kubectl get pods -o wide
+kubectl describe pod <pod-name>
+kubectl logs <pod-name>
+kubectl logs <pod-name> --previous
+kubectl exec -it <pod-name> -- /bin/sh
+
+## Deployments
+
+kubectl apply -f deployment.yaml
+kubectl rollout status deployment/<name>
+kubectl rollout history deployment/<name>
+kubectl rollout undo deployment/<name>
+kubectl scale deployment <name> --replicas=5
+
+## Services & Networking
+
+kubectl get svc
+kubectl describe svc <name>
+kubectl get endpointslices
+kubectl get pods --show-labels
+
+## ConfigMaps & Secrets
+
+kubectl create configmap app-config --from-literal=APP_ENV=production
+kubectl create secret generic db-secret --from-literal=DB_PASSWORD=changeme
+kubectl get secret db-secret -o jsonpath='{.data.DB_PASSWORD}' | base64 --decode
+
+## Storage
+
+kubectl get pvc
+kubectl describe pvc <name>
+kubectl get storageclass
+
+## Nodes
+
+kubectl get nodes
+kubectl describe node <node-name>
+kubectl top nodes
+
+## Master Troubleshooting Flow
+
+kubectl get pods -o wide
+kubectl describe pod <pod-name>
+kubectl logs <pod-name> --previous
+kubectl get events --sort-by=.metadata.creationTimestamp
+kubectl get svc,endpointslices
+kubectl get pvc
+kubectl get nodes
 ```
 
 ---
@@ -2403,6 +2412,56 @@ Production Deployment
 
 ---
 
+# 🧠 Core Concepts — Kubernetes
+
+```text
+Cluster
+Control Plane
+Worker Node
+API Server
+etcd
+Scheduler
+Controller Manager
+Kubelet
+Kube Proxy
+Container Runtime
+Pod
+Pod Lifecycle & States
+Deployment
+ReplicaSet
+Self-healing
+Rolling Update
+Rollback
+Service
+ClusterIP / NodePort / LoadBalancer / ExternalName
+Labels & Selectors
+EndpointSlice
+Kubernetes DNS
+Namespace
+ConfigMap
+Secret
+Volume
+PersistentVolume (PV)
+PersistentVolumeClaim (PVC)
+StorageClass
+Dynamic Provisioning
+Liveness Probe
+Readiness Probe
+Startup Probe
+Resource Requests
+Resource Limits
+OOMKilled
+nodeSelector
+Affinity / Anti-affinity
+Taints & Tolerations
+Ingress
+Ingress Controller
+Horizontal Pod Autoscaler (HPA)
+Production Troubleshooting
+```
+
+---
+
 # 🗝 Key Learnings — Git Cherry-pick
 
 - Git Cherry-pick copies commits instead of moving them.
@@ -2476,56 +2535,6 @@ Production Deployment
 - Relying on the `latest` tag in production is risky since it can silently change what gets deployed.
 - Cloud-managed registries like AWS ECR integrate registry access with cloud IAM permissions.
 - A production registry workflow moves an image from local build → tag → push → registry → pull on the production server → run.
-
----
-
-# 🗝 Key Learnings — Production Lab & Final Challenge (Day 09–10)
-
-- `service_healthy` in `depends_on` is stricter than default `depends_on` — it waits for the health check to pass, not just for the container to start.
-- Database authentication failures are diagnosed by checking logs, then verifying credentials match between the app's env vars and the database service.
-- Hardcoding secrets in a Dockerfile (`ENV DB_PASSWORD=...`) bakes them into every image layer and image history — secrets belong in runtime `.env` files instead.
-- Running containers as a dedicated non-root user (`addgroup`/`adduser` + `USER`) limits the blast radius if the application is compromised.
-- Predictable rollback in production depends on versioned tags (e.g. `v1.9`, `v2.0`) rather than mutable tags like `latest`.
-
----
-
-# 🗝 Key Learnings — Jenkins (Day 11)
-
-- Jenkins is an automation server used to automate CI/CD workflows.
-- Jenkins can automate checkout, build, testing, packaging, Docker image creation, registry operations, and deployment.
-- Continuous Integration means frequently integrating code changes and automatically building/testing them to detect problems early.
-- Continuous Delivery/Deployment extends the pipeline toward delivering or deploying validated software.
-- The Jenkins Controller manages and coordinates jobs and schedules work.
-- Jenkins Agents execute the actual build, test, and deployment work.
-- A Job contains configured instructions; a Build is one execution of a Job.
-- A Pipeline defines the sequence of stages and steps in a CI/CD workflow.
-- A Jenkinsfile stores the Pipeline definition as code, making it version-controlled and reviewable.
-- Jenkins credentials should be used instead of hardcoding secrets in pipeline code.
-- Console Output is one of the first places to investigate a failed build.
-- Production troubleshooting should identify the exact failed stage before changing configuration.
-
----
-
-# 🗝 Key Learnings — Jenkins (Day 12–15)
-
-- Declarative pipelines are validated before any stage runs; Scripted pipeline errors only surface at runtime.
-- `when` directives make stage execution conditional (branch, expression, environment) without duplicating jobs per environment.
-- Webhooks beat SCM polling for both latency and load; Multibranch Pipelines remove the need to hand-create a job per branch.
-- Building the PR merged with its target branch catches integration issues that testing the source branch alone would miss.
-- Docker agents give every build a clean, disposable environment; mounting the Docker socket is simpler than Docker-in-Docker but grants host-level access to anything that can run `docker` commands.
-- Image tags should include a unique build identifier, not just `latest`, so any deployed version can be pinned and rolled back precisely.
-- Jenkins has no native multi-controller HA — production resilience comes from fast, tested backup/restore and durable `JENKINS_HOME` storage.
-- Shared Libraries and folder-scoped credentials/RBAC are what keep a multi-team Jenkins instance maintainable and secure at scale.
-
----
-
-# 🗝 Key Learnings — GitHub Actions (Day 16–18)
-
-- A workflow is just YAML — most failures are structural (bad indentation, wrong trigger, wrong branch filter) before they're ever logical.
-- `needs` and `if` turn a flat list of jobs into an actual pipeline with gates, the same role `needs`/`when` play in a Jenkins Declarative Pipeline.
-- Artifacts and caching solve two different problems: artifacts move files between jobs (isolated runners share no filesystem), caching speeds up repeated work within a job.
-- Production-readiness = SHA-based image traceability + environment protection (required reviewers) + least-privilege permissions, not just "the pipeline goes green."
-- Compared to Jenkins, GitHub Actions trades self-managed Controller/Agent infrastructure for fully managed hosted runners, at the cost of being tied to GitHub as the source of truth for triggers and secrets.
 
 ---
 
@@ -2787,6 +2796,46 @@ Production Deployment
 
 ---
 
+# 🎤 Interview Questions — Kubernetes (Day 22–26)
+
+```md
+## Day 22 — Architecture
+
+- What does the API Server do, and why is it the only thing kubectl talks to?
+- What's the difference between the Scheduler's job and the Kubelet's job?
+- Why is etcd so important to back up?
+
+## Day 23 — Pods & Deployments
+
+- What's the relationship between a Deployment, a ReplicaSet, and Pods?
+- How does a rolling update avoid downtime?
+- How do you roll back to a specific earlier revision?
+- What's the difference between a container restarting and a Pod being recreated?
+
+## Day 24 — Services & Networking
+
+- Why doesn't Kubernetes just use Pod IPs directly?
+- Explain the four Service types and when you'd use each.
+- Why does `DB_HOST=mysql` work as a hostname inside the cluster?
+- A Service "isn't working" — what's your troubleshooting order?
+
+## Day 25 — Storage, Config & Probes
+
+- Why doesn't deleting a Pod delete its persistent data?
+- Is a Kubernetes Secret encrypted by default?
+- What's the practical difference between liveness and readiness failing?
+- Requests vs Limits — what happens when each is exceeded?
+
+## Day 26 — Troubleshooting
+
+- Walk through your first three commands when a Pod is reported "down."
+- What causes CrashLoopBackOff, and how do you confirm the exact cause?
+- What causes OOMKilled, and what would you check before just raising the memory limit?
+- Walk through the master production troubleshooting flow from memory.
+```
+
+---
+
 # 🗺 Git Revision Cheat Sheet
 
 ```text
@@ -2888,6 +2937,29 @@ Production GitHub Actions & Docker Integration
 
 ---
 
+# 🗺 Kubernetes Revision Cheat Sheet
+
+```text
+Kubernetes Architecture
+   │
+   ▼
+Pods, Deployments & ReplicaSets
+   │
+   ▼
+Services, Networking & DNS
+   │
+   ▼
+Storage, ConfigMaps, Secrets & Health Checks
+   │
+   ▼
+Kubernetes Troubleshooting
+   │
+   ▼
+✅ Kubernetes Module Complete
+```
+
+---
+
 # 🎯 Final Objective
 
 Become confident handling:
@@ -2897,7 +2969,7 @@ Become confident handling:
 - Dockerized Applications
 - Jenkins CI/CD Pipelines
 - GitHub Actions CI/CD Pipelines
-- Kubernetes Clusters
+- Kubernetes Clusters & Production Troubleshooting
 - AWS Infrastructure
 - Infrastructure as Code
 - CI/CD Pipelines
@@ -2925,6 +2997,8 @@ The completed Jenkins module ties fundamentals, pipelines, GitHub integration, D
 
 GitHub Actions completes the CI/CD module with a second, natively-hosted way to run the same Git → Build → Test → Docker → Registry → Deployment workflow — trading self-managed Jenkins infrastructure for workflows that live and run directly inside GitHub.
 
+Kubernetes is where the CI/CD module's built and pushed images actually run — turning `docker run` on a single server into self-healing, horizontally scalable workloads with their own networking, storage, and production troubleshooting discipline.
+
 > **Learning DevOps tools is easy.**
 
 > **Operating production systems with confidence is engineering.**
@@ -2944,7 +3018,7 @@ GitHub Actions completes the CI/CD module with a second, natively-hosted way to 
 - ✅ Day 07 – Git Revert
 - ✅ Day 08 – Git Cherry-pick
 - ⏳ Day 09 – Production Git Challenge
-- ✅ Docker Module Completed (10/10)
+- ✅ Docker Module Completed
 - ✅ Day 01 – Docker Fundamentals
 - ✅ Day 02 – Docker Images & Dockerfile
 - ✅ Day 03 – Docker Volumes & Bind Mounts
@@ -2955,7 +3029,7 @@ GitHub Actions completes the CI/CD module with a second, natively-hosted way to 
 - ✅ Day 08 – Docker Security
 - ✅ Day 09 – Production Docker Lab
 - ✅ Day 10 – Final Docker Challenge & Interview Revision
-- ✅ CI/CD Module Completed (Jenkins 5/5 + GitHub Actions 3/3)
+- ✅ CI/CD Module Completed (Jenkins + GitHub Actions)
 - ✅ Day 11 – Jenkins Fundamentals
 - ✅ Day 12 – Jenkins Jobs & Pipelines
 - ✅ Day 13 – Jenkinsfile & GitHub Integration
@@ -2964,6 +3038,12 @@ GitHub Actions completes the CI/CD module with a second, natively-hosted way to 
 - ✅ Day 16 – GitHub Actions Fundamentals
 - ✅ Day 17 – Advanced GitHub Actions
 - ✅ Day 18 – Production GitHub Actions & Interview Revision
+- ✅ Kubernetes Module Completed
+- ✅ Day 22 – Kubernetes Architecture
+- ✅ Day 23 – Pods, Deployments & ReplicaSets
+- ✅ Day 24 – Services, Networking & DNS
+- ✅ Day 25 – Storage, ConfigMaps, Secrets & Health Checks
+- ✅ Day 26 – Kubernetes Troubleshooting
 
 Building one production-ready skill at a time.
 

@@ -1,0 +1,27 @@
+# Example Deployment showing requests vs limits.
+# requests: what the Scheduler reserves on a node for this container.
+# limits: the hard ceiling; exceeding the memory limit triggers OOMKilled.
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: backend-resources-demo
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: backend-resources-demo
+  template:
+    metadata:
+      labels:
+        app: backend-resources-demo
+    spec:
+      containers:
+        - name: backend
+          image: myapp/backend:v1.0.0
+          resources:
+            requests:
+              cpu: "250m"          # 0.25 vCPU reserved
+              memory: "256Mi"
+            limits:
+              cpu: "500m"          # 0.5 vCPU max — CPU is throttled, not killed
+              memory: "512Mi"      # exceeding this triggers OOMKilled

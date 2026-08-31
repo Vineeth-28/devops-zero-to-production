@@ -1,0 +1,13 @@
+# ClusterIP Service: default type, reachable only inside the cluster.
+# Selector must match the Pod's labels, not the Deployment's name.
+apiVersion: v1
+kind: Service
+metadata:
+  name: backend
+spec:
+  type: ClusterIP
+  selector:
+    app: backend                  # routes to Pods with this label
+  ports:
+    - port: 80                    # Service's own port
+      targetPort: 3000             # container's port

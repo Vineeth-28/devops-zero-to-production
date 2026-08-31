@@ -1,0 +1,25 @@
+# Standalone Pod example.
+# In practice, Pods are usually created by a Deployment, not directly —
+# this is here for learning/troubleshooting purposes.
+apiVersion: v1
+kind: Pod
+metadata:
+  name: backend-pod
+  labels:
+    app: backend
+spec:
+  containers:
+    - name: backend
+      image: myapp/backend:v1.0.0
+      ports:
+        - containerPort: 3000
+      env:
+        - name: APP_ENV
+          value: "production"
+      resources:
+        requests:
+          cpu: "250m"
+          memory: "256Mi"
+        limits:
+          cpu: "500m"
+          memory: "512Mi"

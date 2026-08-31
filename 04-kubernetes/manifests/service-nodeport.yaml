@@ -1,0 +1,15 @@
+# NodePort Service: exposes the app on a static port on every node's IP.
+# Mostly used for local/dev clusters; LoadBalancer or Ingress is preferred
+# for production external access.
+apiVersion: v1
+kind: Service
+metadata:
+  name: backend-nodeport
+spec:
+  type: NodePort
+  selector:
+    app: backend
+  ports:
+    - port: 80
+      targetPort: 3000
+      nodePort: 30080              # must be in the 30000-32767 range

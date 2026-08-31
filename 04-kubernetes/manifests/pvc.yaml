@@ -1,0 +1,13 @@
+# PersistentVolumeClaim: a request for storage, bound to a PersistentVolume
+# (dynamically provisioned here via a StorageClass).
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: mysql-data
+spec:
+  accessModes:
+    - ReadWriteOnce
+  storageClassName: standard        # cluster-provided StorageClass
+  resources:
+    requests:
+      storage: 5Gi

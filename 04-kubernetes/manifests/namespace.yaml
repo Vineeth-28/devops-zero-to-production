@@ -1,0 +1,7 @@
+# Namespace: logical isolation boundary for a set of resources.
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: production
+  labels:
+    environment: production
