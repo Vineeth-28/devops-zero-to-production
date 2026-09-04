@@ -1,0 +1,46 @@
+# Default values for the backend chart.
+# Environment-specific values files override these.
+
+replicaCount: 2
+
+image:
+  repository: myrepo/backend
+  tag: "1.0.0"
+  pullPolicy: IfNotPresent
+
+service:
+  type: ClusterIP
+  port: 80
+  containerPort: 3000
+
+resources:
+  requests:
+    cpu: 100m
+    memory: 128Mi
+  limits:
+    cpu: 500m
+    memory: 256Mi
+
+livenessProbe:
+  path: /healthz
+  initialDelaySeconds: 10
+  periodSeconds: 15
+
+readinessProbe:
+  path: /ready
+  initialDelaySeconds: 5
+  periodSeconds: 10
+
+ingress:
+  enabled: false
+  host: backend.example.com
+  path: /
+
+configMap:
+  NODE_ENV: production
+  LOG_LEVEL: info
+
+secret:
+  # Never put real secrets here — this is a placeholder key only.
+  # Real values should come from a secrets manager / sealed-secrets / CI variable.
+  API_KEY: "placeholder-value"

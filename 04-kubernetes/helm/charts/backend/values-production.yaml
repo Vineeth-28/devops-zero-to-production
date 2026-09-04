@@ -1,0 +1,23 @@
+# Production environment overrides
+
+replicaCount: 5
+
+image:
+  tag: "1.0.0"
+  pullPolicy: IfNotPresent
+
+resources:
+  requests:
+    cpu: 250m
+    memory: 256Mi
+  limits:
+    cpu: 1000m
+    memory: 512Mi
+
+ingress:
+  enabled: true
+  host: backend.example.com
+
+configMap:
+  NODE_ENV: production
+  LOG_LEVEL: warn

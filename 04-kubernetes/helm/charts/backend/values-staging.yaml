@@ -1,0 +1,15 @@
+# Staging environment overrides
+
+replicaCount: 2
+
+image:
+  tag: "staging"
+  pullPolicy: IfNotPresent
+
+ingress:
+  enabled: true
+  host: staging.backend.example.com
+
+configMap:
+  NODE_ENV: staging
+  LOG_LEVEL: info
