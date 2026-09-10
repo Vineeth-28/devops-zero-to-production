@@ -26,7 +26,8 @@ By the end of this roadmap, I aim to confidently:
 - ✅ Build CI/CD pipelines
 - ✅ Deploy containerized applications
 - ✅ Manage Kubernetes clusters
-- ✅ Automate cloud infrastructure
+- ✅ Package and release applications with Helm
+- ✅ Automate cloud infrastructure with Terraform
 - ✅ Monitor production workloads
 - ✅ Think like a DevOps Engineer
 
@@ -41,8 +42,9 @@ By the end of this roadmap, I aim to confidently:
 | 🐳 Docker | ✅ Completed |
 | 🚀 CI/CD | ✅ Jenkins + GitHub Actions Completed |
 | ☸️ Kubernetes | ✅ Completed |
+| ⎈ Helm | ✅ Completed |
+| 🌍 Terraform | ✅ Completed |
 | ☁️ AWS | ⏳ Planned |
-| 🌍 Terraform | ⏳ Planned |
 | ⚙️ Ansible | ⏳ Planned |
 | 📊 Monitoring | ⏳ Planned |
 | 📦 Projects | ⏳ Planned |
@@ -57,7 +59,8 @@ Git & GitHub          █████████████████░░�
 Docker                ████████████████████ 100%
 CI/CD (Jenkins + GA)  ████████████████████ 100%
 Kubernetes            ████████████████████ 100%
-Terraform             ░░░░░░░░░░░░░░░░░░░░
+Helm                  ████████████████████ 100%
+Terraform             ████████████████████ 100%
 Ansible               ░░░░░░░░░░░░░░░░░░░░
 Monitoring            ░░░░░░░░░░░░░░░░░░░░
 ```
@@ -743,6 +746,82 @@ Registry pipeline into how those images actually run in a cluster.
 
 ---
 
+### ⎈ Helm — Kubernetes Package & Release Management ✅
+
+Once Kubernetes workloads exist, managing dozens of repetitive,
+environment-specific YAML manifests by hand doesn't scale. Helm sits on
+top of Kubernetes and packages those manifests into versioned,
+parameterized, installable Charts — continuing directly from the
+Kubernetes troubleshooting flow above into how applications actually get
+packaged and released in production. Lives in `04-kubernetes/helm/`.
+
+Core mental model:
+
+```
+Kubernetes
+    ↓
+Many YAML manifests
+    ↓
+Helm
+    ↓
+Chart + Values + Templates
+    ↓
+Rendered Kubernetes manifests
+    ↓
+Kubernetes API
+    ↓
+Resources
+```
+
+Helm does not replace `kubectl`, the API server, or the scheduler — it
+solves the problem of managing large numbers of repetitive,
+environment-specific YAML files.
+
+#### Day 27 – Helm Fundamentals & Chart Structure
+
+- What is Helm, and why it exists
+- Charts, Releases, and Repositories
+- Chart structure (`Chart.yaml`, `values.yaml`, `templates/`)
+- Template expressions and built-in objects (`.Values`, `.Release`, `.Chart`)
+- `helm create`, `helm install`, `helm template`
+- Values overrides (`-f`, `--set`)
+- Environment-specific values files
+
+#### Day 28 – Helm Releases, Dependencies & Production Workflows
+
+- `helm upgrade` / `helm rollback` / release revision history
+- Chart dependencies (`Chart.yaml` `dependencies:`, `helm dependency update`)
+- Helm Hooks (pre-install, post-install, pre-upgrade, etc.)
+- Helm + CI/CD (packaging and deploying Charts from a pipeline)
+- Helm troubleshooting (failed installs, rendering errors, stuck releases)
+- Production Helm workflows
+
+**Commands Practiced (Day 27–28):**
+
+```bash
+helm create backend
+helm lint ./backend
+helm template backend ./backend
+helm install backend ./backend -f values-dev.yaml
+helm upgrade backend ./backend -f values-prod.yaml
+helm upgrade --install backend ./backend
+helm rollback backend 1
+helm history backend
+helm list
+helm status backend
+helm uninstall backend
+helm dependency update ./backend
+helm repo add bitnami https://charts.bitnami.com/bitnami
+helm repo update
+helm search repo bitnami
+helm get values backend
+helm get manifest backend
+```
+
+**⎈ Helm Module Complete. ✅**
+
+---
+
 ## ☁️ Cloud & Infrastructure
 
 - AWS
@@ -753,6 +832,85 @@ Registry pipeline into how those images actually run in a cluster.
 - Auto Scaling
 - Terraform
 - Ansible
+
+---
+
+## 🌍 Terraform ✅
+
+### Terraform — Infrastructure as Code, Production Focused Revision
+
+Hands-on labs covering Terraform fundamentals, state management, AWS
+provisioning, modules, remote backends, CI/CD integration, and
+production troubleshooting — the first Infrastructure as Code module,
+picking up where the Kubernetes/Helm modules left off (those manage what
+runs *on* infrastructure; Terraform provisions the infrastructure
+itself). Lives in `05-terraform/`.
+
+Core mental model:
+
+```
+Terraform Code
+      ↓
+terraform init
+      ↓
+terraform plan
+      ↓
+Review proposed changes
+      ↓
+terraform apply
+      ↓
+Infrastructure
+```
+
+#### Day 29 – Terraform Fundamentals
+
+- What is Terraform, and why Infrastructure as Code
+- Declarative vs imperative provisioning
+- Providers, Resources, Data Sources
+- Terraform file structure (`main.tf`, `variables.tf`, `outputs.tf`, `provider.tf`)
+- The core workflow: `fmt` → `validate` → `init` → `plan` → `apply`
+- Outputs and safe destroy
+
+#### Day 30 – Terraform State
+
+- `terraform.tfstate` — what state actually is (not just "a copy of infra")
+- `terraform state list` / `state show` / `state mv` / `state rm`
+- State drift and how `plan` detects it
+- State locking
+- Local state vs remote state (S3 backend)
+- State backup and recovery
+
+#### Day 31 – Terraform in Production
+
+- Modules (VPC, EC2, Security Group) — inputs, outputs, reuse
+- AWS provisioning end-to-end (VPC → Subnet → Route Table → Security Group → EC2 → S3)
+- Remote backend + locking
+- Variables per environment (`dev.tfvars`, `prod.tfvars`)
+- `lifecycle` rules (`create_before_destroy`, `prevent_destroy`, `ignore_changes`)
+- Terraform + CI/CD (fmt/validate/plan gated behind review, apply gated behind approval)
+- Production troubleshooting workflow
+
+**Commands Practiced (Day 29–31):**
+
+```bash
+terraform fmt -recursive
+terraform validate
+terraform init
+terraform plan -out=tfplan
+terraform apply tfplan
+terraform destroy
+terraform state list
+terraform state show <resource_address>
+terraform state mv <src> <dst>
+terraform state rm <resource_address>
+terraform show
+terraform output
+terraform import aws_instance.backend i-0123456789abcdef0
+terraform workspace list
+terraform force-unlock <LOCK_ID>
+```
+
+**🌍 Terraform Module Complete. ✅**
 
 ---
 
@@ -827,6 +985,53 @@ devops-zero-to-production/
 ├── troubleshooting/
 ├── workflows/
 ├── labs/
+├── interview/
+│
+└── helm/
+    ├── README.md
+    ├── commands/
+    ├── concepts/
+    ├── charts/
+    │   └── backend/
+    ├── labs/
+    ├── troubleshooting/
+    ├── workflows/
+    └── interview/
+```
+
+### 05-terraform/ structure
+
+```text
+05-terraform/
+├── README.md
+│
+├── commands/
+├── concepts/
+│
+├── aws/
+│   ├── README.md
+│   ├── provider.tf
+│   ├── variables.tf
+│   ├── outputs.tf
+│   ├── main.tf
+│   ├── terraform.tfvars.example
+│   ├── networking/
+│   ├── compute/
+│   └── storage/
+│
+├── modules/
+│   ├── README.md
+│   ├── vpc/
+│   ├── ec2/
+│   └── security-group/
+│
+├── labs/
+│   ├── day-29-terraform-fundamentals/
+│   ├── day-30-terraform-state/
+│   └── day-31-terraform-production/
+│
+├── troubleshooting/
+├── workflows/
 └── interview/
 ```
 
@@ -1045,12 +1250,39 @@ pdfs/
 - PVC Pending and Node-level (`NotReady`, `DiskPressure`) troubleshooting
 - Master production incident flow, tracing root cause across multiple layers
 
+### Helm
+
+- Explain why Helm exists once raw manifest count grows
+- Chart structure (`Chart.yaml`, `values.yaml`, `templates/`) and how templates render
+- `helm install` vs `helm upgrade --install` vs `helm upgrade`
+- Values overrides and environment-specific values files (dev vs prod)
+- Rolling back a bad release via `helm rollback` and reading `helm history`
+- Chart dependencies and `helm dependency update`
+- Helm Hooks and when a hook runs relative to install/upgrade
+- Debugging a failed install/upgrade (`helm status`, `helm get manifest`, `--dry-run --debug`)
+- Packaging and deploying a Chart from a CI/CD pipeline
+
+### Terraform
+
+- Explain Terraform's reconciliation loop (code vs state vs real infrastructure)
+- `terraform plan` vs `terraform apply`, and why plan must be reviewed first
+- What `terraform.tfstate` actually stores, and why it's not "a copy of infra"
+- State drift investigation and reconciliation
+- State locking and recovering from a stale lock (`force-unlock`)
+- `terraform state mv` / `state rm` vs `terraform destroy -target`
+- Importing existing infrastructure into state (`terraform import`)
+- Module input/output mismatches and dependency graph issues
+- Provider authentication failures and least-privilege IAM for Terraform
+- `prevent_destroy` protecting critical resources, and safely removing it when a destroy is intended
+- Terraform + CI/CD (fmt/validate/plan on PRs, gated apply on merge)
+
 ---
 
 ## ⏳ Upcoming
 
-- AWS Infrastructure Issues
-- Terraform State Problems
+- AWS Infrastructure Deep Dive
+- Ansible Configuration Management
+- Monitoring & Alerting (Prometheus/Grafana)
 
 ---
 
@@ -1066,6 +1298,8 @@ The goal is to understand systems well enough to answer questions like:
 - Why is the deployment failing?
 - Why is Kubernetes restarting the pod?
 - Why did the Jenkins pipeline fail at this stage?
+- Why did `terraform plan` propose a change nobody expected?
+- Why did a Helm upgrade leave the release stuck?
 
 Every production issue should be investigated before applying a fix.
 
@@ -1836,6 +2070,165 @@ image tags built in `07-cicd/`.
 
 ---
 
+# ⎈ Helm Architecture
+
+```text
+Kubernetes
+    │
+    ▼
+Many YAML manifests
+    │
+    ▼
+Helm
+    │
+    ▼
+Chart + Values + Templates
+    │
+    ▼
+Rendered Kubernetes manifests
+    │
+    ▼
+Kubernetes API
+    │
+    ▼
+Resources
+```
+
+# 🔄 Helm Release Workflow
+
+```text
+Chart Source
+      │
+      ▼
+helm lint / helm template
+      │
+      ▼
+helm install
+      │
+      ▼
+Release (revision 1)
+      │
+      ▼
+helm upgrade
+      │
+      ▼
+Release (revision 2)
+      │
+      ▼
+Problem found?
+      │
+      ▼
+helm rollback → previous revision
+```
+
+---
+
+# 🌍 Terraform Architecture
+
+```text
+Terraform CLI
+      │
+      ▼
+Provider
+      │
+      ▼
+Cloud / API
+      │
+      ▼
+Infrastructure
+```
+
+# 🔄 Terraform Reconciliation Loop
+
+```text
+Desired State (.tf files)
+      │
+      ▼
+Terraform
+      │
+      ▼
+Compare configuration / state / real infrastructure
+      │
+      ▼
+Determine changes needed
+      │
+      ▼
+Apply changes
+```
+
+# 🚨 Terraform Troubleshooting Workflow
+
+```text
+Problem
+      │
+      ▼
+terraform plan
+      │
+      ▼
+Inspect state
+      │
+      ▼
+Inspect provider / configuration
+      │
+      ▼
+Check cloud resource
+      │
+      ▼
+Find root cause
+      │
+      ▼
+Fix
+      │
+      ▼
+plan again
+      │
+      ▼
+apply
+```
+
+# 🏭 Terraform Production CI/CD Workflow
+
+```text
+Developer
+      │
+      ▼
+    GitHub
+      │
+      ▼
+Pull Request
+      │
+      ▼
+     CI
+      │
+      ▼
+terraform fmt
+      │
+      ▼
+terraform validate
+      │
+      ▼
+terraform plan
+      │
+      ▼
+   Review
+      │
+      ▼
+  Approval
+      │
+      ▼
+terraform apply
+      │
+      ▼
+Infrastructure
+```
+
+This connects the Terraform module directly with the CI/CD module —
+`terraform plan`/`apply` slot into the same pull-request → review →
+merge → deploy pipeline shape already built with Jenkins and GitHub
+Actions in `07-cicd/`.
+
+---
+
 # 📊 Git Learning Progress
 
 ## ✅ Completed
@@ -1911,6 +2304,29 @@ image tags built in `07-cicd/`.
 - Day 26 – Kubernetes Troubleshooting
 
 **☸️ Kubernetes Module Complete. ✅**
+
+---
+
+# 📊 Helm Learning Progress
+
+## ✅ Completed
+
+- Day 27 – Helm Fundamentals & Chart Structure
+- Day 28 – Helm Releases, Dependencies & Production Workflows
+
+**⎈ Helm Module Complete. ✅**
+
+---
+
+# 📊 Terraform Learning Progress
+
+## ✅ Completed
+
+- Day 29 – Terraform Fundamentals
+- Day 30 – Terraform State
+- Day 31 – Terraform in Production
+
+**🌍 Terraform Module Complete. ✅**
 
 ---
 
@@ -2216,6 +2632,85 @@ kubectl get nodes
 
 ---
 
+# 🧰 Commands Practiced — Helm (Day 27–28)
+
+```md
+## Chart authoring & rendering
+
+helm create backend
+helm lint ./backend
+helm template backend ./backend
+helm install backend ./backend --dry-run --debug
+
+## Install / upgrade / rollback
+
+helm install backend ./backend -f values-dev.yaml
+helm upgrade backend ./backend -f values-prod.yaml
+helm upgrade --install backend ./backend
+helm rollback backend 1
+helm history backend
+
+## Release inspection
+
+helm list
+helm status backend
+helm get values backend
+helm get manifest backend
+helm uninstall backend
+
+## Repositories & dependencies
+
+helm repo add bitnami https://charts.bitnami.com/bitnami
+helm repo update
+helm search repo bitnami
+helm dependency update ./backend
+helm dependency list ./backend
+```
+
+---
+
+# 🧰 Commands Practiced — Terraform (Day 29–31)
+
+```md
+## Core workflow
+
+terraform fmt -recursive
+terraform validate
+terraform init
+terraform plan -out=tfplan
+terraform apply tfplan
+terraform destroy
+
+## State
+
+terraform state list
+terraform state show <resource_address>
+terraform state mv <src> <dst>
+terraform state rm <resource_address>
+terraform show
+terraform refresh
+
+## Outputs & variables
+
+terraform output
+terraform output -json
+terraform plan -var-file=dev.tfvars
+
+## Import & workspaces
+
+terraform import aws_instance.backend i-0123456789abcdef0
+terraform workspace list
+terraform workspace new staging
+terraform workspace select prod
+
+## Locking & debugging
+
+terraform force-unlock <LOCK_ID>
+TF_LOG=DEBUG terraform apply
+```
+
+---
+
 # 🧠 Core Concepts — Git Cherry-pick
 
 ```text
@@ -2462,6 +2957,64 @@ Production Troubleshooting
 
 ---
 
+# 🧠 Core Concepts — Helm
+
+```text
+Helm
+Chart
+Release
+Repository
+Chart.yaml
+values.yaml
+Templates
+Template Expressions
+.Values / .Release / .Chart Objects
+helm install
+helm upgrade
+helm rollback
+Release Revision History
+Values Overrides
+Environment-specific Values
+Chart Dependencies
+Helm Hooks
+Helm + CI/CD
+Helm Troubleshooting
+Production Helm Workflow
+```
+
+---
+
+# 🧠 Core Concepts — Terraform
+
+```text
+Terraform
+Infrastructure as Code
+Declarative Configuration
+Desired State
+Provider
+Resource
+Data Source
+Terraform State
+State File
+State Drift
+State Locking
+Remote State
+Backend
+Backend vs Provider
+Variables
+Outputs
+Dependencies (implicit / depends_on)
+Modules
+Root Module vs Child Module
+Workspaces
+Lifecycle (create_before_destroy, prevent_destroy, ignore_changes)
+Terraform Import
+Production Terraform
+Terraform + CI/CD
+```
+
+---
+
 # 🗝 Key Learnings — Git Cherry-pick
 
 - Git Cherry-pick copies commits instead of moving them.
@@ -2535,6 +3088,34 @@ Production Troubleshooting
 - Relying on the `latest` tag in production is risky since it can silently change what gets deployed.
 - Cloud-managed registries like AWS ECR integrate registry access with cloud IAM permissions.
 - A production registry workflow moves an image from local build → tag → push → registry → pull on the production server → run.
+
+---
+
+# 🗝 Key Learnings — Helm
+
+- Helm packages many repetitive Kubernetes YAML manifests into one versioned, parameterized Chart.
+- A Chart's `values.yaml` supplies defaults; `-f`/`--set` overrides them per environment without touching templates.
+- `helm install` creates a release; `helm upgrade` changes it; every change creates a new, numbered revision.
+- `helm rollback <release> <revision>` reverts to a prior revision quickly, using the same revision history `helm history` shows.
+- `helm upgrade --install` is the idempotent pattern most CI/CD pipelines use — installs if missing, upgrades if present.
+- Chart dependencies let one Chart reuse another (e.g. a backend Chart depending on a Bitnami MySQL Chart).
+- Helm Hooks run at defined points in a release's lifecycle (e.g. pre-install, post-upgrade) — useful for jobs like DB migrations.
+- `helm template` and `--dry-run --debug` render manifests locally/against the API without actually installing, which is the fastest way to catch templating errors.
+- A "successful" `helm upgrade` can still leave broken Pods — Helm confirms the manifests were applied, not that the workload is healthy; that's still on the Kubernetes-level checks from the Kubernetes module.
+
+---
+
+# 🗝 Key Learnings — Terraform
+
+- Terraform state is not a copy of infrastructure — it's the mapping between configuration and real resources, plus metadata needed to plan.
+- `terraform plan` diffs three things at once: your code, your state, and real infrastructure via the provider API.
+- A backend controls *where state lives*; a provider controls *how resources are created* — they are configured separately and often confused.
+- Remote state with locking is what makes Terraform safe for more than one person/CI job to run against the same infrastructure.
+- Implicit dependencies (resource attribute references) build Terraform's execution graph automatically; `depends_on` is for the rare case that graph can't infer.
+- Modules turn repeated resource blocks into a reusable, parameterized unit with a clear inputs/outputs interface.
+- `terraform import` populates state for existing infrastructure — it does not generate a perfect matching configuration for you.
+- `prevent_destroy` is a deliberate safety rail for critical resources, not a default — apply it thoughtfully, not universally.
+- A reviewed `terraform plan` before every production `apply` is the same discipline as code review — the plan output is the actual diff about to happen to real infrastructure.
 
 ---
 
@@ -2836,6 +3417,58 @@ Production Troubleshooting
 
 ---
 
+# 🎤 Interview Questions — Helm (Day 27–28)
+
+```md
+## Day 27 — Fundamentals & Chart Structure
+
+- What problem does Helm solve that raw `kubectl apply` doesn't?
+- What are the three main pieces of a Chart, and what does each do?
+- What's the difference between `.Values`, `.Release`, and `.Chart` in a template?
+- What does `helm template` do, and why is it useful before `helm install`?
+- How do values overrides layer (defaults vs `-f` vs `--set`)?
+
+## Day 28 — Releases, Dependencies & Production
+
+- What's the difference between `helm install`, `helm upgrade`, and `helm upgrade --install`?
+- What is a release revision, and how does `helm rollback` use it?
+- How do Chart dependencies work, and when would you use one?
+- Name a real use case for a Helm Hook.
+- A `helm upgrade` reports success but the app is broken — what do you check next?
+- How would you deploy a Chart from a CI/CD pipeline safely?
+```
+
+---
+
+# 🎤 Interview Questions — Terraform (Day 29–31)
+
+```md
+## Day 29 — Fundamentals
+
+- What is Terraform, and how is it different from an imperative script?
+- What is a provider, and why does Terraform need one per platform?
+- Resource vs data source — what's the practical difference?
+- Walk through the `fmt → validate → init → plan → apply` loop and what each step actually does.
+
+## Day 30 — State
+
+- Why does Terraform need a state file at all?
+- What's the difference between local and remote state?
+- What is state drift, and how does `plan` surface it?
+- `terraform state rm` vs `terraform destroy -target` — what's the difference?
+- Why is state locking important in a team/CI setting?
+
+## Day 31 — Production
+
+- How would you structure Terraform for dev/staging/prod?
+- What's the difference between a backend and a provider?
+- What does `prevent_destroy` protect against, and what doesn't it protect against?
+- How do you keep credentials out of a Terraform CI/CD pipeline?
+- Walk through your troubleshooting steps when `terraform apply` fails partway through.
+```
+
+---
+
 # 🗺 Git Revision Cheat Sheet
 
 ```text
@@ -2960,6 +3593,58 @@ Kubernetes Troubleshooting
 
 ---
 
+# 🗺 Helm Revision Cheat Sheet
+
+```text
+Helm Fundamentals & Chart Structure
+   │
+   ▼
+Releases, Upgrades & Rollbacks
+   │
+   ▼
+Chart Dependencies & Hooks
+   │
+   ▼
+Helm + CI/CD
+   │
+   ▼
+Helm Troubleshooting
+   │
+   ▼
+✅ Helm Module Complete
+```
+
+---
+
+# 🗺 Terraform Revision Cheat Sheet
+
+```text
+Terraform Fundamentals
+   │
+   ▼
+Terraform State
+   │
+   ▼
+Variables, Outputs & Dependencies
+   │
+   ▼
+Modules
+   │
+   ▼
+Remote Backend & Production AWS
+   │
+   ▼
+Terraform + CI/CD
+   │
+   ▼
+Terraform Troubleshooting
+   │
+   ▼
+✅ Terraform Module Complete
+```
+
+---
+
 # 🎯 Final Objective
 
 Become confident handling:
@@ -2970,8 +3655,9 @@ Become confident handling:
 - Jenkins CI/CD Pipelines
 - GitHub Actions CI/CD Pipelines
 - Kubernetes Clusters & Production Troubleshooting
+- Helm Chart Packaging & Release Management
 - AWS Infrastructure
-- Infrastructure as Code
+- Infrastructure as Code with Terraform
 - CI/CD Pipelines
 - Monitoring & Alerting
 - Production Incidents
@@ -2998,6 +3684,10 @@ The completed Jenkins module ties fundamentals, pipelines, GitHub integration, D
 GitHub Actions completes the CI/CD module with a second, natively-hosted way to run the same Git → Build → Test → Docker → Registry → Deployment workflow — trading self-managed Jenkins infrastructure for workflows that live and run directly inside GitHub.
 
 Kubernetes is where the CI/CD module's built and pushed images actually run — turning `docker run` on a single server into self-healing, horizontally scalable workloads with their own networking, storage, and production troubleshooting discipline.
+
+Helm turns a growing pile of hand-maintained Kubernetes YAML into a versioned, parameterized, installable package — the same Deployment/Service/ConfigMap objects from the Kubernetes module, now templated once and deployed consistently across every environment.
+
+Terraform completes the loop by provisioning the infrastructure everything else runs on — the same reconciliation discipline (declare, diff, review, apply) the CI/CD and Kubernetes modules bring to application code, applied instead to VPCs, EC2 instances, and cloud networking.
 
 > **Learning DevOps tools is easy.**
 
@@ -3044,6 +3734,13 @@ Kubernetes is where the CI/CD module's built and pushed images actually run — 
 - ✅ Day 24 – Services, Networking & DNS
 - ✅ Day 25 – Storage, ConfigMaps, Secrets & Health Checks
 - ✅ Day 26 – Kubernetes Troubleshooting
+- ✅ Helm Module Completed
+- ✅ Day 27 – Helm Fundamentals & Chart Structure
+- ✅ Day 28 – Helm Releases, Dependencies & Production Workflows
+- ✅ Terraform Module Completed
+- ✅ Day 29 – Terraform Fundamentals
+- ✅ Day 30 – Terraform State
+- ✅ Day 31 – Terraform in Production
 
 Building one production-ready skill at a time.
 
