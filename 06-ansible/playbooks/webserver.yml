@@ -1,0 +1,56 @@
+---
+# Standalone webserver playbook — demonstrates variables, loops, templates, handlers.
+# Run: ansible-playbook webserver.yml --limit webservers
+
+- name: Configure and harden web server
+  hosts: webservers
+  become: true
+
+  vars:
+    web_package: nginx
+    app_port: 8080
+    server_name: "example.internal"
+    allowed_users:
+      - appuser
+      - deploy
+      - monitoring
+
+  tasks:
+    - name: Ensure web package is installed
+      ansible.builtin.package:
+        name: "{{ web_package }}"
+        state: present
+
+    - name: Create application users
+      ansible.builtin.user:
+        name: "{{ item }}"
+        state: present
+        shell: /usr/sbin/nologin
+      loop: "{{ allowed_users }}"
+
+    - name: Install OS-specific firewall tool
+      ansible.builtin.apt:
+        name: ufw
+        state: present
+      when: ansible_facts['os_family'] == "Debian"
+
+    - name: Deploy nginx configuration from template
+      ansible.builtin.template:
+        src: nginx.conf.j2
+        dest: /etc/nginx/nginx.conf
+        owner: root
+        group: root
+        mode: "0644"
+      notify: Restart nginx
+
+    - name: Ensure web package is running and enabled
+      ansible.builtin.service:
+        name: "{{ web_package }}"
+        state: started
+        enabled: true
+
+  handlers:
+    - name: Restart nginx
+      ansible.builtin.service:
+        name: nginx
+        state: restarted

@@ -1,0 +1,50 @@
+---
+# Application deployment playbook — demonstrates register, when, and a CI/CD-style rollout.
+# Run: ansible-playbook deploy.yml --limit webservers --tags deploy
+
+- name: Deploy application release
+  hosts: webservers
+  become: true
+
+  vars:
+    app_dir: /opt/myapp
+    release_version: "{{ release_version | default('latest') }}"
+
+  tasks:
+    - name: Check current deployed version
+      ansible.builtin.command: cat "{{ app_dir }}/RELEASE"
+      register: current_release
+      changed_when: false
+      failed_when: false
+      tags: deploy
+
+    - name: Pull application release artifact
+      ansible.builtin.get_url:
+        url: "https://artifacts.internal.example.com/myapp/{{ release_version }}.tar.gz"
+        dest: "/tmp/myapp-{{ release_version }}.tar.gz"
+        mode: "0644"
+      when: current_release.stdout is not defined or current_release.stdout != release_version
+      register: artifact_download
+      tags: deploy
+
+    - name: Extract release
+      ansible.builtin.unarchive:
+        src: "/tmp/myapp-{{ release_version }}.tar.gz"
+        dest: "{{ app_dir }}"
+        remote_src: true
+      when: artifact_download is changed
+      notify: Restart application
+      tags: deploy
+
+    - name: Record deployed release version
+      ansible.builtin.copy:
+        content: "{{ release_version }}"
+        dest: "{{ app_dir }}/RELEASE"
+      when: artifact_download is changed
+      tags: deploy
+
+  handlers:
+    - name: Restart application
+      ansible.builtin.service:
+        name: myapp
+        state: restarted

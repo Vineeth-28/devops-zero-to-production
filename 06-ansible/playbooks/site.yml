@@ -1,0 +1,31 @@
+---
+# Master playbook — orchestrates all plays for the fleet.
+# Run: ansible-playbook site.yml
+# Dry-run: ansible-playbook site.yml --check --diff
+
+- name: Configure database servers
+  hosts: dbservers
+  become: true
+  vars:
+    db_package: postgresql
+
+  tasks:
+    - name: Ensure PostgreSQL is installed
+      ansible.builtin.package:
+        name: "{{ db_package }}"
+        state: present
+
+    - name: Ensure PostgreSQL is running and enabled
+      ansible.builtin.service:
+        name: "{{ db_package }}"
+        state: started
+        enabled: true
+
+- name: Configure web servers
+  hosts: webservers
+  become: true
+  roles:
+    - nginx
+
+- name: Deploy application
+  import_playbook: deploy.yml
