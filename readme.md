@@ -56,6 +56,7 @@ revise it until it's interview-ready.
   - [⎈ Helm](#-helm)
   - [🌍 Terraform](#-terraform)
   - [⚙️ Ansible](#️-ansible)
+- [🚨 Production Runbooks](#-production-runbooks)
 - [Engineering Mindset](#-engineering-mindset)
 - [Production Investigation Workflow](#-production-investigation-workflow)
 - [What's Next](#-whats-next)
@@ -97,6 +98,7 @@ commands. By the end of this roadmap, I aim to confidently:
 | ⎈ **Helm** | ✅ Complete | Charts, releases, rollbacks, dependencies, hooks, CI/CD packaging |
 | 🌍 **Terraform** | ✅ Complete | State, modules, remote backends, AWS provisioning, CI/CD-gated applies |
 | ⚙️ **Ansible** | ✅ Complete | Inventory, modules, idempotency, playbooks, roles, Vault, CI/CD integration |
+| 🚨 **Production Runbooks** | ✅ Complete | 18 incident runbooks + master troubleshooting framework + layers model |
 | ☁️ **AWS** | ⏳ Planned | Deep-dive infrastructure module |
 | 📊 **Monitoring** | ⏳ Planned | Prometheus, Grafana, alerting |
 | 📦 **Projects** | ⏳ Planned | End-to-end capstone builds |
@@ -139,7 +141,7 @@ devops-zero-to-production/
 │
 ├── interview/
 ├── pdf-notes/
-├── production-runbooks/
+├── production-runbooks/    (18 incident runbooks + master framework)
 │
 └── README.md
 ```
@@ -178,6 +180,30 @@ devops-zero-to-production/
 ├── playbooks/      (site.yml, webserver.yml, deploy.yml)
 ├── roles/          templates/
 ├── troubleshooting/  workflows/  interview/
+```
+
+**`production-runbooks/`** (flat, one file per incident type)
+```text
+production-runbooks/
+├── README.md                          (master framework + layers model + index)
+├── 502-bad-gateway.md
+├── 503-service-unavailable.md
+├── 504-gateway-timeout.md
+├── high-cpu.md
+├── memory-issue.md
+├── disk-full.md
+├── pod-crashloopbackoff.md
+├── pod-pending.md
+├── image-pull-backoff.md
+├── deployment-failure.md
+├── service-not-working.md
+├── ingress-issue.md
+├── ci-pipeline-failure.md
+├── docker-build-failure.md
+├── terraform-failure.md
+├── ansible-unreachable.md
+├── database-connection.md
+└── incident-response.md             (severity, lifecycle, RCA, postmortem template)
 ```
 
 </details>
@@ -380,6 +406,63 @@ Terraform → AWS → EC2 provisioned → Ansible
 
 ---
 
+## 🚨 Production Runbooks
+
+Incident-response runbooks for `production-runbooks/` — meant to be
+opened *during* an incident, not read once and forgotten. **Complete —
+18 runbooks** covering HTTP errors, Linux resource incidents, the full
+set of common Kubernetes failure states, CI/CD and Docker build
+failures, Terraform failures, Ansible `UNREACHABLE`, and database
+connection failures — plus a general Incident Response runbook covering
+severity levels, the incident lifecycle, root cause analysis, and a
+postmortem template.
+
+Every runbook follows the same shape: Incident Summary → Symptoms →
+Impact → Possible Causes → First 5 Minutes → Troubleshooting Flow →
+Commands (each with what it checks / why we run it / what to look for)
+→ Root Cause Examples → Immediate Mitigation → Permanent Fix →
+Verification → Prevention → Post-Incident Checklist → Interview
+Explanation.
+
+**Master troubleshooting framework** (documented in
+`production-runbooks/README.md`):
+
+```text
+Incident → Confirm Symptom → Determine Impact/Blast Radius
+    → Check Recent Changes → Identify Affected Layer
+    → Collect Evidence (Metrics + Logs + Events) → Investigate
+    → Root Cause → Mitigate → Verify Recovery
+    → Prevent Recurrence → Document / Postmortem
+```
+
+**Production layers model** — troubleshoot by walking the layers
+systematically instead of randomly changing things:
+
+```text
+User/Request → DNS/Network → Load Balancer/Ingress → Service
+    → Kubernetes → Container → Application → Database/External Dependency
+```
+
+<details>
+<summary><strong>🗝 Key production learnings</strong></summary>
+
+- 502 vs 503 vs 504 are three different failure points: an invalid
+  response from upstream, no healthy upstream at all, and an upstream
+  that's reachable but too slow, respectively.
+- `CrashLoopBackOff` is a *state*, not a root cause — always check the
+  exit code and `kubectl logs --previous` before forming a hypothesis.
+- "Pod is Running" doesn't mean "Service can route to it" — Endpoints
+  only ever include pods that are both label-matched *and* Ready.
+- Don't blame the database first — most "database is down" incidents
+  resolve to DNS, network, or a security-group rule sitting between the
+  app and a perfectly healthy database.
+- Finding the *first* failing step in a CI pipeline (not the last
+  cascading error) is almost always the fastest path to root cause.
+
+</details>
+
+---
+
 ## 🧠 Engineering Mindset
 
 | ❌ Instinct | ✅ Discipline |
@@ -400,7 +483,9 @@ Incident → Investigate → Collect Evidence → Find Root Cause
 
 Applied consistently across every module — this is the same loop whether
 it's a crashing Pod, a failed Terraform apply, a Jenkins pipeline
-failure, or an `UNREACHABLE` Ansible run.
+failure, or an `UNREACHABLE` Ansible run. The full incident-response
+version of this loop, with commands and interview framing for each
+scenario, lives in [`production-runbooks/`](./production-runbooks).
 
 ---
 
