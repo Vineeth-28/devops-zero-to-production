@@ -57,6 +57,7 @@ revise it until it's interview-ready.
   - [🌍 Terraform](#-terraform)
   - [⚙️ Ansible](#️-ansible)
 - [🚨 Production Runbooks](#-production-runbooks)
+- [🎯 Interview Preparation](#-interview-preparation)
 - [Engineering Mindset](#-engineering-mindset)
 - [Production Investigation Workflow](#-production-investigation-workflow)
 - [What's Next](#-whats-next)
@@ -99,6 +100,7 @@ commands. By the end of this roadmap, I aim to confidently:
 | 🌍 **Terraform** | ✅ Complete | State, modules, remote backends, AWS provisioning, CI/CD-gated applies |
 | ⚙️ **Ansible** | ✅ Complete | Inventory, modules, idempotency, playbooks, roles, Vault, CI/CD integration |
 | 🚨 **Production Runbooks** | ✅ Complete | 18 incident runbooks + master troubleshooting framework + layers model |
+| 🎯 **Interview Preparation** | ✅ Complete | Full question bank across every module + a timed mock interview with an incident scenario |
 | ☁️ **AWS** | ⏳ Planned | Deep-dive infrastructure module |
 | 📊 **Monitoring** | ⏳ Planned | Prometheus, Grafana, alerting |
 | 📦 **Projects** | ⏳ Planned | End-to-end capstone builds |
@@ -139,7 +141,7 @@ devops-zero-to-production/
 ├── 08-monitoring/
 ├── 09-projects/
 │
-├── interview/
+├── interview/              (per-module question bank + final mock interview)
 ├── pdf-notes/
 ├── production-runbooks/    (18 incident runbooks + master framework)
 │
@@ -204,6 +206,25 @@ production-runbooks/
 ├── ansible-unreachable.md
 ├── database-connection.md
 └── incident-response.md             (severity, lifecycle, RCA, postmortem template)
+```
+
+**`interview/`** (question bank, one file per module + a final mock)
+```text
+interview/
+├── README.md                        (hub index + cross-technology map + revision order)
+├── linux.md
+├── git-github.md
+├── docker.md
+├── kubernetes.md
+├── helm.md
+├── terraform.md
+├── ansible.md
+├── jenkins.md
+├── github-actions.md
+├── cicd.md
+├── monitoring.md
+├── production-troubleshooting.md
+└── final-devops-interview.md        (6 timed rounds + a full incident scenario)
 ```
 
 </details>
@@ -460,6 +481,36 @@ User/Request → DNS/Network → Load Balancer/Ingress → Service
   cascading error) is almost always the fastest path to root cause.
 
 </details>
+
+---
+
+## 🎯 Interview Preparation
+
+A complete interview question bank in `interview/` — one file per
+module, built directly from what's actually documented in this repo,
+not generic trivia. **Complete — 13 topic files plus a timed final mock
+interview.**
+
+Every question follows the same shape: Difficulty → What the interviewer
+is testing → Expected Answer → a natural, spoken Strong Interview Answer
+→ Follow-up Questions → Key Points to hit if nothing else lands.
+
+```text
+interview/
+├── linux.md · git-github.md · docker.md · kubernetes.md · helm.md
+├── terraform.md · ansible.md · jenkins.md · github-actions.md · cicd.md
+├── monitoring.md · production-troubleshooting.md
+└── final-devops-interview.md   (6 timed rounds + a full incident scenario)
+```
+
+The final mock interview closes with a single large production incident
+— a checkout service throwing 502s minutes after a deploy — worked
+through as a real interview would run it: first actions, blast radius,
+hypothesis, evidence, mitigation decision, and postmortem action item.
+
+See [`interview/README.md`](./interview) for the full topic index, the
+cross-technology comparison map (merge vs rebase, Terraform vs Ansible,
+readiness vs liveness, and more), and a recommended revision order.
 
 ---
 
