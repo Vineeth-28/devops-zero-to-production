@@ -106,6 +106,6 @@ timeout(time: 10, unit: 'MINUTES') { sh './long-task.sh' }
 
 ## See Also
 
-- [commands/jenkins.md](commands/jenkins-md) — CLI & general commands
+- [commands/jenkins.md](commands/jenkins.md) — CLI & general commands
 - [jenkins-pipeline.md](commands/jenkins-pipeline.md) — pipeline-specific syntax
 - [troubleshooting/jenkins.md](troubleshooting/jenkins.md)

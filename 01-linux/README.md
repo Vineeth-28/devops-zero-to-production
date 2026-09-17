@@ -64,12 +64,12 @@ Build the mindset of a Linux Administrator / DevOps Engineer by learning how to 
 │   └── performance-lab.md
 │
 ├── pdfs/
-│   ├── Day-01-Linux-Production-Basics.pdf
+│   ├── DevOps_Day1_Linux_Production_Revision_Notes.pdf
 │   ├── Day-02-Linux-Permissions-and-SSH.pdf
 │   ├── Day-03-Linux-Networking-and-Logs.pdf
 │   ├── Day-04-Linux-Disk-and-Storage.pdf
 │   ├── Day-05-Linux-Performance-and-Memory.pdf
-│   └── Day-06-Linux-Mock-Interview.pdf
+│   └── Day-06-Linux-Revision-and-Answers.pdf
 │
 └── README.md
 ```

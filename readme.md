@@ -56,6 +56,7 @@ revise it until it's interview-ready.
   - [⎈ Helm](#-helm)
   - [🌍 Terraform](#-terraform)
   - [⚙️ Ansible](#️-ansible)
+  - [📊 Monitoring](#-monitoring)
 - [🚨 Production Runbooks](#-production-runbooks)
 - [🎯 Interview Preparation](#-interview-preparation)
 - [Engineering Mindset](#-engineering-mindset)
@@ -81,7 +82,7 @@ commands. By the end of this roadmap, I aim to confidently:
 | ✅ | Package and release applications with Helm |
 | ✅ | Provision cloud infrastructure with Terraform |
 | ✅ | Configure and manage systems with Ansible |
-| ⏳ | Monitor production workloads (Prometheus/Grafana) |
+| ✅ | Monitor production workloads (Prometheus/Grafana) |
 
 ---
 
@@ -99,10 +100,10 @@ commands. By the end of this roadmap, I aim to confidently:
 | ⎈ **Helm** | ✅ Complete | Charts, releases, rollbacks, dependencies, hooks, CI/CD packaging |
 | 🌍 **Terraform** | ✅ Complete | State, modules, remote backends, AWS provisioning, CI/CD-gated applies |
 | ⚙️ **Ansible** | ✅ Complete | Inventory, modules, idempotency, playbooks, roles, Vault, CI/CD integration |
+| 📊 **Monitoring** | ✅ Complete | Prometheus architecture & scraping, PromQL, Grafana dashboards, Alertmanager, 17-scenario troubleshooting handbook |
 | 🚨 **Production Runbooks** | ✅ Complete | 18 incident runbooks + master troubleshooting framework + layers model |
 | 🎯 **Interview Preparation** | ✅ Complete | Full question bank across every module + a timed mock interview with an incident scenario |
 | ☁️ **AWS** | ⏳ Planned | Deep-dive infrastructure module |
-| 📊 **Monitoring** | ⏳ Planned | Prometheus, Grafana, alerting |
 | 📦 **Projects** | ⏳ Planned | End-to-end capstone builds |
 
 </div>
@@ -139,10 +140,9 @@ devops-zero-to-production/
 ├── 06-ansible/
 ├── 07-cicd/                (jenkins/ + github-actions/)
 ├── 08-monitoring/
-├── 09-projects/
+├── 09-projects/            (planned)
 │
 ├── interview/              (per-module question bank + final mock interview)
-├── pdf-notes/
 ├── production-runbooks/    (18 incident runbooks + master framework)
 │
 └── README.md
@@ -427,6 +427,32 @@ Terraform → AWS → EC2 provisioned → Ansible
 
 ---
 
+### 📊 Monitoring
+
+Prometheus (architecture, scraping, targets/jobs, labels, metric types,
+Node Exporter) → PromQL (filtering, rate/increase, aggregation, error rate,
+latency/percentiles) → Grafana (datasources, dashboards, panels) →
+Alerting & Alertmanager → a 17-scenario troubleshooting handbook. **Complete.**
+Full module handbook: `08-monitoring/README.md`.
+
+```text
+App/Node/Exporter → /metrics → Prometheus (scrape) → Time Series
+    → PromQL → Grafana (dashboards) / Alertmanager (notifications)
+```
+
+<details>
+<summary><strong>🗝 Key production learnings</strong></summary>
+
+- Prometheus pulls metrics from targets rather than having them pushed — targets just expose a `/metrics` endpoint.
+- A time series is uniquely identified by its metric name plus its label set — labels are how you filter and aggregate.
+- `rate()` (per-second average over a range, for counters) and `increase()` (total change over a range) both handle counter resets automatically — using plain subtraction doesn't.
+- Alert rules need a `for:` duration to avoid firing on a single noisy scrape — Alertmanager is what then routes, groups, and silences the resulting alerts.
+- A "green" Grafana dashboard only reflects what it queries — it doesn't guarantee the service is actually healthy end-to-end.
+
+</details>
+
+---
+
 ## 🚨 Production Runbooks
 
 Incident-response runbooks for `production-runbooks/` — meant to be
@@ -543,7 +569,6 @@ scenario, lives in [`production-runbooks/`](./production-runbooks).
 ## 🎯 What's Next
 
 - ☁️ **AWS Infrastructure Deep Dive**
-- 📊 **Monitoring & Alerting** (Prometheus, Grafana)
 - 📦 **End-to-end capstone projects**
 - 🔥 **Production Git Challenge** (final Git module day)
 

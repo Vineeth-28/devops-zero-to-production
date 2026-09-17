@@ -245,21 +245,18 @@ The goal is to understand **how Docker works under the hood**, troubleshoot cont
 │
 ├── dockerfiles/
 │   ├── 01-nginx/
-│   ├── 02-node-basics/
-│   ├── 03-networking/
-│   ├── 04-compose/
-│   └── 05-production/
+│   ├── 02-production/
+│   ├── 03-registry/
+│   └── 04-Backend/
 │
 ├── pdfs/
 │   ├── Day-01-Docker-Basics.pdf
-│   ├── Day-02-Docker-Images-Dockerfile.pdf
+│   ├── Day-02-Docker-Images.pdf
 │   ├── Day-03-Docker-Volumes.pdf
 │   ├── Day-04-Docker-Networking.pdf
 │   ├── Day-05-Docker-Compose.pdf
 │   ├── Day-06-Production-Docker.pdf
-│   ├── Day-07-Docker-Registry.pdf
-│   ├── Day-09-Production-Docker-Lab.pdf
-│   └── Day-10-Final-Challenge-Interview.pdf
+│   └── Day-07-Docker-Registry.pdf
 │
 └── README.md
 ```
