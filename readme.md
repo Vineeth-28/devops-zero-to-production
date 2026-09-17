@@ -4,6 +4,7 @@
 
 ### A Production-First DevOps Engineering Roadmap
 
+![Status](https://img.shields.io/badge/Status-Complete-success?style=for-the-badge)
 ![Linux](https://img.shields.io/badge/Linux-FCC624?style=for-the-badge&logo=linux&logoColor=black)
 ![Git](https://img.shields.io/badge/Git-F05032?style=for-the-badge&logo=git&logoColor=white)
 ![Docker](https://img.shields.io/badge/Docker-2496ED?style=for-the-badge&logo=docker&logoColor=white)
@@ -61,7 +62,6 @@ revise it until it's interview-ready.
 - [🎯 Interview Preparation](#-interview-preparation)
 - [Engineering Mindset](#-engineering-mindset)
 - [Production Investigation Workflow](#-production-investigation-workflow)
-- [What's Next](#-whats-next)
 - [Long-Term Goal](#-long-term-goal)
 
 ---
@@ -93,7 +93,7 @@ commands. By the end of this roadmap, I aim to confidently:
 | Module | Status | Core Skills |
 |---|:---:|---|
 | 🐧 **Linux** | ✅ Complete | Process mgmt, systemd, networking, logs, permissions, SSH, storage, perf & incident troubleshooting |
-| 🔥 **Git & GitHub** | 🟡 89% (Day 8/9) | Internals, branching, merge/rebase, revert, cherry-pick, PR & collaboration workflows |
+| 🔥 **Git & GitHub** | ✅ Complete | Internals, branching, merge/rebase, revert, cherry-pick, PR & collaboration workflows, Production Git Challenge |
 | 🐳 **Docker** | ✅ Complete | Images, volumes, networking, Compose, multi-stage builds, registries, security, production labs |
 | 🚀 **CI/CD** | ✅ Complete | Jenkins (pipelines, RBAC, Shared Libraries) + GitHub Actions (matrix, environments, secrets) |
 | ☸️ **Kubernetes** | ✅ Complete | Architecture, workloads, Services/DNS, storage, probes, production incident triage |
@@ -103,8 +103,6 @@ commands. By the end of this roadmap, I aim to confidently:
 | 📊 **Monitoring** | ✅ Complete | Prometheus architecture & scraping, PromQL, Grafana dashboards, Alertmanager, 17-scenario troubleshooting handbook |
 | 🚨 **Production Runbooks** | ✅ Complete | 18 incident runbooks + master troubleshooting framework + layers model |
 | 🎯 **Interview Preparation** | ✅ Complete | Full question bank across every module + a timed mock interview with an incident scenario |
-| ☁️ **AWS** | ⏳ Planned | Deep-dive infrastructure module |
-| 📦 **Projects** | ⏳ Planned | End-to-end capstone builds |
 
 </div>
 
@@ -140,7 +138,6 @@ devops-zero-to-production/
 ├── 06-ansible/
 ├── 07-cicd/                (jenkins/ + github-actions/)
 ├── 08-monitoring/
-├── 09-projects/            (planned)
 │
 ├── interview/              (per-module question bank + final mock interview)
 ├── production-runbooks/    (18 incident runbooks + master framework)
@@ -245,7 +242,9 @@ troubleshooting for all of it. **Complete.**
 
 Fundamentals → internals (objects, SHA-1, HEAD) → branching → merge →
 rebase/reset/reflog → GitHub collaboration workflows → revert →
-cherry-pick. One day remaining: the **Production Git Challenge**.
+cherry-pick → the **Production Git Challenge** (simulated production
+incident: bad commit, revert, hotfix, cherry-pick, reflog recovery).
+**Complete.**
 
 <details>
 <summary><strong>🍒 Cherry-pick architecture (sample diagram from this module)</strong></summary>
@@ -563,14 +562,6 @@ it's a crashing Pod, a failed Terraform apply, a Jenkins pipeline
 failure, or an `UNREACHABLE` Ansible run. The full incident-response
 version of this loop, with commands and interview framing for each
 scenario, lives in [`production-runbooks/`](./production-runbooks).
-
----
-
-## 🎯 What's Next
-
-- ☁️ **AWS Infrastructure Deep Dive**
-- 📦 **End-to-end capstone projects**
-- 🔥 **Production Git Challenge** (final Git module day)
 
 ---
 
